@@ -1,0 +1,79 @@
+﻿using System;
+using System.Diagnostics.Contracts;
+using System.Linq;
+using Ifc.API;
+using Ifc.Builders.Elements;
+using Ifc.Geometries;
+using Ifc.Interfaces;
+using MathNet.Numerics.LinearAlgebra;
+using Start.Entities.Fittings;
+using Start.Extensions;
+using Start.Interfaces;
+using Utils;
+using Xbim.Common;
+using Xbim.Ifc4.HvacDomain;
+using Xbim.Ifc4.Interfaces;
+using MatrixExtensions = Utils.MatrixExtensions;
+
+namespace IFCConverter.Converters.Elements
+{
+    public sealed class BendConverter : IfcElementConverter<StartAbstractBendEntity, IfcPipeFitting>
+    {
+        private readonly Logger _logger = Logger.GetInstance();
+        
+        public BendConverter(IModel model) : base(model)
+        {
+        }
+        
+        public override IfcPipeFitting BuildIfcElement(StartAbstractBendEntity start)
+        {
+            IStartSegmentEntity[] startSegmentEntities = start.ConnectedEntities
+                .OfType<IStartSegmentEntity>()
+                .ToArray();
+
+            Vector<double> firstDirection = startSegmentEntities[0].GetProjectionFromPoint(start.Position).Negate();
+            Vector<double> secondDirection = startSegmentEntities[1].GetProjectionFromPoint(start.Position);
+            double angle = firstDirection.Angle(secondDirection);
+
+            _logger.Info($"Calculated directions: ({firstDirection.ToRowString()}); ({secondDirection.ToRowString()})");
+            _logger.Info($"Calculated angle: {angle}");
+            
+            double displacementLength = start.Radius.SIProperty * Math.Tan(angle / 2);
+            Vector<double> position = firstDirection.Negate() * displacementLength;
+            _logger.Info($"Calculated position: ({position.ToRowString()})");
+
+            double pipeDiameter = startSegmentEntities.Select(entity => entity.Diameter.SIProperty).Max();
+
+            IIfcGeometry bendGeometry = BendGeometry.CreateGeometry(_Model, new BendGeometryProperties()
+            {
+                BendRadius = start.Radius.SIProperty,
+                Position = position,
+                PipeDiameter = pipeDiameter,
+                Direction = firstDirection,
+                EndDirection = secondDirection
+            });
+            bendGeometry.AssignColor(Color.FromHEX("5f4e7c"));
+            _logger.Info($"Created geometry {bendGeometry.GetType().FullName}");
+
+            Matrix<double> objectMatrix = MatrixExtensions.CreateTransition(start.Position);
+            _logger.Info($"Created object matrix: {objectMatrix.ToRowString()}");
+
+            IIfcPipeFittingBuilder<IfcPipeFitting> builder =
+                new IfcPipeFittingBuilder<IfcPipeFitting>(GenerateName(start), GenerateTag(start),
+                    IfcPipeFittingTypeEnum.BEND);
+            _logger.Info($"Created builder: {builder.GetType().FullName}");
+            TryAddMaterial(start, builder);
+            
+            IIfcObjectPlacement objectPlacement = builder.CreateObjectPlacement(_Model, objectMatrix);
+            builder.AssignPlacement(objectPlacement);
+            builder.AssignGeometry(bendGeometry);
+
+            return builder.CreateInstance(_Model);
+        }
+        
+        public override StartAbstractBendEntity BuildStartElement(IfcPipeFitting ifc)
+        {
+            throw new NotImplementedException();
+        }
+    }
+}

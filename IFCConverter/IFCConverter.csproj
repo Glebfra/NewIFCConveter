@@ -1,0 +1,146 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+    <PropertyGroup>
+        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+        <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+        <ProjectGuid>{DCD55710-0CD4-40F3-848E-A2E0DCC9617B}</ProjectGuid>
+        <OutputType>Library</OutputType>
+        <AppDesignerFolder>Properties</AppDesignerFolder>
+        <RootNamespace>IFCConverter</RootNamespace>
+        <AssemblyName>IFCConverter</AssemblyName>
+        <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+        <FileAlignment>512</FileAlignment>
+        <LangVersion>default</LangVersion>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>full</DebugType>
+        <Optimize>false</Optimize>
+        <OutputPath>bin\Debug\</OutputPath>
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <DebugType>none</DebugType>
+        <Optimize>true</Optimize>
+        <OutputPath>bin\Release\</OutputPath>
+        <DefineConstants>TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+    </PropertyGroup>
+    <ItemGroup>
+        <Reference Include="Esent.Interop, Version=1.9.4.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+          <HintPath>..\packages\Microsoft.Database.ManagedEsent.2.0.3\lib\netstandard2.0\Esent.Interop.dll</HintPath>
+        </Reference>
+        <Reference Include="MathNet.Numerics, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+          <HintPath>..\packages\MathNet.Numerics.5.0.0\lib\net461\MathNet.Numerics.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.Extensions.DependencyInjection, Version=2.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+          <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.2.1.1\lib\net461\Microsoft.Extensions.DependencyInjection.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=2.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+          <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.2.1.1\lib\netstandard2.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.Extensions.Logging.Abstractions, Version=2.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+          <HintPath>..\packages\Microsoft.Extensions.Logging.Abstractions.2.1.1\lib\netstandard2.0\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
+        </Reference>
+        <Reference Include="mscorlib" />
+        <Reference Include="System" />
+        <Reference Include="System.Core" />
+        <Reference Include="System.Data" />
+        <Reference Include="System.Drawing" />
+        <Reference Include="System.Numerics" />
+        <Reference Include="System.ValueTuple, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+          <HintPath>..\packages\System.ValueTuple.4.4.0\lib\net461\System.ValueTuple.dll</HintPath>
+        </Reference>
+        <Reference Include="System.Windows.Forms" />
+        <Reference Include="System.Xml" />
+        <Reference Include="Xbim.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=11e3655e576ec5a9, processorArchitecture=MSIL">
+          <HintPath>..\packages\Xbim.Common.6.0.565\lib\netstandard2.0\Xbim.Common.dll</HintPath>
+        </Reference>
+        <Reference Include="Xbim.Ifc, Version=6.0.0.0, Culture=neutral, PublicKeyToken=11e3655e576ec5a9, processorArchitecture=MSIL">
+          <HintPath>..\packages\Xbim.Ifc.6.0.565\lib\netstandard2.0\Xbim.Ifc.dll</HintPath>
+        </Reference>
+        <Reference Include="Xbim.Ifc2x3, Version=6.0.0.0, Culture=neutral, PublicKeyToken=11e3655e576ec5a9, processorArchitecture=MSIL">
+          <HintPath>..\packages\Xbim.Ifc2x3.6.0.565\lib\netstandard2.0\Xbim.Ifc2x3.dll</HintPath>
+        </Reference>
+        <Reference Include="Xbim.Ifc4, Version=6.0.0.0, Culture=neutral, PublicKeyToken=11e3655e576ec5a9, processorArchitecture=MSIL">
+          <HintPath>..\packages\Xbim.Ifc4.6.0.565\lib\netstandard2.0\Xbim.Ifc4.dll</HintPath>
+        </Reference>
+        <Reference Include="Xbim.Ifc4x3, Version=6.0.0.0, Culture=neutral, PublicKeyToken=11e3655e576ec5a9, processorArchitecture=MSIL">
+          <HintPath>..\packages\Xbim.Ifc4x3.6.0.565\lib\netstandard2.0\Xbim.Ifc4x3.dll</HintPath>
+        </Reference>
+        <Reference Include="Xbim.IO.Esent, Version=6.0.0.0, Culture=neutral, PublicKeyToken=11e3655e576ec5a9, processorArchitecture=MSIL">
+          <HintPath>..\packages\Xbim.IO.Esent.6.0.565\lib\netstandard2.0\Xbim.IO.Esent.dll</HintPath>
+        </Reference>
+        <Reference Include="Xbim.IO.MemoryModel, Version=6.0.0.0, Culture=neutral, PublicKeyToken=11e3655e576ec5a9, processorArchitecture=MSIL">
+          <HintPath>..\packages\Xbim.IO.MemoryModel.6.0.565\lib\netstandard2.0\Xbim.IO.MemoryModel.dll</HintPath>
+        </Reference>
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Include="Converters\ConverterFactory.cs" />
+        <Compile Include="Converters\Elements\BendConverter.cs" />
+        <Compile Include="Converters\Elements\ConeElementConverter.cs" />
+        <Compile Include="Converters\Elements\IfcElementConverter.cs" />
+        <Compile Include="Converters\Elements\PipeConverter.cs" />
+        <Compile Include="Converters\Elements\ReducerConverter.cs" />
+        <Compile Include="Converters\Elements\TeeConverter.cs" />
+        <Compile Include="Converters\Elements\ValveConverter.cs" />
+        <Compile Include="Converters\StartToIfcConverter.cs" />
+        <Compile Include="GUI\ExportWindowForm.cs" />
+        <Compile Include="GUI\ExportWindowForm.Designer.cs" />
+        <Compile Include="IfcConverter.cs" />
+        <Compile Include="Interfaces\IIfcConverter.cs" />
+        <Compile Include="Interfaces\IIfcElementConverter.cs" />
+        <Compile Include="Localization\LocalizationResource.Designer.cs" />
+        <Compile Include="Properties\AssemblyInfo.cs" />
+        <Compile Include="Utils\ConversionResult.cs" />
+        <Compile Include="Utils\ExportDataContainer.cs" />
+        <Compile Include="Utils\IfcExportType.cs" />
+        <Compile Include="Utils\IfcExportTypeEnum.cs" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Ifc\Ifc.csproj">
+            <Project>{d50802dd-0f4f-4971-84dc-1a8b62085757}</Project>
+            <Name>Ifc</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\Start\Start.csproj">
+            <Project>{5eaeb38d-3834-4956-b5cc-6692976af68e}</Project>
+            <Name>Start</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\Utils\Utils.csproj">
+            <Project>{0cbf087b-32d7-430f-8651-82d7c7b9618c}</Project>
+            <Name>Utils</Name>
+        </ProjectReference>
+    </ItemGroup>
+    <ItemGroup>
+      <EmbeddedResource Include="GUI\ExportWindowForm.resx" />
+      <EmbeddedResource Include="GUI\ExportWindowForm.ru.resx">
+        <DependentUpon>ExportWindowForm.cs</DependentUpon>
+      </EmbeddedResource>
+      <EmbeddedResource Include="GUI\ExportWindowForm.zh.resx">
+        <DependentUpon>ExportWindowForm.cs</DependentUpon>
+      </EmbeddedResource>
+      <EmbeddedResource Include="Localization\LocalizationResource.en.resx" />
+      <EmbeddedResource Include="Localization\LocalizationResource.resx" />
+      <EmbeddedResource Include="Localization\LocalizationResource.ru.resx" />
+      <EmbeddedResource Include="Localization\LocalizationResource.zh.resx" />
+    </ItemGroup>
+    <ItemGroup>
+      <None Include="packages.config" />
+    </ItemGroup>
+    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+    <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+         Other similar extension points exist, see Microsoft.Common.targets.
+    <Target Name="BeforeBuild">
+    </Target>
+    <Target Name="AfterBuild">
+    </Target>
+    -->
+
+</Project>

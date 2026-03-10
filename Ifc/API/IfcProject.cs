@@ -1,0 +1,108 @@
+﻿using System;
+using System.Diagnostics.Contracts;
+using System.IO;
+using System.Reflection;
+using Xbim.Common;
+using Xbim.Common.Step21;
+using Xbim.Ifc;
+using Xbim.Ifc4.Interfaces;
+using Xbim.Ifc4.Kernel;
+using Xbim.Ifc4.ProductExtension;
+using Xbim.Ifc4.RepresentationResource;
+using Xbim.IO;
+
+namespace Ifc.API
+{
+    public class IfcProject : IDisposable
+    {
+        private readonly IfcBuilding _building;
+
+        private readonly IfcStore _model;
+
+        public IfcProject(IfcStore model)
+        {
+            _model = model;
+            _building = _model.Instances.FirstOrDefault<IfcBuilding>();
+        }
+
+        public IModel Model => _model;
+
+        public void Dispose()
+        {
+            _model.Dispose();
+        }
+
+        [Pure]
+        public static IfcProject CreateProject(string name)
+        {
+            XbimEditorCredentials editor = new()
+            {
+                ApplicationFullName = "PASS/Start-Prof",
+                ApplicationVersion = $"04.88 (STARTtoIFC: {Assembly.GetExecutingAssembly().GetName().Version})"
+            };
+
+            IfcStore model = IfcStore.Create(editor, XbimSchemaVersion.Ifc4, XbimStoreType.InMemoryModel);
+            model.Header.FileDescription.Description.Add("ViewDefinition [DesignTransferView]");
+            model.Header.FileDescription.Description.Add("Version 2.0");
+            model.Header.FileName.Name = name;
+
+            using (ITransaction transaction = model.BeginTransaction("Model creation"))
+            {
+                Xbim.Ifc4.Kernel.IfcProject project =
+                    model.Instances.New<Xbim.Ifc4.Kernel.IfcProject>(p => p.Name = name);
+
+                IfcGeometricRepresentationContext context = model.Instances.New<IfcGeometricRepresentationContext>(
+                    representationContext =>
+                    {
+                        representationContext.ContextIdentifier = "Start context";
+                        representationContext.Precision = 1e-5;
+                        representationContext.ContextType = "Model";
+                        representationContext.CoordinateSpaceDimension = 3;
+                    });
+
+                IfcSite site = model.Instances.New<IfcSite>(ifcSite =>
+                {
+                    ifcSite.Name = "Site";
+                    ifcSite.CompositionType = IfcElementCompositionEnum.ELEMENT;
+                });
+                project.AddSite(site);
+
+                IfcBuilding building = model.Instances.New<IfcBuilding>(ifcBuilding =>
+                {
+                    ifcBuilding.Name = "Building";
+                    ifcBuilding.CompositionType = IfcElementCompositionEnum.ELEMENT;
+                });
+                site.AddBuilding(building);
+                transaction.Commit();
+            }
+
+            return new IfcProject(model);
+        }
+
+        [Pure]
+        public static IfcProject OpenProject(string filePath)
+        {
+            IfcStore model;
+            using (FileStream stream = new(filePath, FileMode.Open))
+            {
+                model = IfcStore.Open(stream, StorageType.Ifc, XbimSchemaVersion.Ifc4, XbimModelType.MemoryModel);
+            }
+
+            return new IfcProject(model);
+        }
+
+        public void AddEntityRaw(IfcProduct product)
+        {
+            using (ITransaction transaction = _model.BeginTransaction($"{nameof(IfcProject)}: {nameof(AddEntityRaw)}"))
+            {
+                _building.AddElement(product);
+                transaction.Commit();
+            }
+        }
+
+        public void SaveAs(string filepath)
+        {
+            _model.SaveAs(filepath, StorageType.Ifc);
+        }
+    }
+}
