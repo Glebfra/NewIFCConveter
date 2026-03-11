@@ -99,7 +99,6 @@
         <Compile Include="Entities\Segments\StartRigidElementEntity.cs" />
         <Compile Include="Entities\StartAbstractEntity.cs" />
         <Compile Include="Entities\StartNodeEntity.cs" />
-        <Compile Include="Extensions\MatrixExtensions.cs" />
         <Compile Include="Extensions\StartDataArrayItemExtensions.cs" />
         <Compile Include="Extensions\StartElementTypeExtensions.cs" />
         <Compile Include="Extensions\StartEntitiesExtensions.cs" />

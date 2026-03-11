@@ -87,7 +87,7 @@ namespace Tests.Utils
                 { 13, 14, 15, 16 }
             });
             Vector<double> offsetVector = matrix.GetOffset();
-            Assert.AreEqual(Vector<double>.Build.DenseOfArray(new[] { 13.0, 14.0, 15.0 }), offsetVector);
+            Assert.AreEqual(Vector<double>.Build.DenseOfArray(new[] { 4.0, 8.0, 12.0 }), offsetVector);
         }
         
         [Test]
@@ -119,14 +119,14 @@ namespace Tests.Utils
         public void CreateTransition_ShouldHandleSingleAxisInput()
         {
             Vector<double> position = Vector<double>.Build.DenseOfArray(new[] { 1.0, 2.0, 3.0 });
-            Vector<double> xAxis = Vector<double>.Build.DenseOfArray(new[] { 1.0, 0.0, 0.0 });
+            Vector<double> zAxis = Vector<double>.Build.DenseOfArray(new[] { 1.0, 0.0, 0.0 });
         
-            Matrix<double> transitionMatrix = MatrixExtensions.CreateTransition(position, xAxis);
+            Matrix<double> transitionMatrix = MatrixExtensions.CreateTransition(position, zAxis);
         
             Assert.AreEqual(position, transitionMatrix.GetOffset());
-            Assert.AreEqual(xAxis, transitionMatrix.GetX());
-            Assert.IsTrue(transitionMatrix.GetY().IsNormal(transitionMatrix.GetX()));
-            Assert.IsTrue(transitionMatrix.GetZ().IsNormal(transitionMatrix.GetX()));
+            Assert.AreEqual(zAxis, transitionMatrix.GetZ());
+            Assert.IsTrue(transitionMatrix.GetX().IsNormal(transitionMatrix.GetZ()));
+            Assert.IsTrue(transitionMatrix.GetY().IsNormal(transitionMatrix.GetZ()));
         }
     }
 }

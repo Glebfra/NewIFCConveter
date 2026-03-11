@@ -7,7 +7,7 @@ using Start.Attributes;
 using Start.Converters;
 using Start.Interfaces;
 using Start.StartProperties;
-using MatrixExtensions = Start.Extensions.MatrixExtensions;
+using MatrixExtensions = Utils.MatrixExtensions;
 
 namespace Start.Entities.Segments
 {
@@ -130,14 +130,14 @@ namespace Start.Entities.Segments
         /// </summary>
         [JsonIgnore]
         [StartIgnore]
-        public IStartNodeEntity StartNode => ConnectedEntities.OfType<IStartNodeEntity>().First();
+        public IStartNodeEntity StartNode => ConnectedEntities.OfType<IStartNodeEntity>().ElementAt(0);
         
         /// <summary>
         /// Gets the end node entity of the segment.
         /// </summary>
         [JsonIgnore]
         [StartIgnore]
-        public IStartNodeEntity EndNode => ConnectedEntities.OfType<IStartNodeEntity>().Skip(1).First();
+        public IStartNodeEntity EndNode => ConnectedEntities.OfType<IStartNodeEntity>().ElementAt(1);
 
         /// <summary>
         /// Gets the start transformation matrix of the segment.
@@ -145,7 +145,7 @@ namespace Start.Entities.Segments
         [JsonIgnore]
         [StartIgnore]
         public virtual Matrix<double> TransformationMatrix =>
-            MatrixExtensions.CreateSegmentTransitionMatrix(StartPosition, Projection);
+            MatrixExtensions.CreateTransitionWithWorldUp(StartPosition, Projection);
 
         /// <summary>
         /// Determines whether the specified position is closer to the start position of the segment.
