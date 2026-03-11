@@ -7,6 +7,20 @@ namespace Utils
 {
     public static class MatrixExtensions
     {
+        /// <summary>
+        /// Creates a rotation matrix representing a rotation around the X-axis in 3D space.
+        /// The method calculates the cosine and sine of the provided rotation angle and
+        /// constructs a 4x4 homogeneous transformation matrix. In this matrix, the X-axis
+        /// remains unchanged while the Y and Z axes are rotated in the YZ plane according
+        /// to the specified angle. The resulting matrix can be used to rotate points or
+        /// vectors around the X-axis while preserving homogeneous transformation compatibility,
+        /// making it suitable for use in geometric transformations, computer graphics,
+        /// CAD systems, and other 3D mathematical computations.
+        /// </summary>
+        /// <param name="angle">Rotation angle in radians.</param>
+        /// <returns>
+        /// A 4x4 homogeneous rotation matrix that performs a rotation around the X-axis.
+        /// </returns>
         [Pure]
         public static Matrix<double> CreateRotationAroundX(double angle)
         {
@@ -22,6 +36,19 @@ namespace Utils
             });
         }
 
+        /// <summary>
+        /// Creates a rotation matrix representing a rotation around the Y-axis in 3D space.
+        /// The method computes the cosine and sine of the specified rotation angle and builds
+        /// a 4x4 homogeneous transformation matrix. In this matrix, the Y-axis remains fixed
+        /// while the X and Z axes rotate within the XZ plane according to the given angle.
+        /// The resulting matrix can be applied to transform points, vectors, or coordinate
+        /// systems in three-dimensional space and is commonly used in geometric modeling,
+        /// computer graphics, and spatial transformations.
+        /// </summary>
+        /// <param name="angle">Rotation angle in radians.</param>
+        /// <returns>
+        /// A 4x4 homogeneous rotation matrix that performs a rotation around the Y-axis.
+        /// </returns>
         [Pure]
         public static Matrix<double> CreateRotationAroundY(double angle)
         {
@@ -37,6 +64,19 @@ namespace Utils
             });
         }
 
+        /// <summary>
+        /// Creates a rotation matrix representing a rotation around the Z-axis in 3D space.
+        /// The method evaluates the cosine and sine of the specified rotation angle and
+        /// constructs a 4x4 homogeneous transformation matrix. In this matrix, the Z-axis
+        /// remains unchanged while the X and Y axes rotate within the XY plane according
+        /// to the provided angle. The resulting matrix can be used to rotate points,
+        /// vectors, or entire coordinate systems around the Z-axis, which is a common
+        /// operation in computer graphics, geometric transformations, and CAD systems.
+        /// </summary>
+        /// <param name="angle">Rotation angle in radians.</param>
+        /// <returns>
+        /// A 4x4 homogeneous rotation matrix that performs a rotation around the Z-axis.
+        /// </returns>
         [Pure]
         public static Matrix<double> CreateRotationAroundZ(double angle)
         {
@@ -183,6 +223,12 @@ namespace Utils
             return matrix.GetZ();
         }
 
+        [Pure]
+        public static Matrix<double> GetRotation(this Matrix<double> matrix)
+        {
+            return matrix.SubMatrix(0, 3, 0, 3);
+        }
+
         /// <summary>
         /// Creates a transition matrix, which is a 4x4 matrix that represents a transformation in 3D space, including rotation and translation. The transition matrix can be used to transform points and vectors from one coordinate system to another.
         /// </summary>
@@ -199,7 +245,7 @@ namespace Utils
         [Pure]
         public static Vector<double> ApplyRotation(this Matrix<double> matrix, Vector<double> vector)
         {
-            return matrix.SubMatrix(0, 3, 0, 3).Multiply(vector);
+            return matrix.GetRotation().LeftMultiply(vector);
         }
         
         /// <summary>

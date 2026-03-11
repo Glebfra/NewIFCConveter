@@ -16,10 +16,8 @@ namespace Ifc.Geometries
     {
         public double Diameter;
         public double Length;
-        
-        public Vector<double> Position;
-        public Vector<double> Direction;
-        public Vector<double> EndDirection;
+        public Vector<double> TopConePoint;
+        public Vector<double>[] BotConePoints;
     }
     
     [IfcRepresentationIdentifier(IfcRepresentationIdentifier.Body)]
@@ -40,41 +38,29 @@ namespace Ifc.Geometries
         [Pure]
         public static ValveGeometry CreateGeometry(IModel model, ValveGeometryProperties properties)
         {
-            Vector<double>[] directions = { properties.Direction, properties.EndDirection };
-            Vector<double> topConePoint = properties.Position;
-            Vector<double> firstBotConePoint = 
-                topConePoint + properties.Direction.Normalize(2) * properties.Length / 2;
-            Vector<double> secondBotConePoint = 
-                topConePoint + properties.EndDirection.Normalize(2) * properties.Length / 2;
-
-            IfcTriangulatedProperties[] triangulatedPropertiesArray = new IfcTriangulatedProperties[]
-            {
-                IfcTriangulatedProperties.CreateCone(new ConeTriangulatedGeometryProperties()
+            IEnumerable<IfcTriangulatedProperties> triangulatedProperties = properties.BotConePoints
+                .Select(botConePoint => IfcTriangulatedProperties.CreateCone(new ConeTriangulatedGeometryProperties
                 {
-                    TopConePoint = topConePoint,
-                    BottomConeCenter = firstBotConePoint,
-                    Diameter = properties.Diameter * 1.5,
-                }),
-                IfcTriangulatedProperties.CreateCone(new ConeTriangulatedGeometryProperties()
-                {
-                    TopConePoint = topConePoint,
-                    BottomConeCenter = secondBotConePoint,
-                    Diameter = properties.Diameter * 1.5,
-                }),
-            };
+                    TopConePoint = properties.TopConePoint,
+                    BottomConeCenter = botConePoint,
+                    Diameter = properties.Diameter * 1.5
+                }));
             
-            IEnumerable<IIfcBuilder> builders= triangulatedPropertiesArray.Select(triangulatedProperties =>
-            {
-                IIfcTriangulatedFaceSetBuilder<IfcTriangulatedFaceSet> triangulatedFaceSetBuilder =
-                    new IfcTriangulatedFaceSetBuilder<IfcTriangulatedFaceSet>();
-                triangulatedFaceSetBuilder.CreateCoordinates(model, triangulatedProperties.Coordinates);
-                triangulatedFaceSetBuilder.AssignTriangleIndices(triangulatedProperties.TriangleIndices);
-                triangulatedFaceSetBuilder.AssignNormals(triangulatedProperties.Normals);
-
-                return triangulatedFaceSetBuilder;
-            });
+            IEnumerable<IIfcBuilder> builders = triangulatedProperties
+                .Select(triangulatedProp => IfcTriangulatedFaceSetBuilder(model, triangulatedProp));
 
             return new ValveGeometry(builders);
+        }
+
+        private static IIfcTriangulatedFaceSetBuilder<IfcTriangulatedFaceSet> IfcTriangulatedFaceSetBuilder(IModel model,
+            IfcTriangulatedProperties triangulatedProp)
+        {
+            IIfcTriangulatedFaceSetBuilder<IfcTriangulatedFaceSet> triangulatedFaceSetBuilder =
+                new IfcTriangulatedFaceSetBuilder<IfcTriangulatedFaceSet>();
+            triangulatedFaceSetBuilder.CreateCoordinates(model, triangulatedProp.Coordinates);
+            triangulatedFaceSetBuilder.AssignTriangleIndices(triangulatedProp.TriangleIndices);
+            triangulatedFaceSetBuilder.AssignNormals(triangulatedProp.Normals);
+            return triangulatedFaceSetBuilder;
         }
     }
 }

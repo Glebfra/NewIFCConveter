@@ -5,6 +5,7 @@ using Ifc.API;
 using Ifc.Builders.Elements;
 using Ifc.Geometries;
 using Ifc.Interfaces;
+using IFCConverter.Extensions;
 using MathNet.Numerics.LinearAlgebra;
 using Start.Entities.Fittings;
 using Start.Extensions;
@@ -28,18 +29,20 @@ namespace IFCConverter.Converters.Elements
 
         public override IfcPipeFitting BuildIfcElement(StartValveEntity start)
         {
-            Vector<double>[] directions = start.ConnectedEntities
-                .OfType<IStartSegmentEntity>()
-                .Select(segment => segment.GetProjectionFromPoint(start.Position))
+            Vector<double> globalTopConePoint = start.Position;
+            Vector<double>[] globalBotConePoints = start.GetBotConePoints();
+
+            Vector<double> localTopConePoint = VectorExtensions.Zero;
+            Vector<double>[] localBotConePoints = globalBotConePoints
+                .Select(point => point - globalTopConePoint)
                 .ToArray();
-            
+
             IIfcGeometry valveGeometry = ValveGeometry.CreateGeometry(_Model, new ValveGeometryProperties()
             {
-                Position = VectorExtensions.Zero,
                 Diameter = start.OutsideDiameter.SIProperty,
                 Length = start.Length.SIProperty,
-                Direction = directions[0],
-                EndDirection = directions[1]
+                TopConePoint = localTopConePoint,
+                BotConePoints = localBotConePoints
             });
             valveGeometry.AssignColor(Color.FromHEX("5f4e7c"));
             _logger.Info($"Created geometry {valveGeometry.GetType().FullName}");
