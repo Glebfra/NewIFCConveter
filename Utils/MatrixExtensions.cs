@@ -238,11 +238,15 @@ namespace Utils
         {
             Vector<double> xm = z.Normalize(2);
             
-            Vector<double> arbitraryVector = Utils.VectorExtensions.Z;
-            Vector<double> secondArbitraryVector = xm.CrossProduct(arbitraryVector).Normalize(2);
+            Vector<double> firstArbitraryVector = Utils.VectorExtensions.Z;
+            if (firstArbitraryVector.IsParallel(xm))
+                firstArbitraryVector = Utils.VectorExtensions.Y.Negate();
+            Vector<double> secondArbitraryVector = xm.CrossProduct(firstArbitraryVector).Normalize(2);
+            
             Vector<double> zm = xm.CrossProduct(secondArbitraryVector).Normalize(2);
             if (zm.DotProduct(Utils.VectorExtensions.Z) < 0)
                 zm = zm.Negate();
+            
             Vector<double> ym = zm.CrossProduct(xm).Normalize(2);
 
             return CreateTransition(position, ym, zm, xm);

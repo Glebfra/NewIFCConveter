@@ -9,14 +9,14 @@ using VectorExtensions = Utils.VectorExtensions;
 
 namespace Ifc.Geometries
 {
-    internal struct ConeTriangulatedGeometryProperties
+    public struct ConeTriangulatedGeometryProperties
     {
         public Vector<double> TopConePoint;
         public Vector<double> BottomConeCenter;
         public double Diameter;
     }
 
-    internal struct ClippedConeTriangulatedGeometryProperties
+    public struct ClippedConeTriangulatedGeometryProperties
     {
         public Vector<double> TopConeCenter;
         public Vector<double> BottomConeCenter;
@@ -25,7 +25,7 @@ namespace Ifc.Geometries
         public double BottomDiameter;
     }
 
-    internal struct IfcTriangulatedProperties
+    public struct IfcTriangulatedProperties
     {
         public IEnumerable<Vector<double>> Coordinates;
         public IEnumerable<IEnumerable<int>> TriangleIndices;

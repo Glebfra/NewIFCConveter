@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.Contracts;
-using System.Reflection;
+﻿using System.Reflection;
 using Ifc.Builders;
 using Ifc.Interfaces;
 using IFCConverter.Interfaces;

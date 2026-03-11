@@ -30,10 +30,16 @@ namespace IFCConverter.Converters.Elements
             ).DotProduct(start.SegmentWithMinDiameter.Projection) * start.SegmentWithMinDiameter.Projection;
             Matrix<double> transitionMatrix = MatrixExtensions.CreateTransitionWithWorldUp(start.Position, forward);
 
+            // Creating vectors in local coordinates associated with transitionMatrix
+            Vector<double> localDirection = VectorExtensions.Z;
+            Vector<double>[] localPositions = start.Points
+                .Select(point => transitionMatrix.ApplyRotation(point) - transitionMatrix.GetOffset())
+                .ToArray();
+                
             IIfcGeometry geometry = ConeGeometry.CreateGeometry(_Model, new ConeGeometryProperties
             {
-                Direction = VectorExtensions.Forward,
-                Positions = start.Points.ToArray(),
+                Direction = localDirection,
+                Positions = localPositions,
                 Diameters = start.Diameters.ToArray()
             });
             geometry.AssignColor(Color.FromHEX("5f4e7c"));
