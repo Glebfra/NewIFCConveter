@@ -92,6 +92,7 @@
         <Compile Include="Converters\Elements\TeeConverter.cs" />
         <Compile Include="Converters\Elements\ValveConverter.cs" />
         <Compile Include="Converters\StartToIfcConverter.cs" />
+        <Compile Include="Extensions\StartEntityExtensions.cs" />
         <Compile Include="GUI\ExportWindowForm.cs" />
         <Compile Include="GUI\ExportWindowForm.Designer.cs" />
         <Compile Include="IfcConverter.cs" />

@@ -31,30 +31,24 @@ namespace Ifc.Geometries
         public IEnumerable<IEnumerable<int>> TriangleIndices;
         public IEnumerable<Vector<double>> Normals;
 
+        private const int _numSegments = 16;
+
         [Pure]
         public static IfcTriangulatedProperties CreateCone(ConeTriangulatedGeometryProperties properties)
         {
             Vector<double> heightDirection = properties.TopConePoint - properties.BottomConeCenter;
-            Vector<double> z = heightDirection.Normalize(2);
-            Vector<double> x = z.CreateNormalVector().Normalize(2);
-            Vector<double> y = z.CrossProduct(x).Normalize(2);
-            Matrix<double> botMatrix = MatrixExtensions.CreateTransition(properties.BottomConeCenter, x, y, z);
-
+            Matrix<double> botMatrix = MatrixExtensions.CreateTransition(properties.BottomConeCenter, heightDirection);
             return CreateCone(properties, botMatrix);
         }
 
         [Pure]
         public static IfcTriangulatedProperties CreateClippedCone(ClippedConeTriangulatedGeometryProperties properties)
         {
-            Vector<double> heightDirection =
-                properties.Direction ?? properties.TopConeCenter - properties.BottomConeCenter;
-
+            Vector<double> heightDirection = properties.Direction 
+                                             ?? properties.TopConeCenter - properties.BottomConeCenter;
             Vector<double> z = heightDirection.Normalize(2);
-            Vector<double> x = z.CreateNormalVector().Normalize(2);
-            Vector<double> y = z.CrossProduct(x).Normalize(2);
-            Matrix<double> botMatrix = MatrixExtensions.CreateTransition(properties.BottomConeCenter, x, y, z);
-            Matrix<double> topMatrix = MatrixExtensions.CreateTransition(properties.TopConeCenter, x, y, z);
-            
+            Matrix<double> botMatrix = MatrixExtensions.CreateTransition(properties.BottomConeCenter, z);
+            Matrix<double> topMatrix = MatrixExtensions.CreateTransition(properties.TopConeCenter, z);
             return CreateClippedCone(properties, botMatrix, topMatrix);
         }
 
@@ -62,49 +56,51 @@ namespace Ifc.Geometries
         private static IfcTriangulatedProperties CreateCone(ConeTriangulatedGeometryProperties properties,
             Matrix<double> botMatrix)
         {
-            const int numSegments = 16;
-            Vector<double>[] coordinates = new Vector<double>[numSegments + 1];
-            Vector<double>[] normals = new Vector<double>[numSegments * 2];
-            int[][] triangleIndices = new int[numSegments * 2][];
+            Vector<double> botCenter = botMatrix.GetOffset();
+            double radius = properties.Diameter / 2;
 
-            coordinates[numSegments] = VectorExtensions.Zero;
+            Vector<double>[] coordinates = new Vector<double>[_numSegments + 1];
+            Vector<double>[] normals = new Vector<double>[_numSegments * 2];
+            int[][] triangleIndices = new int[_numSegments * 2][];
+
+            coordinates[_numSegments] = VectorExtensions.Zero;
             
-            for (int i = 0; i < numSegments; i++)
+            for (int i = 0; i < _numSegments; i++)
             {
-                double angle = 2 * Math.PI * i / numSegments;
+                double angle = 2 * Math.PI * i / _numSegments;
                 
-                double xBot = properties.Diameter / 2 * Math.Cos(angle);
-                double yBot = properties.Diameter / 2 * Math.Sin(angle);
-                Vector<double> temp = new DenseVector(new double[] { xBot, yBot, 0 }).ToHomogenous();
-                coordinates[i] = botMatrix.Multiply(temp).ToCartesian();
+                double xBot = radius * Math.Cos(angle);
+                double yBot = radius * Math.Sin(angle);
+                Vector<double> temp = new DenseVector(new double[] { xBot, yBot, 0 });
+                coordinates[i] = botMatrix.ApplyRotation(temp) + botMatrix.GetOffset();
             }
 
-            for (int i = 0; i < numSegments; i++)
+            for (int i = 0; i < _numSegments; i++)
             {
                 triangleIndices[i] = new int[]
                 {
-                    (i + 0) % numSegments + 1, 
-                    (i + 1) % numSegments + 1, 
-                    numSegments + 1
+                    (i + 0) % _numSegments + 1, 
+                    (i + 1) % _numSegments + 1, 
+                    _numSegments + 1
                 };
                 
                 Vector<double> first = coordinates[triangleIndices[i][1] - 1] - coordinates[triangleIndices[i][0] - 1];
                 Vector<double> second = coordinates[triangleIndices[i][2] - 1] - coordinates[triangleIndices[i][1] - 1];
-                normals[i] = first.CrossProduct(second).Normalize(2);
+                normals[i] = VectorExtensions.CreateNormalVector(first, second);
             }
 
-            for (int i = numSegments; i < numSegments * 2; i++)
+            for (int i = _numSegments; i < _numSegments * 2; i++)
             {
                 triangleIndices[i] = new int[]
                 {
                     0 + 1,
-                    (i + 1) % numSegments + 1,
-                    (i + 2) % numSegments + 1
+                    (i + 1) % _numSegments + 1,
+                    (i + 2) % _numSegments + 1
                 };
                 
                 Vector<double> first = coordinates[triangleIndices[i][1] - 1] - coordinates[triangleIndices[i][0] - 1];
                 Vector<double> second = coordinates[triangleIndices[i][2] - 1] - coordinates[triangleIndices[i][1] - 1];
-                normals[i] = first.CrossProduct(second).Normalize(2);
+                normals[i] = VectorExtensions.CreateNormalVector(first, second);
             }
 
             return new IfcTriangulatedProperties
@@ -119,74 +115,73 @@ namespace Ifc.Geometries
         private static IfcTriangulatedProperties CreateClippedCone(ClippedConeTriangulatedGeometryProperties properties,
             Matrix<double> botMatrix, Matrix<double> topMatrix)
         {
-            const int numSegments = 16;
-            Vector<double>[] coordinates = new Vector<double>[numSegments * 2];
-            Vector<double>[] normals = new Vector<double>[numSegments * 4];
-            int[][] triangleIndices = new int[numSegments * 4][];
+            Vector<double>[] coordinates = new Vector<double>[_numSegments * 2];
+            Vector<double>[] normals = new Vector<double>[_numSegments * 4];
+            int[][] triangleIndices = new int[_numSegments * 4][];
 
             double botRadius = properties.BottomDiameter / 2, topRadius = properties.TopDiameter / 2;
-            for (int i = 0; i < numSegments * 2; i += 2)
+            for (int i = 0; i < _numSegments * 2; i += 2)
             {
-                double angle = Math.PI * i / numSegments;
+                double angle = Math.PI * i / _numSegments;
                 double cos = Math.Cos(angle), sin = Math.Sin(angle);
 
                 double xBot = botRadius * cos;
                 double yBot = botRadius * sin;
-                Vector<double> bottomTemp = new DenseVector(new[] { xBot, yBot, 0 }).ToHomogenous();
-                coordinates[i] = botMatrix.Multiply(bottomTemp).ToCartesian();
+                Vector<double> bottomTemp = new DenseVector(new[] { xBot, yBot, 0 });
+                coordinates[i] = botMatrix.ApplyRotation(bottomTemp) + botMatrix.GetOffset();
 
                 double xTop = topRadius * cos;
                 double yTop = topRadius * sin;
-                Vector<double> topTemp = new DenseVector(new[] { xTop, yTop, 0 }).ToHomogenous();
-                coordinates[i + 1] = topMatrix.Multiply(topTemp).ToCartesian();
+                Vector<double> topTemp = new DenseVector(new[] { xTop, yTop, 0 });
+                coordinates[i + 1] = topMatrix.ApplyRotation(topTemp) + topMatrix.GetOffset();
             }
 
-            for (int i = 0; i < numSegments * 2; i += 2)
+            for (int i = 0; i < _numSegments * 2; i += 2)
             {
                 triangleIndices[i] = new int[]
                 {
-                    (i + 0) % (numSegments * 2) + 1,
-                    (i + 2) % (numSegments * 2) + 1,
-                    (i + 3) % (numSegments * 2) + 1
+                    (i + 0) % (_numSegments * 2) + 1,
+                    (i + 2) % (_numSegments * 2) + 1,
+                    (i + 3) % (_numSegments * 2) + 1
                 };
                 triangleIndices[i + 1] = new int[]
                 {
-                    (i + 0) % (numSegments * 2) + 1,
-                    (i + 3) % (numSegments * 2) + 1,
-                    (i + 1) % (numSegments * 2) + 1
+                    (i + 0) % (_numSegments * 2) + 1,
+                    (i + 3) % (_numSegments * 2) + 1,
+                    (i + 1) % (_numSegments * 2) + 1
                 };
 
                 Vector<double> first = coordinates[triangleIndices[i][1] - 1] - coordinates[triangleIndices[i][0] - 1];
                 Vector<double> second = coordinates[triangleIndices[i][2] - 1] - coordinates[triangleIndices[i][1] - 1];
-                normals[i] = first.CrossProduct(second).Normalize(2);
+                normals[i] = VectorExtensions.CreateNormalVector(first, second);
 
                 first = coordinates[triangleIndices[i + 1][1] - 1] - coordinates[triangleIndices[i + 1][0] - 1];
                 second = coordinates[triangleIndices[i + 1][2] - 1] - coordinates[triangleIndices[i + 1][1] - 1];
-                normals[i + 1] = first.CrossProduct(second).Normalize(2);
+                normals[i + 1] = VectorExtensions.CreateNormalVector(first, second);
             }
 
-            for (int i = numSegments * 2; i < numSegments * 4; i += 2)
+            for (int i = _numSegments * 2; i < _numSegments * 4; i += 2)
             {
                 triangleIndices[i] = new int[]
                 {
                     0 + 1,
-                    (i + 2) % (numSegments * 2) + 1,
-                    (i + 4) % (numSegments * 2) + 1
+                    (i + 2) % (_numSegments * 2) + 1,
+                    (i + 4) % (_numSegments * 2) + 1
                 };
                 triangleIndices[i + 1] = new int[]
                 {
                     1 + 1,
-                    (i + 3) % (numSegments * 2) + 1,
-                    (i + 5) % (numSegments * 2) + 1
+                    (i + 3) % (_numSegments * 2) + 1,
+                    (i + 5) % (_numSegments * 2) + 1
                 };
                 
                 Vector<double> first = coordinates[triangleIndices[i][1] - 1] - coordinates[triangleIndices[i][0] - 1];
                 Vector<double> second = coordinates[triangleIndices[i][2] - 1] - coordinates[triangleIndices[i][1] - 1];
-                normals[i] = first.CrossProduct(second).Normalize(2);
+                normals[i] = VectorExtensions.CreateNormalVector(first, second);
 
                 first = coordinates[triangleIndices[i + 1][1] - 1] - coordinates[triangleIndices[i + 1][0] - 1];
                 second = coordinates[triangleIndices[i + 1][2] - 1] - coordinates[triangleIndices[i + 1][1] - 1];
-                normals[i + 1] = first.CrossProduct(second).Normalize(2);
+                normals[i + 1] = VectorExtensions.CreateNormalVector(first, second);
             }
 
             return new IfcTriangulatedProperties

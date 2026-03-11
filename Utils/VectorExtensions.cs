@@ -172,9 +172,29 @@ namespace Utils
                 worldUp = Y;
 
             Vector<double> temp = vector.CrossProduct(worldUp);
-            return vector.CrossProduct(temp).Normalize(2);
+            return CreateNormalVector(vector, temp);
         }
-        
+
+        /// <summary>
+        /// Creates a normal vector from two given vectors by calculating their cross product and normalizing the result.
+        /// The method computes a vector that is perpendicular to both input vectors in 3D space. First, it calculates the
+        /// cross product of the two vectors, which produces a vector orthogonal to the plane defined by them. Then, the
+        /// resulting vector is normalized so that its length becomes 1. The returned vector represents a unit normal to
+        /// the plane formed by the two input vectors. This operation is commonly used in computer graphics, geometric
+        /// modeling, and physics simulations for determining surface normals, constructing coordinate systems, or
+        /// computing orientations.
+        /// </summary>
+        /// <param name="first">First 3D vector.</param>
+        /// <param name="second">Second 3D vector.</param>
+        /// <returns>
+        /// A normalized 3D vector that is perpendicular to both <paramref name="first"/> and <paramref name="second"/>.
+        /// </returns>
+        [Pure]
+        public static Vector<double> CreateNormalVector(Vector<double> first, Vector<double> second)
+        {
+            return first.CrossProduct(second).Normalize(2);
+        }
+
         /// <summary>
         /// Calculates the angle between two vectors in radians. The method first normalizes both input vectors to have a length of 1. Then, it computes the dot product of the normalized vectors and applies the arccosine function to the result to obtain the angle in radians. This calculation is based on the geometric definition of the dot product, which relates to the cosine of the angle between two vectors. The resulting angle can be used in various applications, such as determining orientations, calculating rotations, or performing other geometric operations in 3D space.
         /// </summary>
@@ -187,6 +207,17 @@ namespace Utils
             return Math.Acos(first.Normalize(2).DotProduct(second.Normalize(2)));
         }
 
+        /// <summary>
+        /// Converts the given vector into a row-style string representation. The method iterates through
+        /// all elements of the vector and concatenates them into a single string separated by semicolons.
+        /// This format is useful for logging, debugging, exporting numeric data, or displaying vector
+        /// values in a compact and human-readable form. The resulting string represents the vector as
+        /// a sequence of scalar components arranged in row order.
+        /// </summary>
+        /// <param name="vector">Vector containing numeric components.</param>
+        /// <returns>
+        /// A string containing all vector elements separated by semicolons.
+        /// </returns>
         [Pure]
         public static string ToRowString(this Vector<double> vector) => string.Join(";", vector);
     }
