@@ -24,6 +24,12 @@ namespace Ifc.Geometries
         public double TopDiameter;
         public double BottomDiameter;
     }
+    
+    public struct SphereTriangulatedGeometryProperties
+    {
+        public Vector<double> Center;
+        public double Diameter;
+    }
 
     public struct IfcTriangulatedProperties
     {
@@ -32,6 +38,75 @@ namespace Ifc.Geometries
         public IEnumerable<Vector<double>> Normals;
 
         private const int _numSegments = 16;
+
+        [Pure]
+        public static IfcTriangulatedProperties CreateSphere(SphereTriangulatedGeometryProperties properties)
+        {
+            double radius = properties.Diameter / 2;
+            
+            Vector<double>[] coordinates = new Vector<double>[_numSegments * _numSegments];
+            Vector<double>[] normals = new Vector<double>[_numSegments * (_numSegments - 1) * 2];
+            int[][] triangleIndices = new int[_numSegments * (_numSegments - 1) * 2][];
+
+            for (int i = 0; i < _numSegments; i++)
+            {
+                double theta = Math.PI * i / (_numSegments - 1);
+                double sinTheta = Math.Sin(theta);
+                double cosTheta = Math.Cos(theta);
+                
+                for (int j = 0; j < _numSegments; j++)
+                {
+                    int index = i * _numSegments + j;
+                    double phi = 2 * Math.PI * j / (_numSegments);
+
+                    double x = radius * sinTheta * Math.Cos(phi);
+                    double y = radius * sinTheta * Math.Sin(phi);
+                    double z = radius * cosTheta;
+                    Vector<double> temp = new DenseVector(new double[] { x, y, z });
+
+                    coordinates[index] = temp - properties.Center;
+                }
+            }
+
+            int arrIndex = 0;
+            for (int i = 0; i < _numSegments - 1; i++)
+            {
+                for (int j = 0; j < _numSegments; j++)
+                {
+                    int[] indexes = new int[]
+                    {
+                        i * _numSegments + j,
+                        i * _numSegments + (j + 1) % _numSegments,
+                        (i + 1) * _numSegments + j,
+                        (i + 1) * _numSegments + (j + 1) % _numSegments
+                    };
+                    
+                    triangleIndices[arrIndex] = new int[] { indexes[0] + 1, indexes[1] + 1, indexes[3] + 1 };
+                    triangleIndices[arrIndex + 1] = new int[] { indexes[0] + 1, indexes[3] + 1, indexes[2] + 1 };
+                
+                    Vector<double> first = coordinates[triangleIndices[arrIndex][1] - 1] 
+                                           - coordinates[triangleIndices[arrIndex][0] - 1];
+                    Vector<double> second = coordinates[triangleIndices[arrIndex][2] - 1] 
+                                            - coordinates[triangleIndices[arrIndex][1] - 1];
+                    normals[arrIndex] = VectorExtensions.CreateNormalVector(first, second);
+
+                    first = coordinates[triangleIndices[arrIndex + 1][1] - 1]
+                            - coordinates[triangleIndices[arrIndex + 1][0] - 1];
+                    second = coordinates[triangleIndices[arrIndex + 1][2] - 1]
+                             - coordinates[triangleIndices[arrIndex + 1][1] - 1];
+                    normals[arrIndex + 1] = VectorExtensions.CreateNormalVector(first, second);
+
+                    arrIndex += 2;
+                }
+            }
+
+            return new IfcTriangulatedProperties
+            {
+                Coordinates = coordinates,
+                Normals = normals,
+                TriangleIndices = triangleIndices
+            };
+        }
 
         [Pure]
         public static IfcTriangulatedProperties CreateCone(ConeTriangulatedGeometryProperties properties)

@@ -53,10 +53,10 @@ namespace IFCConverter
                 
                 try
                 {
-                    logger.Info($"Converting started at {DateTime.Now}");
+                    logger.System($"Converting started at {DateTime.Now}");
                     StartToIfcConverter converter = new StartToIfcConverter(exportDataContainer);
                     converter.Convert(startDocument);
-                    logger.Info($"Converting ended at {DateTime.Now}");
+                    logger.System($"Converting ended at {DateTime.Now}");
                     
                     #if DEBUG
                     logger.SaveAs(exportDataContainer.OutputFilePath + ".log");

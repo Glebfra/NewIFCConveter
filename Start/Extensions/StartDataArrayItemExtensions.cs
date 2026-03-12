@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Start.API;
+using Start.Interfaces;
 
 namespace Start.Extensions
 {
@@ -22,11 +23,14 @@ namespace Start.Extensions
         {
             StartDataArrayItem baseElement = arrayItems.Single(item => item.DataArrayIndex == ID);
             int[] baseElementNodeIds = baseElement.NodeIds;
-            return (baseElementNodeIds.Length == 1
-                    ? arrayItems.Where(item => item.NodeIds.Contains(baseElementNodeIds[0]))
-                    : arrayItems.Where(item =>
-                        item.NodeIds.Contains(baseElementNodeIds[0]) || item.NodeIds.Contains(baseElementNodeIds[1]))
-                ).Where(item => item.DataArrayIndex != ID);
+            
+            List<StartDataArrayItem> dataArrayItems = new List<StartDataArrayItem>();
+            foreach (int baseElementNodeId in baseElementNodeIds)
+            {
+                dataArrayItems.AddRange(arrayItems.Where(item => item.NodeIds.Contains(baseElementNodeId) 
+                                                                 && item.DataArrayIndex != ID));
+            }
+            return dataArrayItems;
         }
 
         public static IEnumerable<StartDataArrayItem> GetConnElements(this StartDataArrayItem[] arrayItems,

@@ -68,6 +68,8 @@
         <Compile Include="Attributes\StartElementAttribute.cs" />
         <Compile Include="Attributes\StartIgnoreAttribute.cs" />
         <Compile Include="Converters\JsonStartConverter.cs" />
+        <Compile Include="Entities\ExpansionJoints\StartAbstractExpansionJointEntity.cs" />
+        <Compile Include="Entities\ExpansionJoints\StartAngularExpansionJointEntity.cs" />
         <Compile Include="Entities\Fittings\Bends\StartAbstractBendEntity.cs" />
         <Compile Include="Entities\Fittings\Bends\StartElbowEntity.cs" />
         <Compile Include="Entities\Fittings\Bends\StartLongRadiusPipeBendEntity.cs" />
@@ -126,6 +128,7 @@
         <Compile Include="StartProperties\AngleValueProperty.cs" />
         <Compile Include="StartProperties\EnumProperty.cs" />
         <Compile Include="StartProperties\FactorValueProperty.cs" />
+        <Compile Include="StartProperties\FlexibilityValueProperty.cs" />
         <Compile Include="StartProperties\LengthValueProperty.cs" />
         <Compile Include="StartProperties\PressureValueProperty.cs" />
         <Compile Include="StartProperties\StartValueAbstractProperty.cs" />
