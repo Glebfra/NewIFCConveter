@@ -76,7 +76,8 @@ namespace Ifc.Geometries
             for (int i = 0; i < 2; i++)
             {
                 profileDefBuilders[i] =
-                    new IfcCircleProfileDefBuilder<IfcCircleProfileDef>(diameters[i] / 2, IfcProfileTypeEnum.AREA, "Test profile def");
+                    new IfcCircleProfileDefBuilder<IfcCircleProfileDef>(diameters[i] / 2, IfcProfileTypeEnum.AREA,
+                        "Test profile def");
                 profileDefBuilders[i].CreatePosition(model, circleProfileDefMatrix);
                 IIfcCircleProfileDef circleProfileDef = profileDefBuilders[i].CreateProfileDef(model);
 

@@ -19,12 +19,12 @@ namespace Ifc.Geometries
         public Vector<double> TopConePoint;
         public Vector<double>[] BotConePoints;
     }
-    
+
     [IfcRepresentationIdentifier(IfcRepresentationIdentifier.Body)]
     [IfcRepresentationType(IfcRepresentationType.Tessellation)]
     public class ValveGeometry : IfcGeometry
     {
-        public ValveGeometry(IIfcBuilder geometryBuilder, IIfcRepresentationContext? representationContext = null) 
+        public ValveGeometry(IIfcBuilder geometryBuilder, IIfcRepresentationContext? representationContext = null)
             : base(geometryBuilder, representationContext)
         {
         }
@@ -45,14 +45,15 @@ namespace Ifc.Geometries
                     BottomConeCenter = botConePoint,
                     Diameter = properties.Diameter * 1.5
                 }));
-            
+
             IEnumerable<IIfcBuilder> builders = triangulatedProperties
                 .Select(triangulatedProp => IfcTriangulatedFaceSetBuilder(model, triangulatedProp));
 
             return new ValveGeometry(builders);
         }
 
-        private static IIfcTriangulatedFaceSetBuilder<IfcTriangulatedFaceSet> IfcTriangulatedFaceSetBuilder(IModel model,
+        private static IIfcTriangulatedFaceSetBuilder<IfcTriangulatedFaceSet> IfcTriangulatedFaceSetBuilder(
+            IModel model,
             IfcTriangulatedProperties triangulatedProp)
         {
             IIfcTriangulatedFaceSetBuilder<IfcTriangulatedFaceSet> triangulatedFaceSetBuilder =

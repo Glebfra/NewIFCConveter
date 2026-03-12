@@ -23,7 +23,7 @@ namespace Start.StartProperties
             int intRawValue = Convert.ToInt32(value);
             string rawValue = Convert.ToString(intRawValue);
             EnumValue = (T)Enum.Parse(enumType, rawValue);
-            
+
             return EnumValue;
         }
     }

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using MathNet.Numerics.LinearAlgebra;
 using Newtonsoft.Json;
 using Start.API;
@@ -17,19 +16,15 @@ namespace Start.Entities.ExpansionJoints
         [JsonConverter(typeof(JsonStartConverter<LengthValueProperty<double>>))]
         public IStartValueProperty<double> Length { get; set; } = new LengthValueProperty<double>();
 
-        [JsonProperty(StartPropertyName.Name)] 
-        public override string Name { get; set; } = string.Empty;
-
-        [JsonIgnore] 
-        public Vector<double> Position { get; set; } = default!;
-
-        [JsonIgnore]
-        [StartIgnore]
-        public IStartNodeEntity Node => ConnectedEntities.OfType<IStartNodeEntity>().First();
-        
         public void ClipEntity(IStartClippableEntity clippable)
         {
             clippable.Clip(Position, Length.SIProperty / 2);
         }
+
+        [JsonProperty(StartPropertyName.Name)] public override string Name { get; set; } = string.Empty;
+
+        [JsonIgnore] public Vector<double> Position { get; set; } = default!;
+
+        [JsonIgnore] [StartIgnore] public IStartNodeEntity Node => ConnectedEntities.OfType<IStartNodeEntity>().First();
     }
 }

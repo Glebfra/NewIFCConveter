@@ -6,7 +6,7 @@ namespace IFCConverter.Interfaces
     {
         [Pure]
         public object BuildIfc(object start);
-        
+
         [Pure]
         public object BuildStart(object ifc);
     }

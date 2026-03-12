@@ -9,7 +9,7 @@ namespace Ifc.Interfaces
         where T : IIfcTessellatedFaceSet
     {
         public IIfcCartesianPointList3D? Coordinates { get; }
-        
+
         public IIfcCartesianPointList3D CreateCoordinates(IModel model, IEnumerable<Vector<double>> coordinates);
     }
 }

@@ -21,19 +21,19 @@ namespace Start.Interfaces
         ///     Gets the ending position of the entity as a vector of doubles.
         /// </summary>
         public Vector<double> EndPosition { get; }
-        
+
         /// <summary>
-        /// Gets the start node entity of the two node entity.
+        ///     Gets the start node entity of the two node entity.
         /// </summary>
         public IStartNodeEntity StartNode { get; }
-        
+
         /// <summary>
-        /// Gets the end node entity of the two node entity.
+        ///     Gets the end node entity of the two node entity.
         /// </summary>
         public IStartNodeEntity EndNode { get; }
-        
+
         /// <summary>
-        /// Gets the start transformation matrix of the two node entity.
+        ///     Gets the start transformation matrix of the two node entity.
         /// </summary>
         public Matrix<double> TransformationMatrix { get; }
 

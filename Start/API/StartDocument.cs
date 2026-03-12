@@ -7,14 +7,14 @@ using Start.Interfaces;
 namespace Start.API
 {
     /// <summary>
-    /// Represents a document in the Start API, providing methods to interact with its data and views.
+    ///     Represents a document in the Start API, providing methods to interact with its data and views.
     /// </summary>
     public class StartDocument : IStartDocument, IDisposable
     {
-        private object _document;
+        private readonly object _document;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="StartDocument"/> class with the specified document object.
+        ///     Initializes a new instance of the <see cref="StartDocument" /> class with the specified document object.
         /// </summary>
         /// <param name="document">The underlying document object.</param>
         public StartDocument(object document)
@@ -23,7 +23,7 @@ namespace Start.API
         }
 
         /// <summary>
-        /// Retrieves the material JSON string based on the specified parameters.
+        ///     Retrieves the material JSON string based on the specified parameters.
         /// </summary>
         /// <param name="nNorma">The norma value.</param>
         /// <param name="material">The material name.</param>
@@ -33,9 +33,10 @@ namespace Start.API
         /// <param name="temp">The temperature value.</param>
         /// <returns>A JSON string representing the material.</returns>
         /// <exception cref="Exception">Thrown when the material cannot be found.</exception>
-        public string GetMaterialJson(int nNorma, string material, StartManufacturingTechnologyEnum manufacturingTechnologyEnum, double thickness, int nElem, double temp)
+        public string GetMaterialJson(int nNorma, string material,
+            StartManufacturingTechnologyEnum manufacturingTechnologyEnum, double thickness, int nElem, double temp)
         {
-            object[] args = new object[] { nNorma, material, (int)manufacturingTechnologyEnum, thickness, nElem, temp };
+            object[] args = { nNorma, material, (int)manufacturingTechnologyEnum, thickness, nElem, temp };
             object? materialJson = _document.GetType().InvokeMember(
                 "GetMaterialJson", BindingFlags.InvokeMethod, null, _document, args
             );
@@ -45,9 +46,9 @@ namespace Start.API
         }
 
         /// <summary>
-        /// Retrieves the data array dispatch object from the document.
+        ///     Retrieves the data array dispatch object from the document.
         /// </summary>
-        /// <returns>A <see cref="StartBaseRootDataArray"/> representing the data array dispatch.</returns>
+        /// <returns>A <see cref="StartBaseRootDataArray" /> representing the data array dispatch.</returns>
         public IStartBaseRootDataArray GetDataArrayDispatch()
         {
             object? dataArray = _document.GetType().InvokeMember(
@@ -57,7 +58,7 @@ namespace Start.API
         }
 
         /// <summary>
-        /// Sets the view of the model using the specified view parameters.
+        ///     Sets the view of the model using the specified view parameters.
         /// </summary>
         /// <param name="view">An array of integers representing the view parameters.</param>
         public void SetViewOfModel(int[] view)
@@ -67,7 +68,7 @@ namespace Start.API
         }
 
         /// <summary>
-        /// Draws the entire view of the model.
+        ///     Draws the entire view of the model.
         /// </summary>
         public void DrawViewAll()
         {
@@ -75,7 +76,7 @@ namespace Start.API
         }
 
         /// <summary>
-        /// Adjusts the view to fit all elements in the model.
+        ///     Adjusts the view to fit all elements in the model.
         /// </summary>
         public void DrawFitAll()
         {
@@ -83,7 +84,7 @@ namespace Start.API
         }
 
         /// <summary>
-        /// Retrieves the title of the document.
+        ///     Retrieves the title of the document.
         /// </summary>
         /// <returns>A string representing the title of the document.</returns>
         public string GetTitle()
@@ -93,9 +94,9 @@ namespace Start.API
             );
             return (string)title;
         }
-        
+
         /// <summary>
-        /// Retrieves the file path of the document.
+        ///     Retrieves the file path of the document.
         /// </summary>
         /// <returns>A string representing the file path of the document.</returns>
         public string GetPathName()
@@ -107,7 +108,7 @@ namespace Start.API
         }
 
         /// <summary>
-        /// Releases the resources used by the document.
+        ///     Releases the resources used by the document.
         /// </summary>
         public void Dispose()
         {

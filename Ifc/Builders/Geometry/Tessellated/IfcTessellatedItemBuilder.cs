@@ -10,7 +10,7 @@ namespace Ifc.Builders.Geometry.Tessellated
         public T? TessellatedItem { get; private set; }
 
         public object? Instance => TessellatedItem;
-        
+
         public virtual T CreateTessellatedItem(IModel model)
         {
             const string transactionName = $"{nameof(IfcTessellatedItemBuilder<T>)}: {nameof(CreateTessellatedItem)}";
@@ -22,7 +22,7 @@ namespace Ifc.Builders.Geometry.Tessellated
                 return TessellatedItem;
             }
         }
-        
+
         public object Build(IModel model)
         {
             return CreateTessellatedItem(model);

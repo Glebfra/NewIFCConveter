@@ -15,27 +15,26 @@ namespace IFCConverter.Converters.Elements
         where TStart : IStartEntity
         where TIfc : IIfcProduct, IInstantiableEntity
     {
-        protected readonly IModel _Model;
-        
         private readonly Logger _logger = Logger.GetInstance();
+        protected readonly IModel _Model;
 
         protected IfcElementConverter(IModel model)
         {
             _Model = model;
         }
-        
-        public abstract TIfc BuildIfcElement(TStart start);
-        public abstract TStart BuildStartElement(TIfc ifc);
-        
+
         public object BuildIfc(object start)
         {
             return BuildIfcElement((TStart)start);
         }
-        
+
         public object BuildStart(object ifc)
         {
             return BuildStartElement((TIfc)ifc)!;
         }
+
+        public abstract TIfc BuildIfcElement(TStart start);
+        public abstract TStart BuildStartElement(TIfc ifc);
 
         protected void TryAddMaterial(TStart start, IIfcProductBuilder<TIfc> builder)
         {
@@ -55,14 +54,15 @@ namespace IFCConverter.Converters.Elements
 
         protected string GenerateName(TStart start)
         {
-            return !start.Name.IsEmpty() 
-                ? start.Name 
+            return !start.Name.IsEmpty()
+                ? start.Name
                 : start switch
-            {
-                IStartTwoNodeEntity twoNodeEntity => $"{start.GetType().Name}_{twoNodeEntity.StartNode.Name}_{twoNodeEntity.EndNode.Name}",
-                IStartOneNodeEntity oneNodeEntity => $"{start.GetType().Name}_{oneNodeEntity.Node.Name}",
-                _ => $"{start.GetType().Name}_{start.ID}"
-            };
+                {
+                    IStartTwoNodeEntity twoNodeEntity =>
+                        $"{start.GetType().Name}_{twoNodeEntity.StartNode.Name}_{twoNodeEntity.EndNode.Name}",
+                    IStartOneNodeEntity oneNodeEntity => $"{start.GetType().Name}_{oneNodeEntity.Node.Name}",
+                    _ => $"{start.GetType().Name}_{start.ID}"
+                };
         }
     }
 }

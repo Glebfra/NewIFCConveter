@@ -8,7 +8,7 @@ using Start.StartProperties;
 namespace Start.Entities.Fittings
 {
     [StartElement(StartElementTypeEnum.VALVE)]
-    public class StartValveEntity : StartAbstractFittingEntity, 
+    public class StartValveEntity : StartAbstractFittingEntity,
         IStartClippingEntity
     {
         [JsonProperty(StartPropertyName.Diameter)]
@@ -31,7 +31,7 @@ namespace Start.Entities.Fittings
         [JsonProperty(StartPropertyName.NominalPressure)]
         [JsonConverter(typeof(JsonStartConverter<PressureValueProperty<double>>))]
         public IStartValueProperty<double> NominalPressure { get; set; } = new PressureValueProperty<double>();
-        
+
         public void ClipEntity(IStartClippableEntity clippable)
         {
             clippable.Clip(Position, Length.SIProperty / 2);

@@ -7,10 +7,8 @@ namespace Start.Entities.Fittings
     [StartElement(StartElementTypeEnum.NONSTANDARD_TEE)]
     public sealed class StartNonStandardTeeEntity : StartAbstractTeeEntity
     {
-        [JsonIgnore]
-        public override double HeadLength => BranchHeight.SIProperty + MainDiameter / 2;
-        
-        [JsonIgnore]
-        public override double MainLength => HeadDiameter;
+        [JsonIgnore] public override double HeadLength => BranchHeight.SIProperty + MainDiameter / 2;
+
+        [JsonIgnore] public override double MainLength => HeadDiameter;
     }
 }

@@ -9,7 +9,7 @@ namespace Tests.Utils
     public class VectorTests
     {
         private const double Tolerance = 1e-10;
-        
+
         [Test]
         public void Zero_ShouldReturnVectorWithAllComponentsZero()
         {
@@ -68,7 +68,7 @@ namespace Tests.Utils
             Vector<double> normalVector = vector.CreateNormalVector();
             Assert.IsTrue(vector.IsNormal(normalVector));
         }
-        
+
         [Test]
         public void NormalVector_ShouldBePerpendicular_ToInputVector()
         {

@@ -10,20 +10,23 @@ namespace Utils
         SYSTEM = 1,
         INFO = 2
     }
-    
+
     public class Logger
     {
         public static LoggerLevel LoggerLevel = LoggerLevel.INFO;
-        
-        private string Logs { get; set; } = "";
 
         private static Logger? _instance;
         private int _countErrors;
 
-        public static Logger GetInstance() => _instance ??= new Logger();
-
         private Logger()
         {
+        }
+
+        private string Logs { get; set; } = "";
+
+        public static Logger GetInstance()
+        {
+            return _instance ??= new Logger();
         }
 
         private void Flush()
@@ -68,10 +71,11 @@ namespace Utils
         public void SaveAs(string filePath)
         {
             End();
-            using (StreamWriter sw = new StreamWriter(filePath))
+            using (StreamWriter sw = new(filePath))
             {
                 sw.WriteLine(Logs);
             }
+
             Flush();
         }
     }

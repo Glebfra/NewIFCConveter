@@ -12,63 +12,56 @@ using Utils;
 
 namespace Start.Entities.Fittings
 {
-    public abstract class StartAbstractTeeEntity : StartAbstractFittingEntity, 
+    public abstract class StartAbstractTeeEntity : StartAbstractFittingEntity,
         IStartOneNodeEntity, IStartFittingEntity, IStartMaterializedEntity, IStartClippingEntity
     {
-        [JsonIgnore] 
-        public abstract double HeadLength { get; }
+        private IStartSegmentEntity? _headSegment;
+        private readonly IStartSegmentEntity?[] _mainSegments = new IStartSegmentEntity[2];
 
-        [JsonIgnore] 
-        public abstract double MainLength { get; }
+        [JsonIgnore] public abstract double HeadLength { get; }
 
-        [JsonIgnore] 
-        public double MainDiameter => MainSegments.Select(segment => segment.Diameter.SIProperty).Max();
+        [JsonIgnore] public abstract double MainLength { get; }
 
-        [JsonIgnore] 
-        public double HeadDiameter => HeadSegment.Diameter.SIProperty;
-        
+        [JsonIgnore] public double MainDiameter => MainSegments.Select(segment => segment.Diameter.SIProperty).Max();
+
+        [JsonIgnore] public double HeadDiameter => HeadSegment.Diameter.SIProperty;
+
         [JsonIgnore]
         [StartIgnore]
-        public IStartSegmentEntity HeadSegment 
+        public IStartSegmentEntity HeadSegment
         {
             get
             {
                 if (_headSegment is not null)
                     return _headSegment;
-                
+
                 FilterSegments();
                 return _headSegment ?? throw new InvalidOperationException("Head segment could not be determined");
             }
         }
-        
+
         [JsonIgnore]
         [StartIgnore]
-        public IEnumerable<IStartSegmentEntity> MainSegments 
+        public IEnumerable<IStartSegmentEntity> MainSegments
         {
             get
             {
                 if (_mainSegments[0] != null && _mainSegments[1] != null)
                     return _mainSegments!;
-                
+
                 FilterSegments();
                 if (_mainSegments[0] == null || _mainSegments[1] == null)
                     throw new InvalidOperationException("Main segments could not be determined");
-                
+
                 return _mainSegments!;
-            } 
+            }
         }
-        
-        private IStartSegmentEntity? _headSegment;
-        private IStartSegmentEntity?[] _mainSegments = new IStartSegmentEntity[2];
-        
-        [JsonProperty(StartPropertyName.MaterialName)]
-        public string MaterialName { get; set; } = string.Empty;
-        
+
         [JsonProperty(StartPropertyName.ManufacturingTechnology)]
         [JsonConverter(typeof(JsonStartConverter<EnumProperty<StartManufacturingTechnologyEnum>>))]
         public IStartEnumProperty<StartManufacturingTechnologyEnum> ManufacturingTechnologyEnum { get; set; } =
             new EnumProperty<StartManufacturingTechnologyEnum>();
-        
+
         [JsonProperty(StartPropertyName.WallThickness)]
         [JsonConverter(typeof(JsonStartConverter<LengthValueProperty<double>>))]
         public IStartValueProperty<double> HeaderThickness { get; set; } = new LengthValueProperty<double>();
@@ -117,18 +110,21 @@ namespace Start.Entities.Fittings
         [JsonProperty(StartPropertyName.CrotchRadius)]
         [JsonConverter(typeof(JsonStartConverter<LengthValueProperty<double>>))]
         public IStartValueProperty<double> CrotchRadius { get; set; } = new LengthValueProperty<double>();
-        
+
         public void ClipEntity(IStartClippableEntity clippable)
         {
             if (clippable is not IStartSegmentEntity segmentEntity)
                 throw new NotImplementedException("Clipping is only implemented for segments");
-            
+
             if (IsAttachedToHeadSegment(segmentEntity))
                 clippable.Clip(Position, HeadLength);
             else if (IsAttachedToMainSegment(segmentEntity))
                 clippable.Clip(Position, MainLength / 2);
         }
-        
+
+        [JsonProperty(StartPropertyName.MaterialName)]
+        public string MaterialName { get; set; } = string.Empty;
+
         [Pure]
         public bool IsAttachedToHeadSegment(IStartSegmentEntity segmentEntity)
         {
@@ -144,18 +140,16 @@ namespace Start.Entities.Fittings
         private void FilterSegments()
         {
             IStartSegmentEntity[] startSegmentEntities = ConnectedEntities.OfType<IStartSegmentEntity>().ToArray();
-            
+
             for (int i = 0; i < 3; i++)
+            for (int j = i + 1; j < 3; j++)
             {
-                for (int j = i + 1; j < 3; j++)
-                {
-                    if (!startSegmentEntities[i].Projection.IsParallel(startSegmentEntities[j].Projection)) 
-                        continue;
-                    
-                    _mainSegments[0] = startSegmentEntities[i];
-                    _mainSegments[1] = startSegmentEntities[j];
-                    _headSegment = startSegmentEntities[3 - (i + j)];
-                }
+                if (!startSegmentEntities[i].Projection.IsParallel(startSegmentEntities[j].Projection))
+                    continue;
+
+                _mainSegments[0] = startSegmentEntities[i];
+                _mainSegments[1] = startSegmentEntities[j];
+                _headSegment = startSegmentEntities[3 - (i + j)];
             }
         }
     }

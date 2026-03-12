@@ -18,16 +18,16 @@ namespace IFCConverter.Converters.Elements
     public sealed class PipeConverter : IfcElementConverter<StartAbstractSegmentEntity, IfcPipeSegment>
     {
         private readonly Logger _logger = Logger.GetInstance();
-        
+
         public PipeConverter(IModel model) : base(model)
         {
         }
-        
+
         public override IfcPipeSegment BuildIfcElement(StartAbstractSegmentEntity start)
         {
             Matrix<double> transformationMatrix = start.TransformationMatrix;
-            
-            IIfcGeometry pipeGeometry = PipeGeometry.CreateGeometry(_Model, new PipeGeometryProperties()
+
+            IIfcGeometry pipeGeometry = PipeGeometry.CreateGeometry(_Model, new PipeGeometryProperties
             {
                 Diameter = start.Diameter.SIProperty,
                 Length = start.Length,
@@ -54,7 +54,7 @@ namespace IFCConverter.Converters.Elements
 
             return builder.CreateInstance(_Model);
         }
-        
+
         public override StartAbstractSegmentEntity BuildStartElement(IfcPipeSegment ifc)
         {
             throw new NotImplementedException();

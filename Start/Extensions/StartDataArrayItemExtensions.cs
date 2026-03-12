@@ -1,19 +1,18 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Start.API;
-using Start.Interfaces;
 
 namespace Start.Extensions
 {
     internal static class StartDataArrayItemExtensions
     {
-        public static IEnumerable<StartDataArrayItem> GetElementsByType(this IEnumerable<StartDataArrayItem> arrayItems, 
+        public static IEnumerable<StartDataArrayItem> GetElementsByType(this IEnumerable<StartDataArrayItem> arrayItems,
             StartElementTypeEnum type)
         {
             return GetElementsByType(arrayItems, new[] { type });
         }
-        
-        public static IEnumerable<StartDataArrayItem> GetElementsByType(this IEnumerable<StartDataArrayItem> arrayItems, 
+
+        public static IEnumerable<StartDataArrayItem> GetElementsByType(this IEnumerable<StartDataArrayItem> arrayItems,
             IEnumerable<StartElementTypeEnum> types)
         {
             return arrayItems.Where(item => types.Contains(item.Type));
@@ -23,13 +22,11 @@ namespace Start.Extensions
         {
             StartDataArrayItem baseElement = arrayItems.Single(item => item.DataArrayIndex == ID);
             int[] baseElementNodeIds = baseElement.NodeIds;
-            
-            List<StartDataArrayItem> dataArrayItems = new List<StartDataArrayItem>();
+
+            List<StartDataArrayItem> dataArrayItems = new();
             foreach (int baseElementNodeId in baseElementNodeIds)
-            {
-                dataArrayItems.AddRange(arrayItems.Where(item => item.NodeIds.Contains(baseElementNodeId) 
+                dataArrayItems.AddRange(arrayItems.Where(item => item.NodeIds.Contains(baseElementNodeId)
                                                                  && item.DataArrayIndex != ID));
-            }
             return dataArrayItems;
         }
 

@@ -17,12 +17,12 @@ namespace IFCConverter.Converters
             return startEntity switch
             {
                 StartAngularExpansionJointEntity => new AngularExpansionJointConverter(model),
-                
+
                 StartValveEntity => new ValveConverter(model),
                 StartAbstractReducerEntity => new ReducerConverter(model),
                 StartAbstractBendEntity => new BendConverter(model),
                 StartAbstractTeeEntity => new TeeConverter(model),
-                
+
                 StartConeElementEntity => new ConeElementConverter(model),
                 StartAbstractSegmentEntity => new PipeConverter(model),
                 _ => null

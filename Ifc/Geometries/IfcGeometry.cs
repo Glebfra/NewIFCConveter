@@ -16,10 +16,6 @@ namespace Ifc.Geometries
 {
     public abstract class IfcGeometry : IIfcGeometry
     {
-        public IEnumerable<IIfcBuilder> GeometryBuilders { get; }
-        public IIfcRepresentationContext? RepresentationContext { get; }
-        public IColor? Color { get; private set; }
-        
         public IfcGeometry(IIfcBuilder geometryBuilder, IIfcRepresentationContext? representationContext = null)
         {
             GeometryBuilders = new[] { geometryBuilder };
@@ -32,6 +28,10 @@ namespace Ifc.Geometries
             GeometryBuilders = geometryBuilders;
             RepresentationContext = representationContext;
         }
+
+        public IEnumerable<IIfcBuilder> GeometryBuilders { get; }
+        public IIfcRepresentationContext? RepresentationContext { get; }
+        public IColor? Color { get; private set; }
 
         [Pure]
         public IIfcShapeRepresentation CreateShapeRepresentation(IModel model)
@@ -98,18 +98,16 @@ namespace Ifc.Geometries
             IIfcColourRgb colourRgb = CreateColourRgb(model, color);
             IIfcSurfaceStyleShading surfaceStyleShading = CreateSurfaceStyleShading(model, colourRgb);
             IIfcSurfaceStyle surfaceStyle = CreateSurfaceStyle(model, surfaceStyleShading);
-            
+
             const string transactionName = $"{nameof(IfcGeometry)}: {nameof(StyleItems)}";
             using (ITransaction transaction = model.BeginTransaction(transactionName))
             {
                 foreach (IIfcRepresentationItem ifcRepresentationItem in representationItems)
-                {
                     model.Instances.New<IfcStyledItem>(item =>
                     {
                         item.Item = (IfcRepresentationItem)ifcRepresentationItem;
                         item.Styles.Add(surfaceStyle);
                     });
-                }
                 transaction.Commit();
             }
         }
@@ -129,7 +127,7 @@ namespace Ifc.Geometries
                     colourRgb.Blue = normalizedColour[2];
                 });
                 transaction.Commit();
-                
+
                 return colourRgb;
             }
         }
@@ -149,9 +147,10 @@ namespace Ifc.Geometries
                 return styleShading;
             }
         }
-        
+
         [Pure]
-        private static IIfcSurfaceStyle CreateSurfaceStyle(IModel model, IfcSurfaceStyleElementSelect surfaceStyleElementSelect)
+        private static IIfcSurfaceStyle CreateSurfaceStyle(IModel model,
+            IfcSurfaceStyleElementSelect surfaceStyleElementSelect)
         {
             const string transactionName = $"{nameof(IfcGeometry)}: {nameof(CreateSurfaceStyle)}";
             using (ITransaction transaction = model.BeginTransaction(transactionName))

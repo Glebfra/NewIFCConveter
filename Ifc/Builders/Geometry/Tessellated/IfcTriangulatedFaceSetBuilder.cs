@@ -11,11 +11,10 @@ namespace Ifc.Builders.Geometry.Tessellated
     public class IfcTriangulatedFaceSetBuilder<T> : IfcTessellatedFaceSetBuilder<T>, IIfcTriangulatedFaceSetBuilder<T>
         where T : IIfcTriangulatedFaceSet, IInstantiableEntity
     {
-        public IItemSet<IItemSet<IfcPositiveInteger>>? CoordIndex { get; private set; }
-        public IItemSet<IItemSet<IfcParameterValue>>? Normals { get; private set; }
-
         private IEnumerable<IEnumerable<int>>? _coordIndex;
         private IEnumerable<IEnumerable<double>>? _normals;
+        public IItemSet<IItemSet<IfcPositiveInteger>>? CoordIndex { get; }
+        public IItemSet<IItemSet<IfcParameterValue>>? Normals { get; }
 
         public void AssignTriangleIndices(IEnumerable<IEnumerable<int>> coordIndex)
         {
@@ -30,8 +29,9 @@ namespace Ifc.Builders.Geometry.Tessellated
         public override T CreateTessellatedItem(IModel model)
         {
             T instance = base.CreateTessellatedItem(model);
-            
-            const string transactionName = $"{nameof(IfcTriangulatedFaceSetBuilder<T>)}: {nameof(CreateTessellatedItem)}";
+
+            const string transactionName =
+                $"{nameof(IfcTriangulatedFaceSetBuilder<T>)}: {nameof(CreateTessellatedItem)}";
             using (ITransaction transaction = model.BeginTransaction(transactionName))
             {
                 int index = 0;
@@ -55,9 +55,10 @@ namespace Ifc.Builders.Geometry.Tessellated
                     foreach (double coord in normalVector)
                         itemSet.Add(coord);
                 }
+
                 transaction.Commit();
             }
-            
+
             return instance;
         }
     }
