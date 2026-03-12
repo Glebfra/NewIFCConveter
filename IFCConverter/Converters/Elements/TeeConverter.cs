@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.Contracts;
 using System.Linq;
 using Ifc.API;
 using Ifc.Builders.Elements;
@@ -20,23 +19,23 @@ namespace IFCConverter.Converters.Elements
     public sealed class TeeConverter : IfcElementConverter<StartAbstractTeeEntity, IfcPipeFitting>
     {
         private readonly Logger _logger = Logger.GetInstance();
-        
+
         public TeeConverter(IModel model) : base(model)
         {
         }
-        
+
         public override IfcPipeFitting BuildIfcElement(StartAbstractTeeEntity start)
         {
-            IIfcGeometry teeGeometry = TeeGeometry.CreateGeometry(_Model, new TeeGeometryProperties()
+            IIfcGeometry teeGeometry = TeeGeometry.CreateGeometry(_Model, new TeeGeometryProperties
             {
                 HeadDiameter = start.HeadDiameter,
                 HeadDirection = start.HeadSegment.GetProjectionFromPoint(start.Position),
                 HeadLength = start.HeadLength,
-                
+
                 MainDiameter = start.MainDiameter,
                 MainDirection = start.MainSegments.ElementAt(0).GetProjectionFromPoint(start.Position).Negate(),
                 MainLength = start.MainLength,
-                
+
                 Position = VectorExtensions.Zero
             });
             teeGeometry.AssignColor(Color.FromHEX("5f4e7c"));
@@ -57,7 +56,7 @@ namespace IFCConverter.Converters.Elements
 
             return builder.CreateInstance(_Model);
         }
-        
+
         public override StartAbstractTeeEntity BuildStartElement(IfcPipeFitting ifc)
         {
             throw new NotImplementedException();

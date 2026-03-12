@@ -11,7 +11,6 @@ using Xbim.Common;
 using Xbim.Ifc4.HvacDomain;
 using Xbim.Ifc4.Interfaces;
 using MatrixExtensions = Utils.MatrixExtensions;
-using VectorExtensions = Utils.VectorExtensions;
 
 namespace IFCConverter.Converters.Elements
 {
@@ -28,12 +27,14 @@ namespace IFCConverter.Converters.Elements
             Vector<double> forward = (
                 start.Points.ElementAt(1) - start.Points.ElementAt(0)
             ).DotProduct(start.SegmentWithMinDiameter.Projection) * start.SegmentWithMinDiameter.Projection;
-            Matrix<double> transitionMatrix = MatrixExtensions.CreateTransitionWithWorldUp(start.Position, forward);
+            Vector<double>[] positions = start.Points
+                .Select(point => point - start.Position)
+                .ToArray();
 
             IIfcGeometry geometry = ConeGeometry.CreateGeometry(_Model, new ConeGeometryProperties
             {
-                Direction = VectorExtensions.Forward,
-                Positions = start.Points.ToArray(),
+                Direction = forward,
+                Positions = positions,
                 Diameters = start.Diameters.ToArray()
             });
             geometry.AssignColor(Color.FromHEX("5f4e7c"));
@@ -48,7 +49,7 @@ namespace IFCConverter.Converters.Elements
             _logger.Info($"Created builder: {builder.GetType().FullName}");
             TryAddMaterial(start, builder);
 
-            IIfcObjectPlacement objectPlacement = builder.CreateObjectPlacement(_Model, transitionMatrix);
+            IIfcObjectPlacement objectPlacement = builder.CreateObjectPlacement(_Model, objectMatrix);
             builder.AssignPlacement(objectPlacement);
             builder.AssignGeometry(geometry);
 

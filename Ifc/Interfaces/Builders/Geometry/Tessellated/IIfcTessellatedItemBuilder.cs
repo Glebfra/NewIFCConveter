@@ -7,7 +7,7 @@ namespace Ifc.Interfaces
         where T : IIfcTessellatedItem
     {
         public T? TessellatedItem { get; }
-        
+
         public T CreateTessellatedItem(IModel model);
     }
 }

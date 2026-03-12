@@ -11,11 +11,10 @@ namespace Ifc.Builders.Geometry.Brep
     public class IfcFaceBuilder<T> : IIfcFaceBuilder<T>
         where T : IIfcFace, IInstantiableEntity
     {
+        private readonly List<IIfcFaceBound> _bounds = new();
         public object? Instance => IfcFace;
         public T? IfcFace { get; private set; }
         public IEnumerable<IIfcFaceBound> Bounds => _bounds;
-        
-        private readonly List<IIfcFaceBound> _bounds = new List<IIfcFaceBound>();
 
         public IIfcFaceBound CreateFaceBound(IModel model, IEnumerable<Vector<double>> points)
         {
@@ -27,7 +26,7 @@ namespace Ifc.Builders.Geometry.Brep
                 );
                 _bounds.Add(faceBound);
                 transaction.Commit();
-                
+
                 return faceBound;
             }
         }
@@ -42,7 +41,7 @@ namespace Ifc.Builders.Geometry.Brep
                 return IfcFace;
             }
         }
-        
+
         public object Build(IModel model)
         {
             return CreateFace(model);

@@ -22,7 +22,7 @@ namespace IFCConverter
             MessageBox.Show("DLL is connected.");
             return 1;
         }
-        
+
         [STAThread]
         public int Export(object startDocumentObject, int languageId)
         {
@@ -30,37 +30,34 @@ namespace IFCConverter
             {
                 Application.EnableVisualStyles();
                 Logger logger = Logger.GetInstance();
-            
+
                 Localize(languageId);
 
-                StartDocument startDocument = new StartDocument(startDocumentObject);
-                ExportDataContainer exportDataContainer = new ExportDataContainer()
+                StartDocument startDocument = new(startDocumentObject);
+                ExportDataContainer exportDataContainer = new()
                 {
                     InputFilePath = startDocument.GetPathName(),
                     LanguageId = languageId
                 };
 
                 DialogResult dialogResult;
-                using (ExportWindowForm exportWindowForm = new ExportWindowForm(exportDataContainer))
+                using (ExportWindowForm exportWindowForm = new(exportDataContainer))
                 {
                     dialogResult = exportWindowForm.ShowDialog();
                 }
 
-                if (dialogResult == DialogResult.Cancel)
-                {
-                    return (int)ConversionResult.Canceled;
-                }
-                
+                if (dialogResult == DialogResult.Cancel) return (int)ConversionResult.Canceled;
+
                 try
                 {
-                    logger.Info($"Converting started at {DateTime.Now}");
-                    StartToIfcConverter converter = new StartToIfcConverter(exportDataContainer);
+                    logger.System($"Converting started at {DateTime.Now}");
+                    StartToIfcConverter converter = new(exportDataContainer);
                     converter.Convert(startDocument);
-                    logger.Info($"Converting ended at {DateTime.Now}");
-                    
-                    #if DEBUG
+                    logger.System($"Converting ended at {DateTime.Now}");
+
+#if DEBUG
                     logger.SaveAs(exportDataContainer.OutputFilePath + ".log");
-                    #else
+#else
                     if (logger.HasErrors())
                     {
                         logger.SaveAs(exportDataContainer.OutputFilePath + ".log");
@@ -69,8 +66,8 @@ namespace IFCConverter
                     {
                         logger.Flush();
                     }
-                    #endif
-                    
+#endif
+
                     return (int)ConversionResult.Success;
                 }
                 catch (Exception ex)
@@ -79,7 +76,7 @@ namespace IFCConverter
                     logger.SaveAs(exportDataContainer.OutputFilePath + ".log");
                     return (int)ConversionResult.Fail;
                 }
-            } 
+            }
             catch (Exception)
             {
                 return (int)ConversionResult.Fail;
@@ -93,14 +90,15 @@ namespace IFCConverter
         }
 
         [STAThread]
-        public int ImportFromFileOpen(object startAutoServerObject, int languageId, string startTempFileName, string ifcFileName)
+        public int ImportFromFileOpen(object startAutoServerObject, int languageId, string startTempFileName,
+            string ifcFileName)
         {
             throw new NotImplementedException();
         }
 
         private void Localize(int languageId)
         {
-            CultureInfo ci = new CultureInfo(languageId);
+            CultureInfo ci = new(languageId);
             Thread.CurrentThread.CurrentCulture = ci;
             Thread.CurrentThread.CurrentUICulture = ci;
         }

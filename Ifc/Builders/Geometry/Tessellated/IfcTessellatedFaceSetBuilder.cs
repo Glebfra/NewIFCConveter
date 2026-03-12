@@ -11,7 +11,7 @@ namespace Ifc.Builders.Geometry.Tessellated
         where T : IIfcTessellatedFaceSet, IInstantiableEntity
     {
         public IIfcCartesianPointList3D? Coordinates { get; private set; }
-        
+
         public IIfcCartesianPointList3D CreateCoordinates(IModel model, IEnumerable<Vector<double>> coordinates)
         {
             const string transactionName = $"{nameof(IfcTessellatedFaceSetBuilder<T>)}: {nameof(CreateCoordinates)}";
@@ -28,7 +28,8 @@ namespace Ifc.Builders.Geometry.Tessellated
         {
             T instance = base.CreateTessellatedItem(model);
 
-            const string transactionName = $"{nameof(IfcTessellatedFaceSetBuilder<T>)}: {nameof(CreateTessellatedItem)}";
+            const string transactionName =
+                $"{nameof(IfcTessellatedFaceSetBuilder<T>)}: {nameof(CreateTessellatedItem)}";
             using (ITransaction transaction = model.BeginTransaction(transactionName))
             {
                 instance.Coordinates = Coordinates;

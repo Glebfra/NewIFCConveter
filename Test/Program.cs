@@ -9,10 +9,12 @@ namespace Test
         [STAThread]
         public static void Main(string[] args)
         {
-            using (StartAutoServer startAutoServer = new StartAutoServer())
+            using (StartAutoServer startAutoServer = new())
             {
-                object startDocumentRaw = startAutoServer.LoadStartDocumentRaw(0x4, @"D:\Работа\Projects Files\ReducersTest.ctp");
-                IfcConverter ifcConverter = new IfcConverter();
+                object startDocumentRaw =
+                    startAutoServer.LoadStartDocumentRaw(0x4,
+                        @"D:\Работа\Projects Files\AngularExpansionJointTest.ctp");
+                IfcConverter ifcConverter = new();
                 ifcConverter.Export(startDocumentRaw, 1049);
             }
         }

@@ -41,8 +41,8 @@ namespace Ifc.Builders.Geometry.SolidModel
             T solid = base.CreateSolidModel(model);
 
             using (ITransaction transaction = model.BeginTransaction(
-                $"{nameof(IfcRevolvedAreaSolidBuilder<T>)} : {nameof(CreateSolidModel)}"
-            ))
+                       $"{nameof(IfcRevolvedAreaSolidBuilder<T>)} : {nameof(CreateSolidModel)}"
+                   ))
             {
                 solid.Angle = Angle;
                 solid.Axis = Axis;

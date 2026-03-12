@@ -11,34 +11,35 @@ namespace Start.Extensions
     public static class StartEntitiesExtensions
     {
         private const double EQUALS_TOLERANCE = 1e-6;
-        
+
         [Pure]
         public static bool IsConnectedTo(this IStartEntity startEntity, IStartEntity otherEntity)
         {
             Vector<double>[] startEntityPositions = startEntity switch
             {
-                IStartOneNodeEntity oneNodeEntity => new Vector<double>[] { oneNodeEntity.Position },
-                IStartTwoNodeEntity twoNodeEntity => new Vector<double>[] { twoNodeEntity.StartPosition, twoNodeEntity.EndPosition },
-                _ => new Vector<double>[] {}
+                IStartOneNodeEntity oneNodeEntity => new[] { oneNodeEntity.Position },
+                IStartTwoNodeEntity twoNodeEntity => new[] { twoNodeEntity.StartPosition, twoNodeEntity.EndPosition },
+                _ => new Vector<double>[] { }
             };
-            
+
             Vector<double>[] otherEntityPositions = otherEntity switch
             {
-                IStartOneNodeEntity oneNodeEntity => new Vector<double>[] { oneNodeEntity.Position },
-                IStartTwoNodeEntity twoNodeEntity => new Vector<double>[] { twoNodeEntity.StartPosition, twoNodeEntity.EndPosition },
-                _ => new Vector<double>[] {}
+                IStartOneNodeEntity oneNodeEntity => new[] { oneNodeEntity.Position },
+                IStartTwoNodeEntity twoNodeEntity => new[] { twoNodeEntity.StartPosition, twoNodeEntity.EndPosition },
+                _ => new Vector<double>[] { }
             };
 
             return (
-                from startEntityPosition in startEntityPositions 
-                from otherEntityPosition in otherEntityPositions 
-                where startEntityPosition.AlmostEqual(otherEntityPosition, EQUALS_TOLERANCE) 
+                from startEntityPosition in startEntityPositions
+                from otherEntityPosition in otherEntityPositions
+                where startEntityPosition.AlmostEqual(otherEntityPosition, EQUALS_TOLERANCE)
                 select startEntityPosition
             ).Any();
         }
-        
+
         [Pure]
-        public static IEnumerable<T> GetConnectedEntities<T>(this IStartEntity startEntity, IEnumerable<T> otherEntities)
+        public static IEnumerable<T> GetConnectedEntities<T>(this IStartEntity startEntity,
+            IEnumerable<T> otherEntities)
             where T : IStartEntity
         {
             return otherEntities.Where(entity => startEntity.IsConnectedTo(entity));

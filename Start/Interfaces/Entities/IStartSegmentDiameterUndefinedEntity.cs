@@ -2,6 +2,6 @@
 {
     public interface IStartSegmentDiameterUndefinedEntity : IStartSegmentEntity
     {
-        public IStartValueProperty<double> GetDiameter(object? skipEntity=null);
+        public IStartValueProperty<double> GetDiameter(object? skipEntity = null);
     }
 }

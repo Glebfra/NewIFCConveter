@@ -6,15 +6,15 @@ namespace Start.Interfaces
     public interface IStartAutoServer : IDisposable
     {
         /// <summary>
-        /// Loads a document into the AutoServer.
+        ///     Loads a document into the AutoServer.
         /// </summary>
         /// <param name="mode">The mode in which to load the document.</param>
         /// <param name="filepath">The file path of the document to load.</param>
-        /// <returns>A <see cref="IStartDocument"/> representing the loaded document.</returns>
+        /// <returns>A <see cref="IStartDocument" /> representing the loaded document.</returns>
         public IStartDocument LoadStartDocument(int mode, string filepath);
 
         /// <summary>
-        /// Loads a document into the AutoServer and returns the raw object.
+        ///     Loads a document into the AutoServer and returns the raw object.
         /// </summary>
         /// <param name="mode">The mode in which to load the document.</param>
         /// <param name="filepath">The file path of the document to load.</param>
@@ -22,7 +22,7 @@ namespace Start.Interfaces
         public object LoadStartDocumentRaw(int mode, string filepath);
 
         /// <summary>
-        /// Retrieves the material JSON string from the AutoServer.
+        ///     Retrieves the material JSON string from the AutoServer.
         /// </summary>
         /// <param name="nNorma">The norma value.</param>
         /// <param name="material">The material name.</param>
@@ -36,21 +36,21 @@ namespace Start.Interfaces
             StartManufacturingTechnologyEnum manufacturingTechnologyEnum, double thickness, int nElem, double temp);
 
         /// <summary>
-        /// Saves the current state of the AutoServer to a file.
+        ///     Saves the current state of the AutoServer to a file.
         /// </summary>
         /// <param name="filepath">The file path where the state should be saved.</param>
         public void SaveToFile(string filepath);
 
         /// <summary>
-        /// Retrieves the full name of the AutoServer.
+        ///     Retrieves the full name of the AutoServer.
         /// </summary>
         /// <returns>The full name of the AutoServer, or null if not available.</returns>
         public string? GetFullName();
 
         /// <summary>
-        /// Retrieves the data array dispatch object from the AutoServer.
+        ///     Retrieves the data array dispatch object from the AutoServer.
         /// </summary>
-        /// <returns>A <see cref="IStartBaseRootDataArray"/> representing the data array dispatch.</returns>
+        /// <returns>A <see cref="IStartBaseRootDataArray" /> representing the data array dispatch.</returns>
         public IStartBaseRootDataArray GetDataArrayDispatch();
     }
 }

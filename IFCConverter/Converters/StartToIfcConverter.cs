@@ -19,8 +19,8 @@ namespace IFCConverter.Converters
 {
     internal class StartToIfcConverter
     {
-        private readonly Logger _logger = Logger.GetInstance();
         private readonly ExportDataContainer _exportDataContainer;
+        private readonly Logger _logger = Logger.GetInstance();
 
         public StartToIfcConverter(ExportDataContainer exportDataContainer)
         {
@@ -29,17 +29,17 @@ namespace IFCConverter.Converters
 
         public void Convert(StartDocument startDocument)
         {
-            _logger.Info($"STARTtoIFC converter v.{Assembly.GetExecutingAssembly().GetName().Version}");
+            _logger.System($"STARTtoIFC converter v.{Assembly.GetExecutingAssembly().GetName().Version}");
 
             using (IStartProject startProject = StartProject.OpenFromDocument(startDocument))
             {
                 IStartEntity[] startEntities = startProject.GetStartEntities();
                 _logger.Info($"Found {startEntities.Count()} objects");
-                
+
                 IStartClippableEntity[] clippableEntities = startEntities.OfType<IStartClippableEntity>().ToArray();
                 _logger.Info($"Clippable entities found {clippableEntities.Length} objects");
                 ClipEntities(clippableEntities);
-                
+
                 IEnumerable<StartReducerEccentricEntity> reducerEccentricEntities =
                     startEntities.OfType<StartReducerEccentricEntity>();
                 MoveSegmentsWithReducers(reducerEccentricEntities);
@@ -48,7 +48,6 @@ namespace IFCConverter.Converters
                 {
                     IModel model = ifcProject.Model;
                     foreach (IStartEntity startEntity in startEntities)
-                    {
                         try
                         {
                             IfcProduct? ifcProduct = CreateIfcEntity(model, startEntity);
@@ -58,41 +57,42 @@ namespace IFCConverter.Converters
                         }
                         catch (Exception ex)
                         {
-                            _logger.Error($"Error while converting entity {startEntity.GetType().FullName} with id {startEntity.ID}: {ex}");
+                            _logger.Error(
+                                $"Error while converting entity {startEntity.GetType().FullName} with id {startEntity.ID}: {ex}");
                         }
-                    }
 
                     ifcProject.SaveAs(_exportDataContainer.OutputFilePath);
                 }
             }
         }
-        
+
         private void ClipEntities(IEnumerable<IStartClippableEntity> clippableEntities)
         {
             foreach (IStartClippableEntity clippableEntity in clippableEntities)
             {
-                IEnumerable<IStartClippingEntity> clippingEntities = 
+                IEnumerable<IStartClippingEntity> clippingEntities =
                     clippableEntity.ConnectedEntities.OfType<IStartClippingEntity>();
                 foreach (IStartClippingEntity clippingEntity in clippingEntities)
                 {
                     clippingEntity.ClipEntity(clippableEntity);
-                    _logger.Info($"Clipping entity {clippableEntity.GetType().FullName} by {clippingEntity.GetType().FullName}");
+                    _logger.Info(
+                        $"Clipping entity {clippableEntity.GetType().FullName} by {clippingEntity.GetType().FullName}");
                 }
             }
         }
-        
+
         [Pure]
         private IfcProduct? CreateIfcEntity(IModel model, IStartEntity startEntity)
         {
             IIfcElementConverter? converter = ConverterFactory.CreateConverter(model, startEntity);
             if (converter == null)
                 return null;
-            
+
             _logger.Info($"Created converter {converter?.GetType().FullName}");
-            
+
             IfcProduct? ifcProduct = converter?.BuildIfc(startEntity) as IfcProduct;
             _logger.Info($"Created product {ifcProduct?.GetType().FullName} (global ifc id: {ifcProduct?.GlobalId})");
-            
+
             return ifcProduct;
         }
 
@@ -102,7 +102,7 @@ namespace IFCConverter.Converters
             {
                 IStartSegmentEntity minDiameterSegmentEntity = startReducerEccentricEntity.SegmentWithMinDiameter;
                 IStartSegmentEntity maxDiameterSegmentEntity = startReducerEccentricEntity.SegmentWithMaxDiameter;
-                
+
                 double angle = startReducerEccentricEntity.AngleBetweenEccentricityVectorAndZmAxis.SIProperty;
                 Matrix<double> minDiameterSegmentMatrix = minDiameterSegmentEntity.TransformationMatrix;
                 Matrix<double> rotationMatrix = MatrixExtensions.CreateRotationAroundZ(angle);

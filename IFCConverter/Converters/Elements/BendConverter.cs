@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.Contracts;
 using System.Linq;
 using Ifc.API;
 using Ifc.Builders.Elements;
@@ -20,11 +19,11 @@ namespace IFCConverter.Converters.Elements
     public sealed class BendConverter : IfcElementConverter<StartAbstractBendEntity, IfcPipeFitting>
     {
         private readonly Logger _logger = Logger.GetInstance();
-        
+
         public BendConverter(IModel model) : base(model)
         {
         }
-        
+
         public override IfcPipeFitting BuildIfcElement(StartAbstractBendEntity start)
         {
             IStartSegmentEntity[] startSegmentEntities = start.ConnectedEntities
@@ -37,14 +36,14 @@ namespace IFCConverter.Converters.Elements
 
             _logger.Info($"Calculated directions: ({firstDirection.ToRowString()}); ({secondDirection.ToRowString()})");
             _logger.Info($"Calculated angle: {angle}");
-            
+
             double displacementLength = start.Radius.SIProperty * Math.Tan(angle / 2);
             Vector<double> position = firstDirection.Negate() * displacementLength;
             _logger.Info($"Calculated position: ({position.ToRowString()})");
 
             double pipeDiameter = startSegmentEntities.Select(entity => entity.Diameter.SIProperty).Max();
 
-            IIfcGeometry bendGeometry = BendGeometry.CreateGeometry(_Model, new BendGeometryProperties()
+            IIfcGeometry bendGeometry = BendGeometry.CreateGeometry(_Model, new BendGeometryProperties
             {
                 BendRadius = start.Radius.SIProperty,
                 Position = position,
@@ -63,14 +62,14 @@ namespace IFCConverter.Converters.Elements
                     IfcPipeFittingTypeEnum.BEND);
             _logger.Info($"Created builder: {builder.GetType().FullName}");
             TryAddMaterial(start, builder);
-            
+
             IIfcObjectPlacement objectPlacement = builder.CreateObjectPlacement(_Model, objectMatrix);
             builder.AssignPlacement(objectPlacement);
             builder.AssignGeometry(bendGeometry);
 
             return builder.CreateInstance(_Model);
         }
-        
+
         public override StartAbstractBendEntity BuildStartElement(IfcPipeFitting ifc)
         {
             throw new NotImplementedException();

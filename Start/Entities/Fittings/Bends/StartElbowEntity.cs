@@ -6,6 +6,5 @@ namespace Start.Entities.Fittings
     [StartElement(StartElementTypeEnum.ELBOW)]
     public sealed class StartElbowEntity : StartAbstractBendEntity
     {
-        
     }
 }

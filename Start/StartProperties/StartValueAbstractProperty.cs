@@ -4,12 +4,20 @@ using Start.Interfaces;
 
 namespace Start.StartProperties
 {
-    public abstract class StartValueAbstractProperty<T> : 
+    public abstract class StartValueAbstractProperty<T> :
         IStartValueProperty<T>, IComparable<StartValueAbstractProperty<T>>
         where T : struct, IComparable<T>
     {
+        public int CompareTo(StartValueAbstractProperty<T>? other)
+        {
+            if (other == null)
+                return 1;
+
+            return SIProperty.CompareTo(other.SIProperty);
+        }
+
         public T StartProperty { get; private set; }
-        public T SIProperty { get; private set; } 
+        public T SIProperty { get; private set; }
 
         public abstract string StartUnit { get; }
         public abstract string SIUnit { get; }
@@ -52,27 +60,34 @@ namespace Start.StartProperties
             return this;
         }
 
+        public int CompareTo(object obj)
+        {
+            return CompareTo(obj as StartValueAbstractProperty<T>);
+        }
+
         public override string ToString()
         {
             return $"{SIProperty.ToString()} {SIUnit}";
         }
-        
-        public int CompareTo(StartValueAbstractProperty<T>? other)
-        {
-            if (other == null)
-                return 1;
 
-            return SIProperty.CompareTo(other.SIProperty);
+        public static bool operator >(StartValueAbstractProperty<T> left, StartValueAbstractProperty<T> right)
+        {
+            return left.CompareTo(right) > 0;
         }
 
-        public int CompareTo(object obj) => CompareTo(obj as StartValueAbstractProperty<T>);
-        public static bool operator >(StartValueAbstractProperty<T> left, StartValueAbstractProperty<T> right) 
-            => left.CompareTo(right) > 0;
-        public static bool operator <(StartValueAbstractProperty<T> left, StartValueAbstractProperty<T> right) 
-            => left.CompareTo(right) < 0;
-        public static bool operator >=(StartValueAbstractProperty<T> left, StartValueAbstractProperty<T> right) 
-            => left.CompareTo(right) >= 0;
-        public static bool operator <=(StartValueAbstractProperty<T> left, StartValueAbstractProperty<T> right) 
-            => left.CompareTo(right) <= 0;
+        public static bool operator <(StartValueAbstractProperty<T> left, StartValueAbstractProperty<T> right)
+        {
+            return left.CompareTo(right) < 0;
+        }
+
+        public static bool operator >=(StartValueAbstractProperty<T> left, StartValueAbstractProperty<T> right)
+        {
+            return left.CompareTo(right) >= 0;
+        }
+
+        public static bool operator <=(StartValueAbstractProperty<T> left, StartValueAbstractProperty<T> right)
+        {
+            return left.CompareTo(right) <= 0;
+        }
     }
 }

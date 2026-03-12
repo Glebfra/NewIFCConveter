@@ -6,6 +6,7 @@ namespace Ifc.Interfaces
 {
     public interface IIfcStyledSurfaceBuilder
     {
-        public IEnumerable<IIfcStyledItem> CreateStyledItems(IModel model, IEnumerable<IIfcRepresentationItem> representationItems);
+        public IEnumerable<IIfcStyledItem> CreateStyledItems(IModel model,
+            IEnumerable<IIfcRepresentationItem> representationItems);
     }
 }

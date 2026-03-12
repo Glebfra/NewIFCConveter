@@ -17,19 +17,19 @@ namespace Ifc.Geometries
         public Vector<double>[] Positions;
         public double[] Diameters;
     }
-    
+
     [IfcRepresentationIdentifier(IfcRepresentationIdentifier.Body)]
     [IfcRepresentationType(IfcRepresentationType.Tessellation)]
     public class ConeGeometry : IfcGeometry
     {
-        public ConeGeometry(IIfcBuilder geometryBuilder, 
-            IIfcRepresentationContext? representationContext = null) 
+        public ConeGeometry(IIfcBuilder geometryBuilder,
+            IIfcRepresentationContext? representationContext = null)
             : base(geometryBuilder, representationContext)
         {
         }
 
-        public ConeGeometry(IEnumerable<IIfcBuilder> geometryBuilders, 
-            IIfcRepresentationContext? representationContext = null) 
+        public ConeGeometry(IEnumerable<IIfcBuilder> geometryBuilders,
+            IIfcRepresentationContext? representationContext = null)
             : base(geometryBuilders, representationContext)
         {
         }
@@ -37,7 +37,7 @@ namespace Ifc.Geometries
         public static ConeGeometry CreateGeometry(IModel model, ConeGeometryProperties properties)
         {
             Vector<double> direction = properties.Positions[1] - properties.Positions[0];
-            
+
             IfcTriangulatedProperties triangulatedProperties = IfcTriangulatedProperties.CreateClippedCone(
                 new ClippedConeTriangulatedGeometryProperties
                 {
@@ -48,8 +48,8 @@ namespace Ifc.Geometries
                     Direction = properties.Direction
                 }
             );
-            
-            IIfcTriangulatedFaceSetBuilder<IfcTriangulatedFaceSet> faceSetBuilder = 
+
+            IIfcTriangulatedFaceSetBuilder<IfcTriangulatedFaceSet> faceSetBuilder =
                 new IfcTriangulatedFaceSetBuilder<IfcTriangulatedFaceSet>();
             faceSetBuilder.CreateCoordinates(model, triangulatedProperties.Coordinates);
             faceSetBuilder.AssignTriangleIndices(triangulatedProperties.TriangleIndices);

@@ -6,13 +6,13 @@ namespace Start.Extensions
 {
     internal static class StartDataArrayItemExtensions
     {
-        public static IEnumerable<StartDataArrayItem> GetElementsByType(this IEnumerable<StartDataArrayItem> arrayItems, 
+        public static IEnumerable<StartDataArrayItem> GetElementsByType(this IEnumerable<StartDataArrayItem> arrayItems,
             StartElementTypeEnum type)
         {
             return GetElementsByType(arrayItems, new[] { type });
         }
-        
-        public static IEnumerable<StartDataArrayItem> GetElementsByType(this IEnumerable<StartDataArrayItem> arrayItems, 
+
+        public static IEnumerable<StartDataArrayItem> GetElementsByType(this IEnumerable<StartDataArrayItem> arrayItems,
             IEnumerable<StartElementTypeEnum> types)
         {
             return arrayItems.Where(item => types.Contains(item.Type));
@@ -22,11 +22,12 @@ namespace Start.Extensions
         {
             StartDataArrayItem baseElement = arrayItems.Single(item => item.DataArrayIndex == ID);
             int[] baseElementNodeIds = baseElement.NodeIds;
-            return (baseElementNodeIds.Length == 1
-                    ? arrayItems.Where(item => item.NodeIds.Contains(baseElementNodeIds[0]))
-                    : arrayItems.Where(item =>
-                        item.NodeIds.Contains(baseElementNodeIds[0]) || item.NodeIds.Contains(baseElementNodeIds[1]))
-                ).Where(item => item.DataArrayIndex != ID);
+
+            List<StartDataArrayItem> dataArrayItems = new();
+            foreach (int baseElementNodeId in baseElementNodeIds)
+                dataArrayItems.AddRange(arrayItems.Where(item => item.NodeIds.Contains(baseElementNodeId)
+                                                                 && item.DataArrayIndex != ID));
+            return dataArrayItems;
         }
 
         public static IEnumerable<StartDataArrayItem> GetConnElements(this StartDataArrayItem[] arrayItems,

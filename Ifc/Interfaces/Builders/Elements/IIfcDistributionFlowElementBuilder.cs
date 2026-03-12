@@ -2,9 +2,8 @@
 
 namespace Ifc.Interfaces
 {
-    public interface IIfcDistributionFlowElementBuilder<out T> : IIfcDistributionElementBuilder<T> 
+    public interface IIfcDistributionFlowElementBuilder<out T> : IIfcDistributionElementBuilder<T>
         where T : IIfcDistributionFlowElement
     {
-        
     }
 }

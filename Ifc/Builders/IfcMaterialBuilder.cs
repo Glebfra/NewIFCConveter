@@ -10,12 +10,6 @@ namespace Ifc.Builders
 {
     public class IfcMaterialBuilder : IIfcMaterialBuilder
     {
-        public object? Instance { get; private set; }
-
-        public IfcLabel MaterialName { get; }
-        public IfcText Description { get; }
-        public IfcLabel Category { get; }
-        
         private readonly Logger _logger = Logger.GetInstance();
 
         public IfcMaterialBuilder(IfcLabel materialName, IfcText description, IfcLabel category)
@@ -24,12 +18,18 @@ namespace Ifc.Builders
             Description = description;
             Category = category;
         }
-        
+
+        public object? Instance { get; private set; }
+
+        public IfcLabel MaterialName { get; }
+        public IfcText Description { get; }
+        public IfcLabel Category { get; }
+
         public IIfcMaterial CreateMaterial(IModel model)
         {
             const string transactionName = $"{nameof(IfcMaterialBuilder)}: {nameof(CreateMaterial)}";
             _logger.Info($"Begin transaction: {transactionName}");
-            
+
             using (ITransaction transaction = model.BeginTransaction(transactionName))
             {
                 Instance = model.Instances.New<IfcMaterial>(ifcMaterial =>
@@ -39,24 +39,25 @@ namespace Ifc.Builders
                     ifcMaterial.Category = Category;
                 });
                 transaction.Commit();
-                
+
                 return (IIfcMaterial)Instance;
             }
         }
 
         public bool GetOrCreateMaterial(IModel model, out IIfcMaterial material)
         {
-            material = model.Instances.OfType<IIfcMaterial>().FirstOrDefault(material => material.Name == MaterialName)!;
+            material = model.Instances.OfType<IIfcMaterial>()
+                .FirstOrDefault(material => material.Name == MaterialName)!;
             if (material == null!)
             {
                 material = CreateMaterial(model);
                 return true;
             }
-            
+
             Instance = material;
             return false;
         }
-        
+
         public object Build(IModel model)
         {
             return CreateMaterial(model);

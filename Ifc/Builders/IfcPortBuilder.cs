@@ -26,7 +26,7 @@ namespace Ifc.Builders
 
         public IfcDistributionPortTypeEnum DistributionPortTypeEnum { get; }
         public IfcFlowDirectionEnum FlowDirectionEnum { get; }
-        
+
         public IIfcPort CreatePort(IModel model)
         {
             if (ObjectPlacement == null)
@@ -46,7 +46,7 @@ namespace Ifc.Builders
                 return IfcPort;
             }
         }
-        
+
         public IIfcObjectPlacement CreateObjectPlacement(IModel model, Matrix<double> matrix3D)
         {
             using (ITransaction transaction =
@@ -58,7 +58,7 @@ namespace Ifc.Builders
                 return ObjectPlacement;
             }
         }
-        
+
         public object Build(IModel model)
         {
             return CreatePort(model);

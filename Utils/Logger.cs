@@ -4,17 +4,29 @@ using System.Reflection;
 
 namespace Utils
 {
+    public enum LoggerLevel
+    {
+        ERROR = 0,
+        SYSTEM = 1,
+        INFO = 2
+    }
+
     public class Logger
     {
-        private string Logs { get; set; } = "";
+        public static LoggerLevel LoggerLevel = LoggerLevel.INFO;
 
         private static Logger? _instance;
         private int _countErrors;
 
-        public static Logger GetInstance() => _instance ??= new Logger();
-
         private Logger()
         {
+        }
+
+        private string Logs { get; set; } = "";
+
+        public static Logger GetInstance()
+        {
+            return _instance ??= new Logger();
         }
 
         private void Flush()
@@ -24,7 +36,17 @@ namespace Utils
 
         public void Info(string message)
         {
+            if (LoggerLevel < LoggerLevel.INFO)
+                return;
             string formattedMessage = $"[INFO] [{Assembly.GetCallingAssembly().GetName().Name}] {message} \n";
+            Logs += formattedMessage;
+        }
+
+        public void System(string message)
+        {
+            if (LoggerLevel < LoggerLevel.SYSTEM)
+                return;
+            string formattedMessage = $"[SYSTEM] [{Assembly.GetCallingAssembly().GetName().Name}] {message}\n";
             Logs += formattedMessage;
         }
 
@@ -49,10 +71,11 @@ namespace Utils
         public void SaveAs(string filePath)
         {
             End();
-            using (StreamWriter sw = new StreamWriter(filePath))
+            using (StreamWriter sw = new(filePath))
             {
                 sw.WriteLine(Logs);
             }
+
             Flush();
         }
     }
