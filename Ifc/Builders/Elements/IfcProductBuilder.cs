@@ -16,6 +16,7 @@ namespace Ifc.Builders.Elements
     public class IfcProductBuilder<T> : IIfcProductBuilder<T>
         where T : IfcProduct, IInstantiableEntity
     {
+        private readonly Logger _logger = Logger.GetInstance();
         public bool IsCreated { get; private set; }
         public T? Instance { get; private set; }
         public IIfcObjectPlacement? ObjectPlacement { get; private set; }
@@ -23,9 +24,7 @@ namespace Ifc.Builders.Elements
         public IIfcProductRepresentation? Representation { get; private set; }
         public IIfcMaterial? Material { get; private set; }
 
-        public List<IIfcPropertySet> PropertySets { get; } = new List<IIfcPropertySet>();
-
-        private readonly Logger _logger = Logger.GetInstance();
+        public List<IIfcPropertySet> PropertySets { get; } = new();
 
         public IIfcObjectPlacement CreateObjectPlacement(IModel model, Matrix<double> matrix)
         {
@@ -36,10 +35,10 @@ namespace Ifc.Builders.Elements
             {
                 ObjectPlacement = matrix.ToIfcObjectPlacement(model);
                 _logger.Info($"Created object placement with matrix: {matrix.ToRowString()}");
-                
+
                 transaction.Commit();
-                _logger.Info($"Transaction ended");
-                
+                _logger.Info("Transaction ended");
+
                 return ObjectPlacement;
             }
         }
@@ -54,7 +53,7 @@ namespace Ifc.Builders.Elements
 
             const string transactionName = $"{nameof(IfcProductBuilder<T>)}: {nameof(CreateInstance)}";
             _logger.Info($"Begin transaction: {transactionName}");
-            
+
             using (ITransaction transaction = model.BeginTransaction(transactionName))
             {
                 Instance = model.Instances.New<T>(product =>
@@ -69,9 +68,10 @@ namespace Ifc.Builders.Elements
                 if (Material != null)
                 {
                     RelateMaterial(model);
-                    _logger.Info($"Added relation between material with id: {Material.EntityLabel} and product instance with id: {Instance.EntityLabel}");
+                    _logger.Info(
+                        $"Added relation between material with id: {Material.EntityLabel} and product instance with id: {Instance.EntityLabel}");
                 }
-                
+
                 IsCreated = true;
                 transaction.Commit();
 

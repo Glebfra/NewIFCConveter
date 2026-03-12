@@ -11,20 +11,17 @@ using Start.StartProperties;
 
 namespace Start.Entities.Fittings
 {
-    public abstract class StartAbstractReducerEntity : StartAbstractFittingEntity, 
+    public abstract class StartAbstractReducerEntity : StartAbstractFittingEntity,
         IStartOneNodeEntity, IStartClippingEntity, IStartConeEntity, IStartMaterializedEntity
     {
-        
-        [JsonProperty(StartPropertyName.MaterialName)]
-        public string MaterialName { get; set; } = string.Empty;
-        
         [JsonProperty(StartPropertyName.ConicalPartLength)]
         [JsonConverter(typeof(JsonStartConverter<LengthValueProperty<double>>))]
         public IStartValueProperty<double> LengthOfConicalPart { get; set; } = new LengthValueProperty<double>();
 
         [JsonProperty(StartPropertyName.WallThickness)]
         [JsonConverter(typeof(JsonStartConverter<LengthValueProperty<double>>))]
-        public IStartValueProperty<double> ThicknessAtMaxDiameterPoint { get; set; } = new LengthValueProperty<double>();
+        public IStartValueProperty<double> ThicknessAtMaxDiameterPoint { get; set; } =
+            new LengthValueProperty<double>();
 
         [JsonProperty(StartPropertyName.MillTolerance)]
         [JsonConverter(typeof(JsonStartConverter<LengthValueProperty<double>>))]
@@ -48,33 +45,19 @@ namespace Start.Entities.Fittings
         [JsonConverter(typeof(JsonStartConverter<LengthValueProperty<double>>))]
         public IStartValueProperty<double> MillTolerance { get; set; } = new LengthValueProperty<double>();
 
-        [JsonIgnore]
-        public IStartValueProperty<double> MaxDiameter => SegmentWithMaxDiameter.Diameter;
+        [JsonIgnore] public IStartValueProperty<double> MaxDiameter => SegmentWithMaxDiameter.Diameter;
 
-        [JsonIgnore]
-        public IStartValueProperty<double> MinDiameter => SegmentWithMinDiameter.Diameter;
+        [JsonIgnore] public IStartValueProperty<double> MinDiameter => SegmentWithMinDiameter.Diameter;
 
         [JsonIgnore]
         [StartIgnore]
         public IStartSegmentEntity SegmentWithMinDiameter =>
             ConnectedEntities.OfType<IStartSegmentEntity>().OrderBy(segment => segment.Diameter).First();
-        
+
         [JsonIgnore]
         [StartIgnore]
         public IStartSegmentEntity SegmentWithMaxDiameter =>
             ConnectedEntities.OfType<IStartSegmentEntity>().OrderByDescending(segment => segment.Diameter).First();
-
-        [JsonIgnore]
-        [StartIgnore]
-        public IEnumerable<Vector<double>> Points => new Vector<double>[]
-        {
-            SegmentWithMinDiameter.GetNearestPosition(Position),
-            SegmentWithMaxDiameter.GetNearestPosition(Position)
-        };
-
-        [JsonIgnore] 
-        [StartIgnore] 
-        public IEnumerable<double> Diameters => new double[] { MinDiameter.SIProperty, MaxDiameter.SIProperty };
 
         public void ClipEntity(IStartClippableEntity clippable)
         {
@@ -83,5 +66,20 @@ namespace Start.Entities.Fittings
                )
                 clippableEntity.Clip(Position, LengthOfConicalPart.SIProperty);
         }
+
+        [JsonIgnore]
+        [StartIgnore]
+        public IEnumerable<Vector<double>> Points => new[]
+        {
+            SegmentWithMinDiameter.GetNearestPosition(Position),
+            SegmentWithMaxDiameter.GetNearestPosition(Position)
+        };
+
+        [JsonIgnore]
+        [StartIgnore]
+        public IEnumerable<double> Diameters => new[] { MinDiameter.SIProperty, MaxDiameter.SIProperty };
+
+        [JsonProperty(StartPropertyName.MaterialName)]
+        public string MaterialName { get; set; } = string.Empty;
     }
 }

@@ -9,7 +9,7 @@
         ///     Gets or sets the length of the segment.
         /// </summary>
         public double Length { get; }
-        
+
         public IStartValueProperty<double> Diameter { get; set; }
     }
 }

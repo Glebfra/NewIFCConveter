@@ -8,19 +8,19 @@ namespace Ifc.API
         public byte Red { get; }
         public byte Green { get; }
         public byte Blue { get; }
-        
-        public static Color WHITE => new Color(255, 255, 255);
-        public static Color RED => new Color(255, 0, 0);
-        public static Color GREEN => new Color(0, 255, 0);
-        public static Color BLUE => new Color(0, 0, 255);
-        
+
+        public static Color WHITE => new(255, 255, 255);
+        public static Color RED => new(255, 0, 0);
+        public static Color GREEN => new(0, 255, 0);
+        public static Color BLUE => new(0, 0, 255);
+
         public Color(byte red, byte green, byte blue)
         {
             Red = red;
             Green = green;
             Blue = blue;
         }
-        
+
         public static Color FromHEX(string hex)
         {
             hex = hex.Replace("#", "");
@@ -35,15 +35,15 @@ namespace Ifc.API
         {
             return new Color(rgb[0], rgb[1], rgb[2]);
         }
-        
+
         public byte[] ToRGB()
         {
-            return new byte[] { Red, Green, Blue };
+            return new[] { Red, Green, Blue };
         }
 
         public double[] ToNormal()
         {
-            return new double[] { (double)Red / 255, (double)Green / 255, (double)Blue / 255, };
+            return new[] { (double)Red / 255, (double)Green / 255, (double)Blue / 255 };
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.Contracts;
 using System.Linq;
 using Ifc.API;
 using Ifc.Builders.Elements;
@@ -8,8 +7,6 @@ using Ifc.Interfaces;
 using IFCConverter.Extensions;
 using MathNet.Numerics.LinearAlgebra;
 using Start.Entities.Fittings;
-using Start.Extensions;
-using Start.Interfaces;
 using Utils;
 using Xbim.Common;
 using Xbim.Ifc4.HvacDomain;
@@ -22,7 +19,7 @@ namespace IFCConverter.Converters.Elements
     public sealed class ValveConverter : IfcElementConverter<StartValveEntity, IfcPipeFitting>
     {
         private readonly Logger _logger = Logger.GetInstance();
-        
+
         public ValveConverter(IModel model) : base(model)
         {
         }
@@ -37,7 +34,7 @@ namespace IFCConverter.Converters.Elements
                 .Select(point => point - globalTopConePoint)
                 .ToArray();
 
-            IIfcGeometry valveGeometry = ValveGeometry.CreateGeometry(_Model, new ValveGeometryProperties()
+            IIfcGeometry valveGeometry = ValveGeometry.CreateGeometry(_Model, new ValveGeometryProperties
             {
                 Diameter = start.OutsideDiameter.SIProperty,
                 Length = start.Length.SIProperty,
@@ -46,7 +43,7 @@ namespace IFCConverter.Converters.Elements
             });
             valveGeometry.AssignColor(Color.FromHEX("5f4e7c"));
             _logger.Info($"Created geometry {valveGeometry.GetType().FullName}");
-            
+
             Matrix<double> objectMatrix = MatrixExtensions.CreateTransition(start.Position);
             _logger.Info($"Created object matrix: {objectMatrix.ToRowString()}");
 
@@ -55,7 +52,7 @@ namespace IFCConverter.Converters.Elements
                     IfcPipeFittingTypeEnum.OBSTRUCTION);
             _logger.Info($"Created builder: {builder.GetType().FullName}");
             TryAddMaterial(start, builder);
-            
+
             IIfcObjectPlacement objectPlacement = builder.CreateObjectPlacement(_Model, objectMatrix);
             builder.AssignPlacement(objectPlacement);
             builder.AssignGeometry(valveGeometry);

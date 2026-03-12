@@ -13,7 +13,7 @@ namespace IFCConverter.Extensions
             IStartSegmentEntity[] startSegmentEntities = valveEntity.ConnectedEntities
                 .OfType<IStartSegmentEntity>()
                 .ToArray();
-            return new Vector<double>[]
+            return new[]
             {
                 startSegmentEntities[0].GetNearestPosition(valveEntity.Position),
                 startSegmentEntities[1].GetNearestPosition(valveEntity.Position)

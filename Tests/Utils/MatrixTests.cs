@@ -9,9 +9,11 @@ namespace Tests.Utils
     public class MatrixTests
     {
         private const double Tolerance = 1e-10;
-        
-        private static Vector<double> V(double x, double y, double z) =>
-            Vector<double>.Build.DenseOfArray(new[] { x, y, z });
+
+        private static Vector<double> V(double x, double y, double z)
+        {
+            return Vector<double>.Build.DenseOfArray(new[] { x, y, z });
+        }
 
         [Test]
         public void Identity_ShouldReturnIdentity()
@@ -53,7 +55,7 @@ namespace Tests.Utils
 
             Assert.That(double.IsNaN(y[0]) || y.L2Norm() < Tolerance);
         }
-        
+
         [Test]
         public void Identity_ShouldReturn4x4IdentityMatrix()
         {
@@ -62,7 +64,7 @@ namespace Tests.Utils
             Assert.AreEqual(4, identityMatrix.ColumnCount);
             Assert.IsTrue(identityMatrix.Equals(Matrix<double>.Build.DenseIdentity(4)));
         }
-        
+
         [Test]
         public void GetX_ShouldReturnFirstRowSubVector()
         {
@@ -76,7 +78,7 @@ namespace Tests.Utils
             Vector<double> xVector = matrix.GetX();
             Assert.AreEqual(Vector<double>.Build.DenseOfArray(new[] { 1.0, 2.0, 3.0 }), xVector);
         }
-        
+
         [Test]
         public void GetOffset_ShouldReturnLastRowSubVector()
         {
@@ -90,7 +92,7 @@ namespace Tests.Utils
             Vector<double> offsetVector = matrix.GetOffset();
             Assert.AreEqual(Vector<double>.Build.DenseOfArray(new double[] { 4, 8, 12 }), offsetVector);
         }
-        
+
         [Test]
         public void SetX_ShouldUpdateFirstRowWithGivenVector()
         {
@@ -99,7 +101,7 @@ namespace Tests.Utils
             matrix.SetX(vector);
             Assert.AreEqual(vector, matrix.GetX());
         }
-        
+
         [Test]
         public void CreateTransition_ShouldReturnMatrixWithCorrectPositionAndAxes()
         {
@@ -107,29 +109,29 @@ namespace Tests.Utils
             Vector<double> xAxis = Vector<double>.Build.DenseOfArray(new[] { 1.0, 0.0, 0.0 });
             Vector<double> yAxis = Vector<double>.Build.DenseOfArray(new[] { 0.0, 1.0, 0.0 });
             Vector<double> zAxis = Vector<double>.Build.DenseOfArray(new[] { 0.0, 0.0, 1.0 });
-        
+
             Matrix<double> transitionMatrix = MatrixExtensions.CreateTransition(position, xAxis, yAxis, zAxis);
-        
+
             Assert.AreEqual(position, transitionMatrix.GetOffset());
             Assert.AreEqual(xAxis, transitionMatrix.GetX());
             Assert.AreEqual(yAxis, transitionMatrix.GetY());
             Assert.AreEqual(zAxis, transitionMatrix.GetZ());
         }
-        
+
         [Test]
         public void CreateTransition_ShouldHandleSingleAxisInput()
         {
             Vector<double> position = Vector<double>.Build.DenseOfArray(new[] { 1.0, 2.0, 3.0 });
             Vector<double> zAxis = Vector<double>.Build.DenseOfArray(new[] { 1.0, 0.0, 0.0 });
-        
+
             Matrix<double> transitionMatrix = MatrixExtensions.CreateTransition(position, zAxis);
-        
+
             Assert.AreEqual(position, transitionMatrix.GetOffset());
             Assert.AreEqual(zAxis, transitionMatrix.GetZ());
             Assert.IsTrue(transitionMatrix.GetX().IsNormal(transitionMatrix.GetZ()));
             Assert.IsTrue(transitionMatrix.GetY().IsNormal(transitionMatrix.GetZ()));
         }
-        
+
         [Test]
         public void Should_Set_Translation()
         {
@@ -205,7 +207,7 @@ namespace Tests.Utils
             Vector<double> zCopy = z.Clone();
 
             MatrixExtensions.CreateTransition(position, x, y, z);
-            
+
             Assert.That(x, Is.EqualTo(xCopy));
             Assert.That(y, Is.EqualTo(yCopy));
             Assert.That(z, Is.EqualTo(zCopy));

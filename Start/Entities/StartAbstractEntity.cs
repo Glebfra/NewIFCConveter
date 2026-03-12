@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
-using MathNet.Numerics.LinearAlgebra;
 using Newtonsoft.Json;
 using Start.Attributes;
 using Start.Interfaces;
@@ -10,35 +9,35 @@ using Start.Interfaces;
 namespace Start.Entities
 {
     /// <summary>
-    /// Represents an abstract base class for Start entities, implementing the <see cref="IStartEntity"/> interface.
+    ///     Represents an abstract base class for Start entities, implementing the <see cref="IStartEntity" /> interface.
     /// </summary>
     [DebuggerDisplay("Name: {Name}")]
     public abstract class StartAbstractEntity : IStartEntity
     {
         /// <summary>
-        /// Gets or sets the unique identifier of the entity.
-        /// This property is ignored during JSON serialization and by the Start framework.
-        /// </summary>
-        [JsonIgnore] 
-        [StartIgnore] 
-        public int ID { get; set; }
-
-        /// <summary>
-        /// Gets or sets the list of entities connected to this entity.
-        /// This property is ignored during JSON serialization and by the Start framework.
+        ///     Gets or sets the unique identifier of the entity.
+        ///     This property is ignored during JSON serialization and by the Start framework.
         /// </summary>
         [JsonIgnore]
         [StartIgnore]
-        public List<IStartEntity> ConnectedEntities { get; set; } = new List<IStartEntity>();
-        
+        public int ID { get; set; }
+
         /// <summary>
-        /// Gets or sets the name of the entity.
-        /// This property must be implemented by derived classes.
+        ///     Gets or sets the list of entities connected to this entity.
+        ///     This property is ignored during JSON serialization and by the Start framework.
+        /// </summary>
+        [JsonIgnore]
+        [StartIgnore]
+        public List<IStartEntity> ConnectedEntities { get; set; } = new();
+
+        /// <summary>
+        ///     Gets or sets the name of the entity.
+        ///     This property must be implemented by derived classes.
         /// </summary>
         public abstract string Name { get; set; }
 
         /// <summary>
-        /// Retrieves the data of the entity as a dictionary of key-value pairs.
+        ///     Retrieves the data of the entity as a dictionary of key-value pairs.
         /// </summary>
         /// <returns>A dictionary containing the entity's data.</returns>
         public IDictionary<string, string> GetData()
@@ -49,7 +48,7 @@ namespace Start.Entities
         }
 
         /// <summary>
-        /// Recursively adds the properties of the specified object to the dictionary.
+        ///     Recursively adds the properties of the specified object to the dictionary.
         /// </summary>
         /// <param name="dictionary">The dictionary to populate with property data.</param>
         /// <param name="type">The type of the object being processed.</param>

@@ -25,19 +25,19 @@ namespace Ifc.Geometries
         public Vector<double> Direction;
         public Vector<double> EndDirection;
     }
-    
+
     [IfcRepresentationIdentifier(IfcRepresentationIdentifier.Body)]
     [IfcRepresentationType(IfcRepresentationType.SolidModel)]
     public class BendGeometry : IfcGeometry
     {
-        public BendGeometry(IIfcBuilder geometryBuilder, 
-            IIfcRepresentationContext? representationContext = null) 
+        public BendGeometry(IIfcBuilder geometryBuilder,
+            IIfcRepresentationContext? representationContext = null)
             : base(geometryBuilder, representationContext)
         {
         }
 
-        public BendGeometry(IEnumerable<IIfcBuilder> geometryBuilders, 
-            IIfcRepresentationContext? representationContext = null) 
+        public BendGeometry(IEnumerable<IIfcBuilder> geometryBuilders,
+            IIfcRepresentationContext? representationContext = null)
             : base(geometryBuilders, representationContext)
         {
         }
@@ -55,19 +55,19 @@ namespace Ifc.Geometries
             Matrix<double> circleProfileDefMatrix = MatrixExtensions.CreateTransition(VectorExtensions.Zero);
             Matrix<double> revolvedAreaSolidMatrix = MatrixExtensions.CreateTransition(properties.Position, x, y, z);
 
-            IIfcCircleProfileDefBuilder<IIfcCircleProfileDef> circleProfileDefBuilder = 
+            IIfcCircleProfileDefBuilder<IIfcCircleProfileDef> circleProfileDefBuilder =
                 new IfcCircleProfileDefBuilder<IfcCircleProfileDef>(
                     properties.PipeDiameter / 2,
                     IfcProfileTypeEnum.AREA, "Test profile def"
                 );
             circleProfileDefBuilder.CreatePosition(model, circleProfileDefMatrix);
             IIfcCircleProfileDef profileDef = circleProfileDefBuilder.CreateProfileDef(model);
-            
+
             IIfcRevolvedAreaSolidBuilder<IIfcRevolvedAreaSolid> revolvedAreaSolidBuilder =
                 new IfcRevolvedAreaSolidBuilder<IfcRevolvedAreaSolid>(angle, profileDef);
             revolvedAreaSolidBuilder.CreateAxis(model, axisPosition, VectorExtensions.Y.Negate());
             revolvedAreaSolidBuilder.CreatePosition(model, revolvedAreaSolidMatrix);
-            
+
             return new BendGeometry(revolvedAreaSolidBuilder);
         }
     }

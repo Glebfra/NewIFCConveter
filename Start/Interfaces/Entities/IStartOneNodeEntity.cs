@@ -11,7 +11,7 @@ namespace Start.Interfaces
         ///     Gets or sets the position of the node as a vector of doubles.
         /// </summary>
         public Vector<double> Position { get; set; }
-        
+
         public IStartNodeEntity Node { get; }
     }
 }

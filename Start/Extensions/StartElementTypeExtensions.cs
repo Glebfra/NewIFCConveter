@@ -4,7 +4,7 @@ namespace Start.Extensions
 {
     public static class StartElementTypeExtensions
     {
-        public static StartElementTypeEnum[] TwoNodeElementTypes = 
+        public static StartElementTypeEnum[] TwoNodeElementTypes =
         {
             StartElementTypeEnum.PIPE_ELEMENT,
             StartElementTypeEnum.RIGID_ELEMENT,

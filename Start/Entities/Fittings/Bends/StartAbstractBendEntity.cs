@@ -13,9 +13,6 @@ namespace Start.Entities.Fittings
     public abstract class StartAbstractBendEntity : StartAbstractFittingEntity,
         IStartOneNodeEntity, IStartFittingEntity, IStartMaterializedEntity, IStartClippingEntity
     {
-        [JsonProperty(StartPropertyName.MaterialName)]
-        public string MaterialName { get; set; } = string.Empty;
-        
         [JsonProperty(StartPropertyName.WallThickness)]
         [JsonConverter(typeof(JsonStartConverter<LengthValueProperty<double>>))]
         public IStartValueProperty<double> WallThickness { get; set; } = new LengthValueProperty<double>();
@@ -44,12 +41,15 @@ namespace Start.Entities.Fittings
         [JsonProperty(StartPropertyName.MillToleranceOutside)]
         [JsonConverter(typeof(JsonStartConverter<LengthValueProperty<double>>))]
         public IStartValueProperty<double> MillToleranceOutside { get; set; } = new LengthValueProperty<double>();
-        
+
         public void ClipEntity(IStartClippableEntity clippable)
         {
             clippable.Clip(Position, GetClipLength());
         }
-        
+
+        [JsonProperty(StartPropertyName.MaterialName)]
+        public string MaterialName { get; set; } = string.Empty;
+
         private double GetClipLength()
         {
             IStartSegmentEntity[] segmentEntities = ConnectedEntities.OfType<IStartSegmentEntity>().ToArray();

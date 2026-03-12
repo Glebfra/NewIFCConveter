@@ -19,9 +19,10 @@ namespace Ifc.Extensions
             IEnumerable<IfcCartesianPoint> points = vectors.Select(vector => vector.ToCartesianPoint(model));
             return model.Instances.New<IfcPolyLoop>(loop => loop.Polygon.AddRange(points));
         }
-        
+
         [Pure]
-        public static IfcCartesianPointList3D ToCartesianPointList3D(this IEnumerable<Vector<double>> vectors, IModel model)
+        public static IfcCartesianPointList3D ToCartesianPointList3D(this IEnumerable<Vector<double>> vectors,
+            IModel model)
         {
             return model.Instances.New<IfcCartesianPointList3D>(list3D =>
             {
@@ -34,7 +35,7 @@ namespace Ifc.Extensions
                 }
             });
         }
-        
+
         [Pure]
         public static IfcCartesianPoint ToCartesianPoint(this Vector<double> vector, IModel model)
         {
@@ -66,7 +67,8 @@ namespace Ifc.Extensions
         }
 
         [Pure]
-        public static IfcAxis1Placement CreateAxis1Placement(IModel model, Vector<double> position, Vector<double> direction)
+        public static IfcAxis1Placement CreateAxis1Placement(IModel model, Vector<double> position,
+            Vector<double> direction)
         {
             return model.Instances.New<IfcAxis1Placement>(placement =>
             {

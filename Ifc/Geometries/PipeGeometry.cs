@@ -49,7 +49,8 @@ namespace Ifc.Geometries
             Vector<double> y = z.CrossProduct(x).Normalize(2);
 
             Matrix<double> extrudedAreaSolidMatrix = MatrixExtensions.CreateTransition(properties.Position, x, y, z);
-            Matrix<double> circleProfileDefMatrix = MatrixExtensions.CreateTransition(VectorExtensions.Zero, VectorExtensions.Z);
+            Matrix<double> circleProfileDefMatrix =
+                MatrixExtensions.CreateTransition(VectorExtensions.Zero, VectorExtensions.Z);
 
             double circleProfileDefRadius = properties.Diameter / 2;
             IIfcCircleProfileDefBuilder<IfcCircleProfileDef> circleProfileDefBuilder =

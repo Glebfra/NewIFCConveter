@@ -23,19 +23,19 @@ namespace Ifc.Geometries
         public Vector<double> Position;
         public Vector<double>[] Points;
     }
-    
+
     [IfcRepresentationIdentifier(IfcRepresentationIdentifier.Body)]
     [IfcRepresentationType(IfcRepresentationType.Tessellation)]
     public class AngularExpansionJointGeometry : IfcGeometry
     {
-        public AngularExpansionJointGeometry(IIfcBuilder geometryBuilder, 
-            IIfcRepresentationContext? representationContext = null) 
+        public AngularExpansionJointGeometry(IIfcBuilder geometryBuilder,
+            IIfcRepresentationContext? representationContext = null)
             : base(geometryBuilder, representationContext)
         {
         }
 
-        public AngularExpansionJointGeometry(IEnumerable<IIfcBuilder> geometryBuilders, 
-            IIfcRepresentationContext? representationContext = null) 
+        public AngularExpansionJointGeometry(IEnumerable<IIfcBuilder> geometryBuilders,
+            IIfcRepresentationContext? representationContext = null)
             : base(geometryBuilders, representationContext)
         {
         }
@@ -43,8 +43,8 @@ namespace Ifc.Geometries
         public static AngularExpansionJointGeometry CreateGeometry(IModel model,
             AngularExpansionJointGeometryProperties properties)
         {
-            List<IIfcBuilder> builders = new List<IIfcBuilder>();
-            
+            List<IIfcBuilder> builders = new();
+
             // Creating pipe extrusions
             foreach (Vector<double> point in properties.Points)
             {
@@ -55,7 +55,7 @@ namespace Ifc.Geometries
 
                 IIfcCircleProfileDefBuilder<IfcCircleProfileDef> circleProfileDefBuilder =
                     new IfcCircleProfileDefBuilder<IfcCircleProfileDef>(
-                        properties.PipeDiameter / 2, IfcProfileTypeEnum.AREA, 
+                        properties.PipeDiameter / 2, IfcProfileTypeEnum.AREA,
                         $"{nameof(AngularExpansionJointGeometry)} {nameof(IfcCircleProfileDef)}"
                     );
                 circleProfileDefBuilder.CreatePosition(model, circleProfileDefMatrix);
@@ -69,7 +69,7 @@ namespace Ifc.Geometries
 
                 builders.Add(extrudedAreaSolidBuilder);
             }
-            
+
             // Create sphere
             IfcTriangulatedProperties sphereTriangulatedProperties = IfcTriangulatedProperties.CreateSphere(
                 new SphereTriangulatedGeometryProperties

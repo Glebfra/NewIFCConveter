@@ -17,7 +17,7 @@ namespace IFCConverter.Converters.Elements
     public sealed class ConeElementConverter : IfcElementConverter<StartConeElementEntity, IfcPipeSegment>
     {
         private readonly Logger _logger = Logger.GetInstance();
-        
+
         public ConeElementConverter(IModel model) : base(model)
         {
         }
@@ -31,7 +31,7 @@ namespace IFCConverter.Converters.Elements
             });
             geometry.AssignColor(Color.FromHEX("46008b"));
             _logger.Info($"Created geometry {geometry.GetType().FullName}");
-            
+
             Matrix<double> objectMatrix = MatrixExtensions.CreateTransition(start.Position);
             _logger.Info($"Created object matrix: {objectMatrix.ToRowString()}");
 
@@ -40,7 +40,7 @@ namespace IFCConverter.Converters.Elements
                     IfcPipeSegmentTypeEnum.USERDEFINED);
             _logger.Info($"Created builder: {builder.GetType().FullName}");
             TryAddMaterial(start, builder);
-            
+
             IIfcObjectPlacement objectPlacement = builder.CreateObjectPlacement(_Model, objectMatrix);
             builder.AssignPlacement(objectPlacement);
             builder.AssignGeometry(geometry);

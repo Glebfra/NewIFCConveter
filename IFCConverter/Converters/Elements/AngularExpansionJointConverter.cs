@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Ifc.API;
 using Ifc.Builders.Elements;
@@ -20,7 +21,7 @@ namespace IFCConverter.Converters.Elements
     public class AngularExpansionJointConverter : IfcElementConverter<StartAngularExpansionJointEntity, IfcPipeFitting>
     {
         private readonly Logger _logger = Logger.GetInstance();
-        
+
         public AngularExpansionJointConverter(IModel model) : base(model)
         {
         }
@@ -28,8 +29,9 @@ namespace IFCConverter.Converters.Elements
         public override IfcPipeFitting BuildIfcElement(StartAngularExpansionJointEntity start)
         {
             Matrix<double> objectMatrix = MatrixExtensions.CreateTransition(start.Position);
-            
-            IStartSegmentEntity[] startSegmentEntities = start.ConnectedEntities.OfType<IStartSegmentEntity>().ToArray();
+
+            IStartSegmentEntity[] startSegmentEntities =
+                start.ConnectedEntities.OfType<IStartSegmentEntity>().ToArray();
             IEnumerable<Vector<double>> globalPoints = startSegmentEntities
                 .Select(segment => segment.GetNearestPosition(start.Position));
             Vector<double>[] localPoints = globalPoints.Select(point => point - start.Position).ToArray();
@@ -52,7 +54,7 @@ namespace IFCConverter.Converters.Elements
             );
             _logger.Info($"Created builder: {builder.GetType().FullName}");
             TryAddMaterial(start, builder);
-            
+
             builder.AssignGeometry(geometry);
             builder.CreateObjectPlacement(_Model, objectMatrix);
 
@@ -61,7 +63,7 @@ namespace IFCConverter.Converters.Elements
 
         public override StartAngularExpansionJointEntity BuildStartElement(IfcPipeFitting ifc)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }
