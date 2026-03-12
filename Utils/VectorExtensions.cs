@@ -8,62 +8,77 @@ namespace Utils
     public static class VectorExtensions
     {
         /// <summary>
-        /// Represents the zero vector and the unit vectors along the X, Y, and Z axes, as well as their combinations. These vectors can be used as reference points or directions in 3D space.
+        /// Represents the zero vector and the unit vectors along the X, Y, and Z axes, as well as their combinations.
+        /// These vectors can be used as reference points or directions in 3D space.
         /// </summary>
         public static Vector<double> Zero => new DenseVector(3);
         
         /// <summary>
-        /// Represents the unit vectors along the X, Y, and Z axes, as well as their combinations. These vectors can be used as reference points or directions in 3D space.
+        /// Represents the unit vectors along the X, Y, and Z axes, as well as their combinations. These vectors can be
+        /// used as reference points or directions in 3D space.
         /// </summary>
         public static Vector<double> X => new DenseVector(new double[] { 1, 0, 0 });
         
         /// <summary>
-        /// Represents the unit vectors along the X, Y, and Z axes, as well as their combinations. These vectors can be used as reference points or directions in 3D space.
+        /// Represents the unit vectors along the X, Y, and Z axes, as well as their combinations. These vectors can be
+        /// used as reference points or directions in 3D space.
         /// </summary>
         public static Vector<double> Y => new DenseVector(new double[] { 0, 1, 0 });
         
         /// <summary>
-        /// Represents the unit vectors along the X, Y, and Z axes, as well as their combinations. These vectors can be used as reference points or directions in 3D space.
+        /// Represents the unit vectors along the X, Y, and Z axes, as well as their combinations. These vectors can be
+        /// used as reference points or directions in 3D space.
         /// </summary>
         public static Vector<double> Z => new DenseVector(new double[] { 0, 0, 1 });
         
         /// <summary>
-        /// Represents the unit vectors along the X, Y, and Z axes, as well as their combinations. These vectors can be used as reference points or directions in 3D space.
+        /// Represents the unit vectors along the X, Y, and Z axes, as well as their combinations. These vectors can be
+        /// used as reference points or directions in 3D space.
         /// </summary>
         public static Vector<double> XY => new DenseVector(new double[] { 1, 1, 0 });
         
         /// <summary>
-        /// Represents the unit vectors along the X, Y, and Z axes, as well as their combinations. These vectors can be used as reference points or directions in 3D space.
+        /// Represents the unit vectors along the X, Y, and Z axes, as well as their combinations. These vectors can be
+        /// used as reference points or directions in 3D space.
         /// </summary>
         public static Vector<double> YZ => new DenseVector(new double[] { 0, 1, 1 });
         
         /// <summary>
-        /// Represents the unit vectors along the X, Y, and Z axes, as well as their combinations. These vectors can be used as reference points or directions in 3D space.
+        /// Represents the unit vectors along the X, Y, and Z axes, as well as their combinations. These vectors can be
+        /// used as reference points or directions in 3D space.
         /// </summary>
         public static Vector<double> XZ => new DenseVector(new double[] { 1, 0, 1 });
         
         /// <summary>
-        /// Represents the unit vectors along the X, Y, and Z axes, as well as their combinations. These vectors can be used as reference points or directions in 3D space.
+        /// Represents the unit vectors along the X, Y, and Z axes, as well as their combinations. These vectors can be
+        /// used as reference points or directions in 3D space.
         /// </summary>
         public static Vector<double> XYZ => new DenseVector(new double[] { 1, 1, 1 });
 
         /// <summary>
-        /// Represents the right, up, and forward directions in a 3D coordinate system. These vectors can be used to define the orientation of objects or to specify movement directions in 3D space.
+        /// Represents the right, up, and forward directions in a 3D coordinate system. These vectors can be used to
+        /// define the orientation of objects or to specify movement directions in 3D space.
         /// </summary>
         public static Vector<double> Right => X;
         
         /// <summary>
-        /// Represents the right, up, and forward directions in a 3D coordinate system. These vectors can be used to define the orientation of objects or to specify movement directions in 3D space.
+        /// Represents the right, up, and forward directions in a 3D coordinate system. These vectors can be used to
+        /// define the orientation of objects or to specify movement directions in 3D space.
         /// </summary>
         public static Vector<double> Up => Y;
         
         /// <summary>
-        /// Represents the right, up, and forward directions in a 3D coordinate system. These vectors can be used to define the orientation of objects or to specify movement directions in 3D space.
+        /// Represents the right, up, and forward directions in a 3D coordinate system. These vectors can be used to
+        /// define the orientation of objects or to specify movement directions in 3D space.
         /// </summary>
         public static Vector<double> Forward => Z;
         
         /// <summary>
-        /// Returns a new vector that is the homogenous representation of the original vector. The homogenous representation is commonly used in computer graphics and geometric transformations, where an additional coordinate (the fourth coordinate) is added to represent points in 3D space. The original vector's X, Y, and Z components are preserved, and the fourth component is set to 1, allowing for translations and other transformations to be applied using matrix operations.
+        /// Returns a new vector that is the homogenous representation of the original vector. The homogenous representation
+        /// is commonly used in computer graphics and geometric transformations, where an additional coordinate
+        /// (the fourth coordinate) is added to represent points in 3D space. The original vector's X, Y, and Z components
+        /// are preserved, and the fourth component is set to 1, allowing for translations and other transformations to
+        /// be applied using matrix operations.
         /// </summary>
         /// <param name="vector">3D Vector</param>
         /// <returns>4D Vector</returns>
@@ -74,7 +89,10 @@ namespace Utils
         }
 
         /// <summary>
-        /// Returns a new vector that is the Cartesian representation of the original homogenous vector. The Cartesian representation is obtained by dividing the X, Y, and Z components of the homogenous vector by its fourth component (the homogenous coordinate). This conversion is essential for interpreting the homogenous coordinates as points in 3D space, allowing for accurate geometric transformations and calculations.
+        /// Returns a new vector that is the Cartesian representation of the original homogenous vector. The Cartesian
+        /// representation is obtained by dividing the X, Y, and Z components of the homogenous vector by its fourth component
+        /// (the homogenous coordinate). This conversion is essential for interpreting the homogenous coordinates as points
+        /// in 3D space, allowing for accurate geometric transformations and calculations.
         /// </summary>
         /// <param name="vector">4D Vector</param>
         /// <returns>3D Vector</returns>
@@ -85,7 +103,8 @@ namespace Utils
         }
 
         /// <summary>
-        /// Returns the X component of the vector. This method provides a convenient way to access the X coordinate of a 3D vector, which is often used in various geometric calculations and transformations in 3D space.
+        /// Returns the X component of the vector. This method provides a convenient way to access the X coordinate of a
+        /// 3D vector, which is often used in various geometric calculations and transformations in 3D space.
         /// </summary>
         /// <param name="vector"></param>
         /// <returns>X Component</returns>
@@ -96,7 +115,8 @@ namespace Utils
         }
 
         /// <summary>
-        /// Returns the Y component of the vector. This method provides a convenient way to access the Y coordinate of a 3D vector, which is often used in various geometric calculations and transformations in 3D space.
+        /// Returns the Y component of the vector. This method provides a convenient way to access the Y coordinate of a
+        /// 3D vector, which is often used in various geometric calculations and transformations in 3D space.
         /// </summary>
         /// <param name="vector"></param>
         /// <returns>Y Component</returns>
@@ -107,7 +127,8 @@ namespace Utils
         }
 
         /// <summary>
-        /// Returns the Z component of the vector. This method provides a convenient way to access the Z coordinate of a 3D vector, which is often used in various geometric calculations and transformations in 3D space.
+        /// Returns the Z component of the vector. This method provides a convenient way to access the Z coordinate of a
+        /// 3D vector, which is often used in various geometric calculations and transformations in 3D space.
         /// </summary>
         /// <param name="vector"></param>
         /// <returns>Z Component</returns>
@@ -118,7 +139,10 @@ namespace Utils
         }
 
         /// <summary>
-        /// Returns true if the two vectors are parallel to each other within a specified tolerance. The method normalizes both vectors and calculates their cross product. If the L2 norm of the cross product is less than the given tolerance, it indicates that the vectors are parallel. This is a common technique in vector mathematics to determine parallelism, as parallel vectors will have a cross product that is close to zero.
+        /// Returns true if the two vectors are parallel to each other within a specified tolerance. The method normalizes
+        /// both vectors and calculates their cross product. If the L2 norm of the cross product is less than the given
+        /// tolerance, it indicates that the vectors are parallel. This is a common technique in vector mathematics to determine
+        /// parallelism, as parallel vectors will have a cross product that is close to zero.
         /// </summary>
         /// <param name="first">First vector</param>
         /// <param name="second">Second vector</param>
@@ -131,7 +155,10 @@ namespace Utils
         }
 
         /// <summary>
-        /// Returns true if the two vectors are normal to each other within a specified tolerance. The method normalizes both vectors and calculates their dot product. If the dot product is less than the given tolerance, it indicates that the vectors are normal. This is a common technique in vector mathematics to determine parallelism, as parallel vectors will have a cross product that is close to zero.
+        /// Returns true if the two vectors are normal to each other within a specified tolerance. The method normalizes
+        /// both vectors and calculates their dot product. If the dot product is less than the given tolerance, it
+        /// indicates that the vectors are normal. This is a common technique in vector mathematics to determine
+        /// parallelism, as parallel vectors will have a cross product that is close to zero.
         /// </summary>
         /// <param name="first">First vector</param>
         /// <param name="second">Second vector</param>
@@ -144,7 +171,12 @@ namespace Utils
         }
         
         /// <summary>
-        /// Calculates the cross product of two vectors. The cross product is a vector that is perpendicular to both input vectors and has a magnitude equal to the area of the parallelogram formed by the input vectors. The method computes the cross product using the standard formula for 3D vectors, where each component of the resulting vector is calculated based on the components of the input vectors. This operation is fundamental in various applications, including physics, engineering, and computer graphics, where it is used to determine orientations, calculate torques, and perform other vector operations in 3D space.
+        /// Calculates the cross product of two vectors. The cross product is a vector that is perpendicular to both
+        /// input vectors and has a magnitude equal to the area of the parallelogram formed by the input vectors. The
+        /// method computes the cross product using the standard formula for 3D vectors, where each component of the
+        /// resulting vector is calculated based on the components of the input vectors. This operation is fundamental in
+        /// various applications, including physics, engineering, and computer graphics, where it is used to determine
+        /// orientations, calculate torques, and perform other vector operations in 3D space.
         /// </summary>
         /// <param name="first">First 3D vector</param>
         /// <param name="second">Second 3D vector</param>
@@ -160,7 +192,13 @@ namespace Utils
         }
         
         /// <summary>
-        /// Creates a normal vector to the given vector. The method first checks if the input vector is parallel to the world up vector (Z-axis). If it is, it uses the Y-axis as the world up vector instead. Then, it calculates a temporary vector by taking the cross product of the input vector and the world up vector. Finally, it returns the cross product of the input vector and the temporary vector, normalized to have a length of 1. This resulting vector is perpendicular to the original input vector, making it a normal vector in 3D space. This technique is commonly used in computer graphics and geometric computations to find a normal direction for shading, lighting, or other purposes where perpendicular vectors are needed.
+        /// Creates a normal vector to the given vector. The method first checks if the input vector is parallel to the
+        /// world up vector (Z-axis). If it is, it uses the Y-axis as the world up vector instead. Then, it calculates a
+        /// temporary vector by taking the cross product of the input vector and the world up vector. Finally, it returns
+        /// the cross product of the input vector and the temporary vector, normalized to have a length of 1. This
+        /// resulting vector is perpendicular to the original input vector, making it a normal vector in 3D space. This
+        /// technique is commonly used in computer graphics and geometric computations to find a normal direction for
+        /// shading, lighting, or other purposes where perpendicular vectors are needed.
         /// </summary>
         /// <param name="vector">3D Vector</param>
         /// <returns>3D Vector</returns>
@@ -196,7 +234,12 @@ namespace Utils
         }
 
         /// <summary>
-        /// Calculates the angle between two vectors in radians. The method first normalizes both input vectors to have a length of 1. Then, it computes the dot product of the normalized vectors and applies the arccosine function to the result to obtain the angle in radians. This calculation is based on the geometric definition of the dot product, which relates to the cosine of the angle between two vectors. The resulting angle can be used in various applications, such as determining orientations, calculating rotations, or performing other geometric operations in 3D space.
+        /// Calculates the angle between two vectors in radians. The method first normalizes both input vectors to have a
+        /// length of 1. Then, it computes the dot product of the normalized vectors and applies the arccosine function
+        /// to the result to obtain the angle in radians. This calculation is based on the geometric definition of the
+        /// dot product, which relates to the cosine of the angle between two vectors. The resulting angle can be used
+        /// in various applications, such as determining orientations, calculating rotations, or performing other
+        /// geometric operations in 3D space.
         /// </summary>
         /// <param name="first">First vector</param>
         /// <param name="second">Second vector</param>

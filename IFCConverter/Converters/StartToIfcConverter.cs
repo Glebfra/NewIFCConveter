@@ -29,7 +29,7 @@ namespace IFCConverter.Converters
 
         public void Convert(StartDocument startDocument)
         {
-            _logger.Info($"STARTtoIFC converter v.{Assembly.GetExecutingAssembly().GetName().Version}");
+            _logger.System($"STARTtoIFC converter v.{Assembly.GetExecutingAssembly().GetName().Version}");
 
             using (IStartProject startProject = StartProject.OpenFromDocument(startDocument))
             {

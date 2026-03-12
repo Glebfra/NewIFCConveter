@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics.Contracts;
 using IFCConverter.Converters.Elements;
 using IFCConverter.Interfaces;
+using Start.Entities.ExpansionJoints;
 using Start.Entities.Fittings;
 using Start.Entities.Segments;
 using Start.Interfaces;
@@ -15,6 +16,8 @@ namespace IFCConverter.Converters
         {
             return startEntity switch
             {
+                StartAngularExpansionJointEntity => new AngularExpansionJointConverter(model),
+                
                 StartValveEntity => new ValveConverter(model),
                 StartAbstractReducerEntity => new ReducerConverter(model),
                 StartAbstractBendEntity => new BendConverter(model),

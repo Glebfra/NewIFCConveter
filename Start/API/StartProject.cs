@@ -221,7 +221,8 @@ namespace Start.API
         [Pure]
         internal StartDataArrayItem[] GetDataArrayItems()
         {
-            StartDataArrayItem[]? allDataArrayItems = JsonConvert.DeserializeObject<StartDataArrayItem[]>(GetDataJson());
+            string json = GetDataJson();
+            StartDataArrayItem[]? allDataArrayItems = JsonConvert.DeserializeObject<StartDataArrayItem[]>(json);
             if (allDataArrayItems == null) 
                 throw new NullReferenceException($"{nameof(GetDataArrayItems)} Cannot deserialize objects");
 
