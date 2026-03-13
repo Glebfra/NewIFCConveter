@@ -7,7 +7,7 @@ using Start.Converters;
 using Start.Interfaces;
 using Start.StartProperties;
 
-namespace Start.Entities.ExpansionJoints
+namespace Start.Entities.Joints
 {
     public abstract class StartAbstractExpansionJointEntity : StartAbstractEntity,
         IStartOneNodeEntity, IStartClippingEntity

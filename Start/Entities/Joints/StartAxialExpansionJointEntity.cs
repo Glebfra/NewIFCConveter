@@ -5,7 +5,7 @@ using Start.Converters;
 using Start.Interfaces;
 using Start.StartProperties;
 
-namespace Start.Entities.ExpansionJoints
+namespace Start.Entities.Joints
 {
     [StartElement(StartElementTypeEnum.AXIAL_EXPANSION_JOINT)]
     public class StartAxialExpansionJointEntity : StartAbstractExpansionJointEntity

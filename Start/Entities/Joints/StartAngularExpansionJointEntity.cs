@@ -5,7 +5,7 @@ using Start.Converters;
 using Start.Interfaces;
 using Start.StartProperties;
 
-namespace Start.Entities.ExpansionJoints
+namespace Start.Entities.Joints
 {
     [StartElement(StartElementTypeEnum.ANGULAR_EXPANSION_JOINT)]
     public class StartAngularExpansionJointEntity : StartAbstractExpansionJointEntity

@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics.Contracts;
 using IFCConverter.Converters.Elements;
 using IFCConverter.Interfaces;
-using Start.Entities.ExpansionJoints;
 using Start.Entities.Fittings;
+using Start.Entities.Joints;
 using Start.Entities.Segments;
 using Start.Interfaces;
 using Xbim.Common;

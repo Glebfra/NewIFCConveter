@@ -78,6 +78,7 @@
         BALL_EXPANSION_JOINT = 94,
         STAND_TEE = 95,
         SADDLE_BEND = 96,
+        AXIAL_COUPLING_JOINT = 97,
         SINGLE_FLANGE = 98,
         SUPPORT_LOAD = 101,
         NODE_DISPLACEMENT = 102,

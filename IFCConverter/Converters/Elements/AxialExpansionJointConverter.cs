@@ -5,7 +5,7 @@ using Ifc.Builders.Elements;
 using Ifc.Geometries;
 using Ifc.Interfaces;
 using MathNet.Numerics.LinearAlgebra;
-using Start.Entities.ExpansionJoints;
+using Start.Entities.Joints;
 using Start.Extensions;
 using Start.Interfaces;
 using Utils;
