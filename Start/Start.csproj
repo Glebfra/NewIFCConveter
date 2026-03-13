@@ -70,6 +70,7 @@
         <Compile Include="Converters\JsonStartConverter.cs" />
         <Compile Include="Entities\ExpansionJoints\StartAbstractExpansionJointEntity.cs" />
         <Compile Include="Entities\ExpansionJoints\StartAngularExpansionJointEntity.cs" />
+        <Compile Include="Entities\ExpansionJoints\StartBallExpansionJointEntity.cs" />
         <Compile Include="Entities\ExpansionJoints\StartTorsionExpansionJointEntity.cs" />
         <Compile Include="Entities\Fittings\Bends\StartAbstractBendEntity.cs" />
         <Compile Include="Entities\Fittings\Bends\StartElbowEntity.cs" />

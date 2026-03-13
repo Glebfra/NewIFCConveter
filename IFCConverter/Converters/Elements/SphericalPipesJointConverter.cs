@@ -18,7 +18,7 @@ using VectorExtensions = Utils.VectorExtensions;
 
 namespace IFCConverter.Converters.Elements
 {
-    public class SphericalPipesJointConverter : IfcElementConverter<StartAngularExpansionJointEntity, IfcPipeFitting>
+    public class SphericalPipesJointConverter : IfcElementConverter<StartAbstractExpansionJointEntity, IfcPipeFitting>
     {
         private readonly Logger _logger = Logger.GetInstance();
 
@@ -26,7 +26,7 @@ namespace IFCConverter.Converters.Elements
         {
         }
 
-        public override IfcPipeFitting BuildIfcElement(StartAngularExpansionJointEntity start)
+        public override IfcPipeFitting BuildIfcElement(StartAbstractExpansionJointEntity start)
         {
             Matrix<double> objectMatrix = MatrixExtensions.CreateTransition(start.Position);
 
@@ -61,7 +61,7 @@ namespace IFCConverter.Converters.Elements
             return builder.CreateInstance(_Model);
         }
 
-        public override StartAngularExpansionJointEntity BuildStartElement(IfcPipeFitting ifc)
+        public override StartAbstractExpansionJointEntity BuildStartElement(IfcPipeFitting ifc)
         {
             throw new NotImplementedException();
         }
