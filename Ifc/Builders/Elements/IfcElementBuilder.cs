@@ -20,16 +20,9 @@ namespace Ifc.Builders.Elements
         public override T CreateInstance(IModel model)
         {
             T instance = base.CreateInstance(model);
-
-            const string transactionName = $"{nameof(IfcElementBuilder<T>)}: {nameof(CreateInstance)}";
-            using (ITransaction transaction = model.BeginTransaction(transactionName))
-            {
-                instance.Name = Name;
-                instance.Tag = Tag;
-                transaction.Commit();
-
-                return instance;
-            }
+            instance.Name = Name;
+            instance.Tag = Tag;
+            return instance;
         }
     }
 }

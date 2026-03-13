@@ -30,17 +30,11 @@ namespace Ifc.Builders.Elements
         {
             const string transactionName = $"{nameof(IfcProductBuilder<T>)}: {nameof(CreateObjectPlacement)}";
             _logger.Info($"Begin transaction: {transactionName}");
-
-            using (ITransaction transaction = model.BeginTransaction(transactionName))
-            {
-                ObjectPlacement = matrix.ToIfcObjectPlacement(model);
-                _logger.Info($"Created object placement with matrix: {matrix.ToRowString()}");
-
-                transaction.Commit();
-                _logger.Info("Transaction ended");
-
-                return ObjectPlacement;
-            }
+            
+            ObjectPlacement = matrix.ToIfcObjectPlacement(model);
+            _logger.Info($"Created object placement with matrix: {matrix.ToRowString()}");
+            
+            return ObjectPlacement;
         }
 
         public virtual T CreateInstance(IModel model)
@@ -53,30 +47,26 @@ namespace Ifc.Builders.Elements
 
             const string transactionName = $"{nameof(IfcProductBuilder<T>)}: {nameof(CreateInstance)}";
             _logger.Info($"Begin transaction: {transactionName}");
-
-            using (ITransaction transaction = model.BeginTransaction(transactionName))
+            
+            Instance = model.Instances.New<T>(product =>
             {
-                Instance = model.Instances.New<T>(product =>
-                {
-                    if (ObjectPlacement != null)
-                        product.ObjectPlacement = (IfcObjectPlacement)ObjectPlacement;
-                    if (Representation != null)
-                        product.Representation = (IfcProductRepresentation)Representation;
-                });
-                _logger.Info($"Created instance with type: {typeof(T).Name}");
+                if (ObjectPlacement != null)
+                    product.ObjectPlacement = (IfcObjectPlacement)ObjectPlacement;
+                if (Representation != null)
+                    product.Representation = (IfcProductRepresentation)Representation;
+            });
+            _logger.Info($"Created instance with type: {typeof(T).Name}");
 
-                if (Material != null)
-                {
-                    RelateMaterial(model);
-                    _logger.Info(
-                        $"Added relation between material with id: {Material.EntityLabel} and product instance with id: {Instance.EntityLabel}");
-                }
-
-                IsCreated = true;
-                transaction.Commit();
-
-                return Instance;
+            if (Material != null)
+            {
+                RelateMaterial(model);
+                _logger.Info(
+                    $"Added relation between material with id: {Material.EntityLabel} and product instance with id: {Instance.EntityLabel}");
             }
+
+            IsCreated = true;
+            
+            return Instance;
         }
 
         public void AssignPlacement(IIfcObjectPlacement ifcObjectPlacement)

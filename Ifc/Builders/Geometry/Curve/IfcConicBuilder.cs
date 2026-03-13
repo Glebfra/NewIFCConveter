@@ -14,14 +14,8 @@ namespace Ifc.Builders.Geometry.Curve
 
         public IIfcAxis2Placement2D CreatePosition(IModel model, Matrix<double> matrix)
         {
-            using (ITransaction transaction =
-                   model.BeginTransaction($"{nameof(IfcConicBuilder<T>)}: {nameof(CreatePosition)}"))
-            {
-                Position = matrix.ToAxis2Placement2D(model);
-                transaction.Commit();
-
-                return Position;
-            }
+            Position = matrix.ToAxis2Placement2D(model);
+            return Position;
         }
 
         public override T CreateCurve(IModel model)
@@ -31,14 +25,7 @@ namespace Ifc.Builders.Geometry.Curve
                     $"{nameof(IfcConicBuilder<T>)}: {nameof(Position)}. Call {nameof(CreatePosition)} before {nameof(CreateCurve)}");
 
             T curve = base.CreateCurve(model);
-
-            using (ITransaction transaction =
-                   model.BeginTransaction($"{nameof(IfcConicBuilder<T>)}: {nameof(CreateCurve)}"))
-            {
-                curve.Position = Position;
-                transaction.Commit();
-            }
-
+            curve.Position = Position;
             return curve;
         }
     }

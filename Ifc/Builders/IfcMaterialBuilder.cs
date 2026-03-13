@@ -27,21 +27,13 @@ namespace Ifc.Builders
 
         public IIfcMaterial CreateMaterial(IModel model)
         {
-            const string transactionName = $"{nameof(IfcMaterialBuilder)}: {nameof(CreateMaterial)}";
-            _logger.Info($"Begin transaction: {transactionName}");
-
-            using (ITransaction transaction = model.BeginTransaction(transactionName))
+            Instance = model.Instances.New<IfcMaterial>(ifcMaterial =>
             {
-                Instance = model.Instances.New<IfcMaterial>(ifcMaterial =>
-                {
-                    ifcMaterial.Name = MaterialName;
-                    ifcMaterial.Description = Description;
-                    ifcMaterial.Category = Category;
-                });
-                transaction.Commit();
-
-                return (IIfcMaterial)Instance;
-            }
+                ifcMaterial.Name = MaterialName;
+                ifcMaterial.Description = Description;
+                ifcMaterial.Category = Category;
+            });
+            return (IIfcMaterial)Instance;
         }
 
         public bool GetOrCreateMaterial(IModel model, out IIfcMaterial material)

@@ -13,14 +13,8 @@ namespace Ifc.Builders.Geometry.SolidModel
 
         public virtual T CreateSolidModel(IModel model)
         {
-            using (ITransaction transaction =
-                   model.BeginTransaction($"{nameof(IfcSolidModelBuilder<T>)} : {nameof(CreateSolidModel)}"))
-            {
-                SolidModel = model.Instances.New<T>();
-                transaction.Commit();
-
-                return SolidModel;
-            }
+            SolidModel = model.Instances.New<T>();
+            return SolidModel;
         }
 
         public object Build(IModel model)

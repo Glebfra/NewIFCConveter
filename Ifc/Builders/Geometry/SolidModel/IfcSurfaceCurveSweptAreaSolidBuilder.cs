@@ -28,19 +28,11 @@ namespace Ifc.Builders.Geometry.SolidModel
         public override T CreateSolidModel(IModel model)
         {
             T solid = base.CreateSolidModel(model);
-
-            using (ITransaction transaction =
-                   model.BeginTransaction(
-                       $"{nameof(IfcSurfaceCurveSweptAreaSolidBuilder<T>)} : {nameof(CreateSolidModel)}"))
-            {
-                solid.Directrix = Directrix;
-                solid.ReferenceSurface = ReferenceSurface;
-                solid.StartParam = StartParam;
-                solid.EndParam = EndParam;
-                transaction.Commit();
-
-                return solid;
-            }
+            solid.Directrix = Directrix;
+            solid.ReferenceSurface = ReferenceSurface;
+            solid.StartParam = StartParam;
+            solid.EndParam = EndParam;
+            return solid;
         }
     }
 }

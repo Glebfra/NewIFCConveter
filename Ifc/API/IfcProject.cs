@@ -18,11 +18,13 @@ namespace Ifc.API
         private readonly IfcBuilding _building;
 
         private readonly IfcStore _model;
+        private readonly ITransaction _transaction;
 
         public IfcProject(IfcStore model)
         {
             _model = model;
             _building = _model.Instances.FirstOrDefault<IfcBuilding>();
+            _transaction = _model.BeginTransaction("Model creation");
         }
 
         public IModel Model => _model;
@@ -30,6 +32,7 @@ namespace Ifc.API
         public void Dispose()
         {
             _model.Dispose();
+            _transaction.Dispose();
         }
 
         [Pure]
@@ -93,11 +96,7 @@ namespace Ifc.API
 
         public void AddEntityRaw(IfcProduct product)
         {
-            using (ITransaction transaction = _model.BeginTransaction($"{nameof(IfcProject)}: {nameof(AddEntityRaw)}"))
-            {
-                _building.AddElement(product);
-                transaction.Commit();
-            }
+            _building.AddElement(product);
         }
 
         public void SaveAs(string filepath)

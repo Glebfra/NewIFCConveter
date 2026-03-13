@@ -29,36 +29,28 @@ namespace Ifc.Builders.Geometry.Tessellated
         public override T CreateTessellatedItem(IModel model)
         {
             T instance = base.CreateTessellatedItem(model);
-
-            const string transactionName =
-                $"{nameof(IfcTriangulatedFaceSetBuilder<T>)}: {nameof(CreateTessellatedItem)}";
-            using (ITransaction transaction = model.BeginTransaction(transactionName))
+            int index = 0;
+            if (_coordIndex == null)
+                throw new InvalidOperationException(
+                    $"CoordIndex is not assigned. Call {nameof(AssignTriangleIndices)} before {nameof(CreateTessellatedItem)}");
+            foreach (IEnumerable<int> coordIndexes in _coordIndex)
             {
-                int index = 0;
-                if (_coordIndex == null)
-                    throw new InvalidOperationException(
-                        $"CoordIndex is not assigned. Call {nameof(AssignTriangleIndices)} before {nameof(CreateTessellatedItem)}");
-                foreach (IEnumerable<int> coordIndexes in _coordIndex)
-                {
-                    IItemSet<IfcPositiveInteger> itemSet = instance.CoordIndex.GetAt(index++);
-                    foreach (int coordIndex in coordIndexes)
-                        itemSet.Add(coordIndex);
-                }
-
-                index = 0;
-                if (_normals == null)
-                    throw new InvalidOperationException(
-                        $"Normals is not assigned. Call {nameof(AssignNormals)} before {nameof(CreateTessellatedItem)}");
-                foreach (IEnumerable<double> normalVector in _normals)
-                {
-                    IItemSet<IfcParameterValue> itemSet = instance.Normals.GetAt(index++);
-                    foreach (double coord in normalVector)
-                        itemSet.Add(coord);
-                }
-
-                transaction.Commit();
+                IItemSet<IfcPositiveInteger> itemSet = instance.CoordIndex.GetAt(index++);
+                foreach (int coordIndex in coordIndexes)
+                    itemSet.Add(coordIndex);
             }
 
+            index = 0;
+            if (_normals == null)
+                throw new InvalidOperationException(
+                    $"Normals is not assigned. Call {nameof(AssignNormals)} before {nameof(CreateTessellatedItem)}");
+            foreach (IEnumerable<double> normalVector in _normals)
+            {
+                IItemSet<IfcParameterValue> itemSet = instance.Normals.GetAt(index++);
+                foreach (double coord in normalVector)
+                    itemSet.Add(coord);
+            }
+            
             return instance;
         }
     }

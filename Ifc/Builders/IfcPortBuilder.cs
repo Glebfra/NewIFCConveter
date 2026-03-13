@@ -32,31 +32,21 @@ namespace Ifc.Builders
             if (ObjectPlacement == null)
                 throw new NullReferenceException(
                     $"{nameof(IfcPortBuilder)}: {nameof(ObjectPlacement)}. Call {nameof(CreateObjectPlacement)} before {nameof(CreatePort)}");
-
-            using (ITransaction transaction = model.BeginTransaction($"{nameof(IfcPortBuilder)}: {nameof(CreatePort)}"))
+            
+            IfcPort = model.Instances.New<IfcDistributionPort>(port =>
             {
-                IfcPort = model.Instances.New<IfcDistributionPort>(port =>
-                {
-                    port.PredefinedType = DistributionPortTypeEnum;
-                    port.FlowDirection = FlowDirectionEnum;
-                    port.ObjectPlacement = (IfcObjectPlacement)ObjectPlacement;
-                });
-                transaction.Commit();
-
-                return IfcPort;
-            }
+                port.PredefinedType = DistributionPortTypeEnum;
+                port.FlowDirection = FlowDirectionEnum;
+                port.ObjectPlacement = (IfcObjectPlacement)ObjectPlacement;
+            });
+            
+            return IfcPort;
         }
 
         public IIfcObjectPlacement CreateObjectPlacement(IModel model, Matrix<double> matrix3D)
         {
-            using (ITransaction transaction =
-                   model.BeginTransaction($"{nameof(IfcPortBuilder)}: {nameof(CreateObjectPlacement)}"))
-            {
-                ObjectPlacement = matrix3D.ToIfcObjectPlacement(model);
-                transaction.Commit();
-
-                return ObjectPlacement;
-            }
+            ObjectPlacement = matrix3D.ToIfcObjectPlacement(model);
+            return ObjectPlacement;
         }
 
         public object Build(IModel model)

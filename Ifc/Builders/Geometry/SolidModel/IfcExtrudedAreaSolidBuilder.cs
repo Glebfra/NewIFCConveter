@@ -22,16 +22,9 @@ namespace Ifc.Builders.Geometry.SolidModel
         public override T CreateSolidModel(IModel model)
         {
             T solid = base.CreateSolidModel(model);
-
-            using (ITransaction transaction =
-                   model.BeginTransaction($"{nameof(IfcExtrudedAreaSolidBuilder<T>)} : {nameof(CreateSolidModel)}"))
-            {
-                solid.Depth = Length;
-                solid.ExtrudedDirection = ExtrusionDirection.ToIfcDirection(model);
-                transaction.Commit();
-
-                return solid;
-            }
+            solid.Depth = Length;
+            solid.ExtrudedDirection = ExtrusionDirection.ToIfcDirection(model);
+            return solid;
         }
     }
 }

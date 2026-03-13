@@ -18,28 +18,18 @@ namespace Ifc.Builders.Geometry.Brep
 
         public IIfcFaceBound CreateFaceBound(IModel model, IEnumerable<Vector<double>> points)
         {
-            const string transactionName = $"{nameof(IfcFaceBuilder<T>)}: {nameof(CreateFaceBound)}";
-            using (ITransaction transaction = model.BeginTransaction(transactionName))
-            {
-                IIfcFaceBound faceBound = model.Instances.New<IfcFaceBound>(bound =>
-                    bound.Bound = points.ToPolyLoop(model)
-                );
-                _bounds.Add(faceBound);
-                transaction.Commit();
-
-                return faceBound;
-            }
+            IIfcFaceBound faceBound = model.Instances.New<IfcFaceBound>(bound =>
+                bound.Bound = points.ToPolyLoop(model)
+            );
+            _bounds.Add(faceBound);
+            
+            return faceBound;
         }
 
         public virtual T CreateFace(IModel model)
         {
-            const string transactionName = $"{nameof(IfcFaceBuilder<T>)}: {nameof(CreateFace)}";
-            using (ITransaction transaction = model.BeginTransaction(transactionName))
-            {
-                IfcFace = model.Instances.New<T>(face => face.Bounds.AddRange(_bounds));
-                transaction.Commit();
-                return IfcFace;
-            }
+            IfcFace = model.Instances.New<T>(face => face.Bounds.AddRange(_bounds));
+            return IfcFace;
         }
 
         public object Build(IModel model)

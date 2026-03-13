@@ -21,16 +21,8 @@ namespace Ifc.Builders.Geometry.ProfileDef
         public override T CreateProfileDef(IModel model)
         {
             T profileDef = base.CreateProfileDef(model);
-
-            using (ITransaction transaction =
-                   model.BeginTransaction(
-                       $"{nameof(IfcCircleHollowProfileDefBuilder<T>)} : {nameof(CreateProfileDef)}"))
-            {
-                profileDef.WallThickness = WallThickness;
-                transaction.Commit();
-
-                return profileDef;
-            }
+            profileDef.WallThickness = WallThickness;
+            return profileDef;
         }
     }
 }

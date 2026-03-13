@@ -14,28 +14,14 @@ namespace Ifc.Builders.Geometry.Tessellated
 
         public IIfcCartesianPointList3D CreateCoordinates(IModel model, IEnumerable<Vector<double>> coordinates)
         {
-            const string transactionName = $"{nameof(IfcTessellatedFaceSetBuilder<T>)}: {nameof(CreateCoordinates)}";
-            using (ITransaction transaction = model.BeginTransaction(transactionName))
-            {
-                Coordinates = coordinates.ToCartesianPointList3D(model);
-                transaction.Commit();
-
-                return Coordinates;
-            }
+            Coordinates = coordinates.ToCartesianPointList3D(model);
+            return Coordinates;
         }
 
         public override T CreateTessellatedItem(IModel model)
         {
             T instance = base.CreateTessellatedItem(model);
-
-            const string transactionName =
-                $"{nameof(IfcTessellatedFaceSetBuilder<T>)}: {nameof(CreateTessellatedItem)}";
-            using (ITransaction transaction = model.BeginTransaction(transactionName))
-            {
-                instance.Coordinates = Coordinates;
-                transaction.Commit();
-            }
-
+            instance.Coordinates = Coordinates;
             return instance;
         }
     }

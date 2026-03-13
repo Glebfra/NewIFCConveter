@@ -19,14 +19,7 @@ namespace Ifc.Builders.Elements
         public override T CreateInstance(IModel model)
         {
             T instance = base.CreateInstance(model);
-
-            using (ITransaction transaction =
-                   model.BeginTransaction($"{nameof(IfcPipeSegmentBuilder<T>)}: {nameof(CreateInstance)}"))
-            {
-                instance.PredefinedType = PipeSegmentTypeEnum;
-                transaction.Commit();
-            }
-
+            instance.PredefinedType = PipeSegmentTypeEnum;
             return instance;
         }
     }

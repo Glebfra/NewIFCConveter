@@ -96,7 +96,6 @@
         <Compile Include="Builders\Geometry\Curve\IfcConicBuilder.cs" />
         <Compile Include="Builders\Geometry\Curve\IfcCurveBuilder.cs" />
         <Compile Include="Builders\Geometry\Curve\IfcLineBuilder.cs" />
-        <Compile Include="Builders\Geometry\Curve\IfcPolylineBuilder.cs" />
         <Compile Include="Builders\Geometry\IfcAbstractGeometryBuilder.cs" />
         <Compile Include="Builders\Geometry\ProfileDef\IfcCircleHollowProfileDefBuilder.cs" />
         <Compile Include="Builders\Geometry\ProfileDef\IfcCircleProfileDefBuilder.cs" />
