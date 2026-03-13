@@ -70,6 +70,8 @@
         <Compile Include="Converters\JsonStartConverter.cs" />
         <Compile Include="Entities\ExpansionJoints\StartAbstractExpansionJointEntity.cs" />
         <Compile Include="Entities\ExpansionJoints\StartAngularExpansionJointEntity.cs" />
+        <Compile Include="Entities\ExpansionJoints\StartAxialExpansionJointEntity.cs" />
+        <Compile Include="Entities\ExpansionJoints\StartAxialExpansionSlipJointEntity.cs" />
         <Compile Include="Entities\ExpansionJoints\StartBallExpansionJointEntity.cs" />
         <Compile Include="Entities\ExpansionJoints\StartTorsionExpansionJointEntity.cs" />
         <Compile Include="Entities\Fittings\Bends\StartAbstractBendEntity.cs" />
@@ -128,9 +130,11 @@
         <Compile Include="Interfaces\Properties\IStartValueProperty.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
         <Compile Include="StartProperties\AngleValueProperty.cs" />
+        <Compile Include="StartProperties\AreaValueProperty.cs" />
         <Compile Include="StartProperties\EnumProperty.cs" />
         <Compile Include="StartProperties\FactorValueProperty.cs" />
         <Compile Include="StartProperties\FlexibilityValueProperty.cs" />
+        <Compile Include="StartProperties\ForceValueProperty.cs" />
         <Compile Include="StartProperties\LengthValueProperty.cs" />
         <Compile Include="StartProperties\MomentValueProperty.cs" />
         <Compile Include="StartProperties\PressureValueProperty.cs" />

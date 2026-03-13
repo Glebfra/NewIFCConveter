@@ -19,6 +19,8 @@ namespace IFCConverter.Converters
                 StartAngularExpansionJointEntity => new SphericalPipesJointConverter(model),
                 StartBallExpansionJointEntity => new SphericalPipesJointConverter(model),
                 StartTorsionExpansionJointEntity => new TorsionExpansionJointConverter(model),
+                StartAxialExpansionJointEntity => new AxialExpansionJointConverter(model),
+                StartAxialExpansionSlipJointEntity => new AxialExpansionJointConverter(model),
 
                 StartValveEntity => new ValveConverter(model),
                 StartAbstractReducerEntity => new ReducerConverter(model),
