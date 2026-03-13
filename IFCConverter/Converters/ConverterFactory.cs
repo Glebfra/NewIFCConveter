@@ -16,7 +16,8 @@ namespace IFCConverter.Converters
         {
             return startEntity switch
             {
-                StartAngularExpansionJointEntity => new AngularExpansionJointConverter(model),
+                StartAngularExpansionJointEntity => new SphericalPipesJointConverter(model),
+                StartTorsionExpansionJointEntity => new TorsionExpansionJointConverter(model),
 
                 StartValveEntity => new ValveConverter(model),
                 StartAbstractReducerEntity => new ReducerConverter(model),

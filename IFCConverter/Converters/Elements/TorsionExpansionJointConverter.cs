@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using Ifc.API;
 using Ifc.Builders.Elements;
 using Ifc.Geometries;
@@ -18,37 +16,36 @@ using VectorExtensions = Utils.VectorExtensions;
 
 namespace IFCConverter.Converters.Elements
 {
-    public class AngularExpansionJointConverter : IfcElementConverter<StartAngularExpansionJointEntity, IfcPipeFitting>
+    public class TorsionExpansionJointConverter : IfcElementConverter<StartTorsionExpansionJointEntity, IfcPipeFitting>
     {
         private readonly Logger _logger = Logger.GetInstance();
-
-        public AngularExpansionJointConverter(IModel model) : base(model)
+        
+        public TorsionExpansionJointConverter(IModel model) : base(model)
         {
         }
 
-        public override IfcPipeFitting BuildIfcElement(StartAngularExpansionJointEntity start)
+        public override IfcPipeFitting BuildIfcElement(StartTorsionExpansionJointEntity start)
         {
             Matrix<double> objectMatrix = MatrixExtensions.CreateTransition(start.Position);
 
-            IStartSegmentEntity[] startSegmentEntities =
-                start.ConnectedEntities.OfType<IStartSegmentEntity>().ToArray();
-            IEnumerable<Vector<double>> globalPoints = startSegmentEntities
-                .Select(segment => segment.GetNearestPosition(start.Position));
-            Vector<double>[] localPoints = globalPoints.Select(point => point - start.Position).ToArray();
+            IStartSegmentEntity[] twoNodeEntities = start.ConnectedEntities
+                .OfType<IStartSegmentEntity>()
+                .ToArray();
+            Vector<double>[] localPoints = twoNodeEntities
+                .Select(entity => entity.GetNearestPosition(start.Position) - start.Position)
+                .ToArray();
+            double diameter = twoNodeEntities.Max(entity => entity.Diameter).SIProperty;
 
-            double diameter = startSegmentEntities.Max(segment => segment.Diameter).SIProperty;
-            AngularExpansionJointGeometry geometry = AngularExpansionJointGeometry.CreateGeometry(_Model,
-                new AngularExpansionJointGeometryProperties
+            IIfcGeometry geometry = TorsionExpansionJointGeometry.CreateGeometry(_Model,
+                new TorsionExpansionJointGeometryProperties
                 {
-                    Position = VectorExtensions.Zero,
+                    Diameter = diameter,
                     Points = localPoints,
-                    PipeDiameter = diameter,
-                    SphereDiameter = diameter * 1.5,
-                    Length = start.Length.SIProperty
+                    Position = VectorExtensions.Zero
                 });
             geometry.AssignColor(Color.FromHEX("5f4e7c"));
             _logger.Info($"Created geometry {geometry.GetType().FullName}");
-
+            
             IIfcPipeFittingBuilder<IfcPipeFitting> builder = new IfcPipeFittingBuilder<IfcPipeFitting>(
                 GenerateName(start), GenerateTag(start), IfcPipeFittingTypeEnum.CONNECTOR
             );
@@ -61,9 +58,9 @@ namespace IFCConverter.Converters.Elements
             return builder.CreateInstance(_Model);
         }
 
-        public override StartAngularExpansionJointEntity BuildStartElement(IfcPipeFitting ifc)
+        public override StartTorsionExpansionJointEntity BuildStartElement(IfcPipeFitting ifc)
         {
-            throw new NotImplementedException();
+            throw new System.NotImplementedException();
         }
     }
 }

@@ -13,7 +13,7 @@ namespace Test
             {
                 object startDocumentRaw =
                     startAutoServer.LoadStartDocumentRaw(0x4,
-                        @"D:\Работа\Projects Files\AngularExpansionJointTest.ctp");
+                        @"D:\Работа\Projects Files\rev1.ctp");
                 IfcConverter ifcConverter = new();
                 ifcConverter.Export(startDocumentRaw, 1049);
             }
