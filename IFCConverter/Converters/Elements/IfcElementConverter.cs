@@ -2,6 +2,7 @@
 using Ifc.Builders;
 using Ifc.Interfaces;
 using IFCConverter.Interfaces;
+using MathNet.Numerics.LinearAlgebra;
 using Start.Attributes;
 using Start.Interfaces;
 using Utils;
@@ -33,19 +34,27 @@ namespace IFCConverter.Converters.Elements
             return BuildStartElement((TIfc)ifc)!;
         }
 
-        public abstract TIfc BuildIfcElement(TStart start);
-        public abstract TStart BuildStartElement(TIfc ifc);
+        public abstract IIfcGeometry CreateGeometry(TStart start);
+        public abstract Matrix<double> CreateObjectMatrix(TStart start);
+        public abstract IIfcProductBuilder<TIfc> CreateBuilder(TStart start);
 
-        protected void TryAddMaterial(TStart start, IIfcProductBuilder<TIfc> builder)
+        public TIfc BuildIfcElement(TStart start)
         {
-            if (start is IStartMaterializedEntity materializedEntity)
-            {
-                IIfcMaterialBuilder materialBuilder = new IfcMaterialBuilder(materializedEntity.MaterialName, "", "");
-                if (materialBuilder.GetOrCreateMaterial(_Model, out IIfcMaterial material))
-                    _logger.Info($"Created material with name: {material.Name}");
-                builder.AssignMaterial(material);
-            }
+            Matrix<double> objectMatrix = CreateObjectMatrix(start);
+            
+            IIfcGeometry geometry = CreateGeometry(start);
+            _logger.Info($"Created geometry {geometry.GetType().FullName}");
+
+            IIfcProductBuilder<TIfc> builder = CreateBuilder(start);
+            TryAddMaterial(start, builder);
+
+            builder.AssignGeometry(geometry);
+            builder.CreateObjectPlacement(_Model, objectMatrix);
+            
+            return builder.CreateInstance(_Model);
         }
+        
+        public abstract TStart BuildStartElement(TIfc ifc);
 
         protected string GenerateTag(TStart start)
         {
@@ -63,6 +72,17 @@ namespace IFCConverter.Converters.Elements
                     IStartOneNodeEntity oneNodeEntity => $"{start.GetType().Name}_{oneNodeEntity.Node.Name}",
                     _ => $"{start.GetType().Name}_{start.ID}"
                 };
+        }
+        
+        private void TryAddMaterial(TStart start, IIfcProductBuilder<TIfc> builder)
+        {
+            if (start is not IStartMaterializedEntity materializedEntity) 
+                return;
+            
+            IIfcMaterialBuilder materialBuilder = new IfcMaterialBuilder(materializedEntity.MaterialName, "", "");
+            if (materialBuilder.GetOrCreateMaterial(_Model, out IIfcMaterial material))
+                _logger.Info($"Created material with name: {material.Name}");
+            builder.AssignMaterial(material);
         }
     }
 }

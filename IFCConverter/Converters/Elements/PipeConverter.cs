@@ -23,36 +23,28 @@ namespace IFCConverter.Converters.Elements
         {
         }
 
-        public override IfcPipeSegment BuildIfcElement(StartAbstractSegmentEntity start)
+        public override IIfcGeometry CreateGeometry(StartAbstractSegmentEntity start)
         {
-            Matrix<double> transformationMatrix = start.TransformationMatrix;
-
             IIfcGeometry pipeGeometry = PipeGeometry.CreateGeometry(_Model, new PipeGeometryProperties
             {
                 Diameter = start.Diameter.SIProperty,
                 Length = start.Length,
                 Position = VectorExtensions.Zero,
-                Direction = transformationMatrix.GetForward()
+                Direction = start.TransformationMatrix.GetForward()
             });
             pipeGeometry.AssignColor(GetIfcColor(start));
-            _logger.Info($"Created geometry {pipeGeometry.GetType().FullName}");
+            return pipeGeometry;
+        }
 
-            Matrix<double> objectMatrix = MatrixExtensions.CreateTransition(transformationMatrix.GetOffset());
-            _logger.Info($"Created object matrix: {objectMatrix.ToRowString()}");
+        public override Matrix<double> CreateObjectMatrix(StartAbstractSegmentEntity start)
+        {
+            return MatrixExtensions.CreateTransition(start.TransformationMatrix.GetOffset());
+        }
 
-            IIfcPipeSegmentBuilder<IfcPipeSegment> builder =
-                new IfcPipeSegmentBuilder<IfcPipeSegment>(GenerateName(start), GenerateTag(start),
+        public override IIfcProductBuilder<IfcPipeSegment> CreateBuilder(StartAbstractSegmentEntity start)
+        {
+            return new IfcPipeSegmentBuilder<IfcPipeSegment>(GenerateName(start), GenerateTag(start),
                     GetIfcTypeEnum(start));
-            _logger.Info($"Created builder: {builder.GetType().FullName}");
-            TryAddMaterial(start, builder);
-
-            IIfcObjectPlacement objectPlacement = builder.CreateObjectPlacement(_Model,
-                MatrixExtensions.CreateTransition(transformationMatrix.GetOffset())
-            );
-            builder.AssignPlacement(objectPlacement);
-            builder.AssignGeometry(pipeGeometry);
-
-            return builder.CreateInstance(_Model);
         }
 
         public override StartAbstractSegmentEntity BuildStartElement(IfcPipeSegment ifc)

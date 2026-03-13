@@ -24,7 +24,7 @@ namespace IFCConverter.Converters.Elements
         {
         }
 
-        public override IfcPipeFitting BuildIfcElement(StartAbstractBendEntity start)
+        public override IIfcGeometry CreateGeometry(StartAbstractBendEntity start)
         {
             IStartSegmentEntity[] startSegmentEntities = start.ConnectedEntities
                 .OfType<IStartSegmentEntity>()
@@ -43,7 +43,7 @@ namespace IFCConverter.Converters.Elements
 
             double pipeDiameter = startSegmentEntities.Select(entity => entity.Diameter.SIProperty).Max();
 
-            IIfcGeometry bendGeometry = BendGeometry.CreateGeometry(_Model, new BendGeometryProperties
+            IIfcGeometry geometry = BendGeometry.CreateGeometry(_Model, new BendGeometryProperties
             {
                 BendRadius = start.Radius.SIProperty,
                 Position = position,
@@ -51,23 +51,19 @@ namespace IFCConverter.Converters.Elements
                 Direction = firstDirection,
                 EndDirection = secondDirection
             });
-            bendGeometry.AssignColor(Color.FromHEX("5f4e7c"));
-            _logger.Info($"Created geometry {bendGeometry.GetType().FullName}");
+            geometry.AssignColor(Color.FromHEX("5f4e7c"));
+            return geometry;
+        }
 
-            Matrix<double> objectMatrix = MatrixExtensions.CreateTransition(start.Position);
-            _logger.Info($"Created object matrix: {objectMatrix.ToRowString()}");
+        public override Matrix<double> CreateObjectMatrix(StartAbstractBendEntity start)
+        {
+            return MatrixExtensions.CreateTransition(start.Position);
+        }
 
-            IIfcPipeFittingBuilder<IfcPipeFitting> builder =
-                new IfcPipeFittingBuilder<IfcPipeFitting>(GenerateName(start), GenerateTag(start),
+        public override IIfcProductBuilder<IfcPipeFitting> CreateBuilder(StartAbstractBendEntity start)
+        {
+            return new IfcPipeFittingBuilder<IfcPipeFitting>(GenerateName(start), GenerateTag(start),
                     IfcPipeFittingTypeEnum.BEND);
-            _logger.Info($"Created builder: {builder.GetType().FullName}");
-            TryAddMaterial(start, builder);
-
-            IIfcObjectPlacement objectPlacement = builder.CreateObjectPlacement(_Model, objectMatrix);
-            builder.AssignPlacement(objectPlacement);
-            builder.AssignGeometry(bendGeometry);
-
-            return builder.CreateInstance(_Model);
         }
 
         public override StartAbstractBendEntity BuildStartElement(IfcPipeFitting ifc)

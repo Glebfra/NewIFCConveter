@@ -18,7 +18,7 @@ using VectorExtensions = Utils.VectorExtensions;
 
 namespace IFCConverter.Converters.Elements
 {
-    public class SphericalPipesJointConverter : IfcElementConverter<StartAbstractExpansionJointEntity, IfcPipeFitting>
+    public sealed class SphericalPipesJointConverter : IfcElementConverter<StartAbstractExpansionJointEntity, IfcPipeFitting>
     {
         private readonly Logger _logger = Logger.GetInstance();
 
@@ -26,10 +26,8 @@ namespace IFCConverter.Converters.Elements
         {
         }
 
-        public override IfcPipeFitting BuildIfcElement(StartAbstractExpansionJointEntity start)
+        public override IIfcGeometry CreateGeometry(StartAbstractExpansionJointEntity start)
         {
-            Matrix<double> objectMatrix = MatrixExtensions.CreateTransition(start.Position);
-
             IStartSegmentEntity[] startSegmentEntities =
                 start.ConnectedEntities.OfType<IStartSegmentEntity>().ToArray();
             IEnumerable<Vector<double>> globalPoints = startSegmentEntities
@@ -47,18 +45,19 @@ namespace IFCConverter.Converters.Elements
                     Length = start.Length.SIProperty
                 });
             geometry.AssignColor(Color.FromHEX("5f4e7c"));
-            _logger.Info($"Created geometry {geometry.GetType().FullName}");
+            return geometry;
+        }
 
-            IIfcPipeFittingBuilder<IfcPipeFitting> builder = new IfcPipeFittingBuilder<IfcPipeFitting>(
+        public override Matrix<double> CreateObjectMatrix(StartAbstractExpansionJointEntity start)
+        {
+            return MatrixExtensions.CreateTransition(start.Position);
+        }
+
+        public override IIfcProductBuilder<IfcPipeFitting> CreateBuilder(StartAbstractExpansionJointEntity start)
+        {
+            return new IfcPipeFittingBuilder<IfcPipeFitting>(
                 GenerateName(start), GenerateTag(start), IfcPipeFittingTypeEnum.CONNECTOR
             );
-            _logger.Info($"Created builder: {builder.GetType().FullName}");
-            TryAddMaterial(start, builder);
-
-            builder.AssignGeometry(geometry);
-            builder.CreateObjectPlacement(_Model, objectMatrix);
-
-            return builder.CreateInstance(_Model);
         }
 
         public override StartAbstractExpansionJointEntity BuildStartElement(IfcPipeFitting ifc)

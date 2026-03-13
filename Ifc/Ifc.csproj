@@ -117,6 +117,7 @@
         <Compile Include="Exceptions\IfcEntityCreatedException.cs" />
         <Compile Include="Extensions\IfcMatrixExtensions.cs" />
         <Compile Include="Extensions\IfcVectorExtensions.cs" />
+        <Compile Include="Geometries\AxialCouplingJointGeometry.cs" />
         <Compile Include="Geometries\AxialExpansionJointGeometry.cs" />
         <Compile Include="Geometries\SphericalPipesJointGeometry.cs" />
         <Compile Include="Geometries\BendGeometry.cs" />

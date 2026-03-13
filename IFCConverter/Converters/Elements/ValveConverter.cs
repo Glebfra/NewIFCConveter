@@ -24,7 +24,7 @@ namespace IFCConverter.Converters.Elements
         {
         }
 
-        public override IfcPipeFitting BuildIfcElement(StartValveEntity start)
+        public override IIfcGeometry CreateGeometry(StartValveEntity start)
         {
             Vector<double> globalTopConePoint = start.Position;
             Vector<double>[] globalBotConePoints = start.GetBotConePoints();
@@ -42,22 +42,18 @@ namespace IFCConverter.Converters.Elements
                 BotConePoints = localBotConePoints
             });
             valveGeometry.AssignColor(Color.FromHEX("5f4e7c"));
-            _logger.Info($"Created geometry {valveGeometry.GetType().FullName}");
+            return valveGeometry;
+        }
 
-            Matrix<double> objectMatrix = MatrixExtensions.CreateTransition(start.Position);
-            _logger.Info($"Created object matrix: {objectMatrix.ToRowString()}");
+        public override Matrix<double> CreateObjectMatrix(StartValveEntity start)
+        {
+            return MatrixExtensions.CreateTransition(start.Position);
+        }
 
-            IIfcPipeFittingBuilder<IfcPipeFitting> builder =
-                new IfcPipeFittingBuilder<IfcPipeFitting>(GenerateName(start), GenerateTag(start),
-                    IfcPipeFittingTypeEnum.OBSTRUCTION);
-            _logger.Info($"Created builder: {builder.GetType().FullName}");
-            TryAddMaterial(start, builder);
-
-            IIfcObjectPlacement objectPlacement = builder.CreateObjectPlacement(_Model, objectMatrix);
-            builder.AssignPlacement(objectPlacement);
-            builder.AssignGeometry(valveGeometry);
-
-            return builder.CreateInstance(_Model);
+        public override IIfcProductBuilder<IfcPipeFitting> CreateBuilder(StartValveEntity start)
+        {
+            return new IfcPipeFittingBuilder<IfcPipeFitting>(GenerateName(start), GenerateTag(start),
+                IfcPipeFittingTypeEnum.OBSTRUCTION);
         }
 
         public override StartValveEntity BuildStartElement(IfcPipeFitting ifc)

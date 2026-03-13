@@ -16,7 +16,7 @@ using VectorExtensions = Utils.VectorExtensions;
 
 namespace IFCConverter.Converters.Elements
 {
-    public class TorsionExpansionJointConverter : IfcElementConverter<StartTorsionExpansionJointEntity, IfcPipeFitting>
+    public sealed class TorsionExpansionJointConverter : IfcElementConverter<StartTorsionExpansionJointEntity, IfcPipeFitting>
     {
         private readonly Logger _logger = Logger.GetInstance();
         
@@ -24,10 +24,8 @@ namespace IFCConverter.Converters.Elements
         {
         }
 
-        public override IfcPipeFitting BuildIfcElement(StartTorsionExpansionJointEntity start)
+        public override IIfcGeometry CreateGeometry(StartTorsionExpansionJointEntity start)
         {
-            Matrix<double> objectMatrix = MatrixExtensions.CreateTransition(start.Position);
-
             IStartSegmentEntity[] twoNodeEntities = start.ConnectedEntities
                 .OfType<IStartSegmentEntity>()
                 .ToArray();
@@ -44,18 +42,19 @@ namespace IFCConverter.Converters.Elements
                     Position = VectorExtensions.Zero
                 });
             geometry.AssignColor(Color.FromHEX("5f4e7c"));
-            _logger.Info($"Created geometry {geometry.GetType().FullName}");
-            
-            IIfcPipeFittingBuilder<IfcPipeFitting> builder = new IfcPipeFittingBuilder<IfcPipeFitting>(
+            return geometry;
+        }
+
+        public override Matrix<double> CreateObjectMatrix(StartTorsionExpansionJointEntity start)
+        {
+            return MatrixExtensions.CreateTransition(start.Position);
+        }
+
+        public override IIfcProductBuilder<IfcPipeFitting> CreateBuilder(StartTorsionExpansionJointEntity start)
+        {
+            return new IfcPipeFittingBuilder<IfcPipeFitting>(
                 GenerateName(start), GenerateTag(start), IfcPipeFittingTypeEnum.CONNECTOR
             );
-            _logger.Info($"Created builder: {builder.GetType().FullName}");
-            TryAddMaterial(start, builder);
-
-            builder.AssignGeometry(geometry);
-            builder.CreateObjectPlacement(_Model, objectMatrix);
-
-            return builder.CreateInstance(_Model);
         }
 
         public override StartTorsionExpansionJointEntity BuildStartElement(IfcPipeFitting ifc)
