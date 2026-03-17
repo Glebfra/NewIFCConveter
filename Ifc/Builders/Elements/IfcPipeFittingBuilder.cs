@@ -19,14 +19,7 @@ namespace Ifc.Builders.Elements
         public override T CreateInstance(IModel model)
         {
             T instance = base.CreateInstance(model);
-
-            using (ITransaction transaction =
-                   model.BeginTransaction($"{nameof(IfcPipeFittingBuilder<T>)}: {nameof(CreateInstance)}"))
-            {
-                instance.PredefinedType = PipeFittingType;
-                transaction.Commit();
-            }
-
+            instance.PredefinedType = PipeFittingType;
             return instance;
         }
     }

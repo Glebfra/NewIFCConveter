@@ -21,17 +21,12 @@ namespace Ifc.Builders.Elements
             T instance = base.CreateInstance(model);
 
             const string transactionName = $"{nameof(IfcDistributionElementBuilder<T>)}: {nameof(CreateInstance)}";
-            using (ITransaction transaction = model.BeginTransaction(transactionName))
-            {
-                foreach (IIfcPort ifcPort in Ports)
-                    model.Instances.New<IfcRelConnectsPortToElement>(element =>
-                    {
-                        element.RelatingPort = (IfcPort)ifcPort;
-                        element.RelatedElement = instance;
-                    });
-
-                transaction.Commit();
-            }
+            foreach (IIfcPort ifcPort in Ports)
+                model.Instances.New<IfcRelConnectsPortToElement>(element =>
+                {
+                    element.RelatingPort = (IfcPort)ifcPort;
+                    element.RelatedElement = instance;
+                });
 
             return instance;
         }

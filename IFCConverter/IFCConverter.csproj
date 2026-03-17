@@ -84,13 +84,18 @@
     </ItemGroup>
     <ItemGroup>
         <Compile Include="Converters\ConverterFactory.cs"/>
-        <Compile Include="Converters\Elements\AngularExpansionJointConverter.cs"/>
+        <Compile Include="Converters\Elements\AxialCouplingJointConverter.cs"/>
+        <Compile Include="Converters\Elements\AxialExpansionJointConverter.cs"/>
+        <Compile Include="Converters\Elements\LateralExpansionJointConverter.cs"/>
+        <Compile Include="Converters\Elements\SegmentedExpansionJointConverter.cs"/>
+        <Compile Include="Converters\Elements\SphericalPipesJointConverter.cs"/>
         <Compile Include="Converters\Elements\BendConverter.cs"/>
         <Compile Include="Converters\Elements\ConeElementConverter.cs"/>
         <Compile Include="Converters\Elements\IfcElementConverter.cs"/>
         <Compile Include="Converters\Elements\PipeConverter.cs"/>
         <Compile Include="Converters\Elements\ReducerConverter.cs"/>
         <Compile Include="Converters\Elements\TeeConverter.cs"/>
+        <Compile Include="Converters\Elements\TorsionExpansionJointConverter.cs"/>
         <Compile Include="Converters\Elements\ValveConverter.cs"/>
         <Compile Include="Converters\StartToIfcConverter.cs"/>
         <Compile Include="Extensions\StartEntityExtensions.cs"/>

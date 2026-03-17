@@ -96,7 +96,6 @@
         <Compile Include="Builders\Geometry\Curve\IfcConicBuilder.cs"/>
         <Compile Include="Builders\Geometry\Curve\IfcCurveBuilder.cs"/>
         <Compile Include="Builders\Geometry\Curve\IfcLineBuilder.cs"/>
-        <Compile Include="Builders\Geometry\Curve\IfcPolylineBuilder.cs"/>
         <Compile Include="Builders\Geometry\IfcAbstractGeometryBuilder.cs"/>
         <Compile Include="Builders\Geometry\ProfileDef\IfcCircleHollowProfileDefBuilder.cs"/>
         <Compile Include="Builders\Geometry\ProfileDef\IfcCircleProfileDefBuilder.cs"/>
@@ -117,13 +116,18 @@
         <Compile Include="Exceptions\IfcEntityCreatedException.cs"/>
         <Compile Include="Extensions\IfcMatrixExtensions.cs"/>
         <Compile Include="Extensions\IfcVectorExtensions.cs"/>
-        <Compile Include="Geometries\AngularExpansionJointGeometry.cs"/>
+        <Compile Include="Geometries\AxialCouplingJointGeometry.cs"/>
+        <Compile Include="Geometries\AxialExpansionJointGeometry.cs"/>
+        <Compile Include="Geometries\LateralExpansionJointGeometry.cs"/>
+        <Compile Include="Geometries\SegmentedExpansionJointGeometry.cs"/>
+        <Compile Include="Geometries\SphericalPipesJointGeometry.cs"/>
         <Compile Include="Geometries\BendGeometry.cs"/>
         <Compile Include="Geometries\ConeGeometry.cs"/>
         <Compile Include="Geometries\IfcGeometry.cs"/>
         <Compile Include="Geometries\PipeGeometry.cs"/>
         <Compile Include="Geometries\TeeGeometry.cs"/>
         <Compile Include="Geometries\IfcTriangulatedProperties.cs"/>
+        <Compile Include="Geometries\TorsionExpansionJointGeometry.cs"/>
         <Compile Include="Geometries\ValveGeometry.cs"/>
         <Compile Include="Interfaces\Builders\Elements\IIfcDistributionElementBuilder.cs"/>
         <Compile Include="Interfaces\Builders\Elements\IIfcDistributionFlowElementBuilder.cs"/>

@@ -18,14 +18,7 @@ namespace Ifc.Builders.Geometry.Curve
         public override T CreateCurve(IModel model)
         {
             T curve = base.CreateCurve(model);
-
-            using (ITransaction transaction =
-                   model.BeginTransaction($"{nameof(IfcCircleBuilder<T>)}: {nameof(CreateCurve)}"))
-            {
-                curve.Radius = Radius;
-                transaction.Commit();
-            }
-
+            curve.Radius = Radius;
             return curve;
         }
     }

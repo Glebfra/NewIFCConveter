@@ -13,14 +13,8 @@ namespace Ifc.Builders.Geometry.Tessellated
 
         public virtual T CreateTessellatedItem(IModel model)
         {
-            const string transactionName = $"{nameof(IfcTessellatedItemBuilder<T>)}: {nameof(CreateTessellatedItem)}";
-            using (ITransaction transaction = model.BeginTransaction(transactionName))
-            {
-                TessellatedItem = model.Instances.New<T>();
-                transaction.Commit();
-
-                return TessellatedItem;
-            }
+            TessellatedItem = model.Instances.New<T>();
+            return TessellatedItem;
         }
 
         public object Build(IModel model)

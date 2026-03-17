@@ -20,14 +20,8 @@ namespace Ifc.Builders.Geometry.ProfileDef
 
         public IIfcAxis2Placement2D CreatePosition(IModel model, Matrix<double> matrix)
         {
-            using (ITransaction transaction =
-                   model.BeginTransaction($"{nameof(IfcParameterizedProfileDefBuilder<T>)}: {nameof(CreatePosition)}"))
-            {
-                Position = matrix.ToAxis2Placement2D(model);
-                transaction.Commit();
-
-                return Position;
-            }
+            Position = matrix.ToAxis2Placement2D(model);
+            return Position;
         }
 
         public override T CreateProfileDef(IModel model)
@@ -37,16 +31,8 @@ namespace Ifc.Builders.Geometry.ProfileDef
                     $"{nameof(IfcParameterizedProfileDefBuilder<T>)}: {nameof(Position)}. Call {nameof(CreatePosition)} before {nameof(CreateProfileDef)}");
 
             T profileDef = base.CreateProfileDef(model);
-
-            using (ITransaction transaction =
-                   model.BeginTransaction(
-                       $"{nameof(IfcParameterizedProfileDefBuilder<T>)} : {nameof(CreateProfileDef)}"))
-            {
-                profileDef.Position = Position;
-                transaction.Commit();
-
-                return profileDef;
-            }
+            profileDef.Position = Position;
+            return profileDef;
         }
     }
 }

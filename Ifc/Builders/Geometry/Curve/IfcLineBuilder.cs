@@ -15,26 +15,14 @@ namespace Ifc.Builders.Geometry.Curve
 
         public IIfcCartesianPoint CreatePoint(IModel model, Vector<double> point)
         {
-            using (ITransaction transaction =
-                   model.BeginTransaction($"{nameof(IfcLineBuilder<T>)}: {nameof(CreatePoint)}"))
-            {
-                Point = point.ToCartesianPoint(model);
-                transaction.Commit();
-
-                return Point;
-            }
+            Point = point.ToCartesianPoint(model);
+            return Point;
         }
 
         public IIfcVector CreateDirection(IModel model, Vector<double> vector)
         {
-            using (ITransaction transaction =
-                   model.BeginTransaction($"{nameof(IfcLineBuilder<T>)}: {nameof(CreateDirection)}"))
-            {
-                Direction = vector.ToIfcVector(model);
-                transaction.Commit();
-
-                return Direction;
-            }
+            Direction = vector.ToIfcVector(model);
+            return Direction;
         }
 
         public override T CreateCurve(IModel model)
@@ -47,16 +35,9 @@ namespace Ifc.Builders.Geometry.Curve
                     $"{nameof(IfcLineBuilder<T>)}: {nameof(Direction)}. Call {nameof(CreateDirection)} before {nameof(CreateCurve)}");
 
             T curve = base.CreateCurve(model);
-
-            using (ITransaction transaction =
-                   model.BeginTransaction($"{nameof(IfcLineBuilder<T>)} : {nameof(CreateCurve)}"))
-            {
-                curve.Pnt = Point;
-                curve.Dir = Direction;
-                transaction.Commit();
-
-                return curve;
-            }
+            curve.Pnt = Point;
+            curve.Dir = Direction;
+            return curve;
         }
     }
 }
