@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Start.API;
 using Start.Attributes;
 using Start.Converters;
@@ -18,7 +17,7 @@ namespace Start.Entities.Joints
         [JsonProperty(StartPropertyName.AxialFlexibility)]
         [JsonConverter(typeof(JsonStartConverter<FlexibilityValueProperty<double>>))]
         public IStartValueProperty<double> AxialFlexibility { get; set; } = new FlexibilityValueProperty<double>();
-        
+
         [JsonProperty(StartPropertyName.EffectiveArea)]
         [JsonConverter(typeof(JsonStartConverter<AreaValueProperty<double>>))]
         public IStartValueProperty<double> EffectiveArea { get; set; } = new AreaValueProperty<double>();
@@ -34,7 +33,7 @@ namespace Start.Entities.Joints
         [JsonProperty(StartPropertyName.AllowableCorrFactor)]
         [JsonConverter(typeof(JsonStartConverter<FactorValueProperty<double>>))]
         public IStartValueProperty<double> AllowableCorrFactor { get; set; } = new FactorValueProperty<double>();
-        
+
         //TODO get measurements
         [JsonProperty(StartPropertyName.AxialStiffness)]
         public double AxialStiffness { get; set; }

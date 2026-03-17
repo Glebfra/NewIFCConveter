@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Ifc.API;
 using Ifc.Builders.Elements;
 using Ifc.Geometries;
@@ -16,10 +17,11 @@ using VectorExtensions = Utils.VectorExtensions;
 
 namespace IFCConverter.Converters.Elements
 {
-    public sealed class TorsionExpansionJointConverter : IfcElementConverter<StartTorsionExpansionJointEntity, IfcPipeFitting>
+    public sealed class
+        TorsionExpansionJointConverter : IfcElementConverter<StartTorsionExpansionJointEntity, IfcPipeFitting>
     {
         private readonly Logger _logger = Logger.GetInstance();
-        
+
         public TorsionExpansionJointConverter(IModel model) : base(model)
         {
         }
@@ -59,7 +61,7 @@ namespace IFCConverter.Converters.Elements
 
         public override StartTorsionExpansionJointEntity BuildStartElement(IfcPipeFitting ifc)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

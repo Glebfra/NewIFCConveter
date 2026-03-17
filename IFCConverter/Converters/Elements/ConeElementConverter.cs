@@ -41,7 +41,7 @@ namespace IFCConverter.Converters.Elements
         public override IIfcProductBuilder<IfcPipeSegment> CreateBuilder(StartConeElementEntity start)
         {
             return new IfcPipeSegmentBuilder<IfcPipeSegment>(GenerateName(start), GenerateTag(start),
-                    IfcPipeSegmentTypeEnum.USERDEFINED);
+                IfcPipeSegmentTypeEnum.USERDEFINED);
         }
 
         public override StartConeElementEntity BuildStartElement(IfcPipeSegment ifc)

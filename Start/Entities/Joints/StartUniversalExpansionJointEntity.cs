@@ -25,7 +25,7 @@ namespace Start.Entities.Joints
         //TODO get measurements
         [JsonProperty(StartPropertyName.ShearCompliance)]
         public double ShearCompliance { get; set; }
-        
+
         //TODO get measurements
         [JsonProperty(StartPropertyName.PermissibleLateralMovement)]
         public double PermissibleLateralMovement { get; set; }

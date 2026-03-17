@@ -52,7 +52,7 @@ namespace Ifc.Geometries
 
             string representationIdentifier = representationIdentifierAttribute.RepresentationIdentifier.ToString();
             string representationType = representationTypeAttribute.IfcRepresentationType.ToString();
-            
+
             IfcShapeRepresentation shapeRepresentation = model.Instances.New<IfcShapeRepresentation>(
                 representation =>
                 {
@@ -63,7 +63,7 @@ namespace Ifc.Geometries
                     representation.RepresentationType = representationType;
                     representation.Items.AddRange(representationItems);
                 });
-            
+
             return shapeRepresentation;
         }
 

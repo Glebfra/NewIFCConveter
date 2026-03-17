@@ -12,24 +12,24 @@ namespace Start.Entities.Joints
     {
         [JsonProperty(StartPropertyName.EffectiveArea)]
         [JsonConverter(typeof(JsonStartConverter<AreaValueProperty<double>>))]
-        public AreaValueProperty<double> EffectiveArea { get; set; } = new AreaValueProperty<double>();
+        public AreaValueProperty<double> EffectiveArea { get; set; } = new();
 
-        [JsonProperty(StartPropertyName.Restraint1)] 
+        [JsonProperty(StartPropertyName.Restraint1)]
         public StartNonStandardRestraintModule? Restraint1 { get; set; }
-        
-        [JsonProperty(StartPropertyName.Restraint2)] 
+
+        [JsonProperty(StartPropertyName.Restraint2)]
         public StartNonStandardRestraintModule? Restraint2 { get; set; }
-        
-        [JsonProperty(StartPropertyName.Restraint3)] 
+
+        [JsonProperty(StartPropertyName.Restraint3)]
         public StartNonStandardRestraintModule? Restraint3 { get; set; }
-        
-        [JsonProperty(StartPropertyName.Restraint4)] 
+
+        [JsonProperty(StartPropertyName.Restraint4)]
         public StartNonStandardRestraintModule? Restraint4 { get; set; }
-        
-        [JsonProperty(StartPropertyName.Restraint5)] 
+
+        [JsonProperty(StartPropertyName.Restraint5)]
         public StartNonStandardRestraintModule? Restraint5 { get; set; }
-        
-        [JsonProperty(StartPropertyName.Restraint6)] 
+
+        [JsonProperty(StartPropertyName.Restraint6)]
         public StartNonStandardRestraintModule? Restraint6 { get; set; }
 
         [JsonIgnore]
@@ -38,7 +38,7 @@ namespace Start.Entities.Joints
         {
             get
             {
-                List<StartNonStandardRestraintModule> restraints = new List<StartNonStandardRestraintModule>();
+                List<StartNonStandardRestraintModule> restraints = new();
                 if (Restraint1 != null) restraints.Add(Restraint1);
                 if (Restraint2 != null) restraints.Add(Restraint2);
                 if (Restraint3 != null) restraints.Add(Restraint3);

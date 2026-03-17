@@ -30,10 +30,10 @@ namespace Ifc.Builders.Elements
         {
             const string transactionName = $"{nameof(IfcProductBuilder<T>)}: {nameof(CreateObjectPlacement)}";
             _logger.Info($"Begin transaction: {transactionName}");
-            
+
             ObjectPlacement = matrix.ToIfcObjectPlacement(model);
             _logger.Info($"Created object placement with matrix: {matrix.ToRowString()}");
-            
+
             return ObjectPlacement;
         }
 
@@ -47,7 +47,7 @@ namespace Ifc.Builders.Elements
 
             const string transactionName = $"{nameof(IfcProductBuilder<T>)}: {nameof(CreateInstance)}";
             _logger.Info($"Begin transaction: {transactionName}");
-            
+
             Instance = model.Instances.New<T>(product =>
             {
                 if (ObjectPlacement != null)
@@ -65,7 +65,7 @@ namespace Ifc.Builders.Elements
             }
 
             IsCreated = true;
-            
+
             return Instance;
         }
 

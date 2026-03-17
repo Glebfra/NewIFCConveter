@@ -17,13 +17,13 @@ namespace Start.Entities
         [JsonConverter(typeof(JsonStartConverter<EnumProperty<StartRestraintAxesTypeEnum>>))]
         public IStartEnumProperty<StartRestraintAxesTypeEnum> Local { get; set; } =
             new EnumProperty<StartRestraintAxesTypeEnum>();
-        
+
         [JsonProperty(StartPropertyName.SectionStartNode)]
         public int SectionStartNode { get; set; }
-        
+
         [JsonProperty(StartPropertyName.SectionEndNode)]
         public int SectionEndNode { get; set; }
-        
+
         [JsonProperty(StartPropertyName.RestraintAngleX)]
         [JsonConverter(typeof(JsonStartConverter<AngleValueProperty<double>>))]
         public IStartValueProperty<double> AngleX { get; set; } = new AngleValueProperty<double>();
@@ -39,19 +39,19 @@ namespace Start.Entities
         [JsonProperty(StartPropertyName.RestraintFlexibility)]
         [JsonConverter(typeof(JsonStartConverter<FlexibilityValueProperty<double>>))]
         public IStartValueProperty<double> Flexibility { get; set; } = new FlexibilityValueProperty<double>();
-        
+
         [JsonProperty(StartPropertyName.RestraintLength)]
         [JsonConverter(typeof(JsonStartConverter<LengthValueProperty<double>>))]
         public IStartValueProperty<double> Length { get; set; } = new LengthValueProperty<double>();
-        
+
         [JsonProperty(StartPropertyName.RestraintFrictionCoefficient)]
         [JsonConverter(typeof(JsonStartConverter<FactorValueProperty<double>>))]
         public IStartValueProperty<double> FrictionCoefficient { get; set; } = new FactorValueProperty<double>();
-        
+
         [JsonProperty(StartPropertyName.RestraintGapPlus)]
         [JsonConverter(typeof(JsonStartConverter<LengthValueProperty<double>>))]
         public IStartValueProperty<double> RestraintGapPlus { get; set; } = new LengthValueProperty<double>();
-        
+
         [JsonProperty(StartPropertyName.RestraintGapMinus)]
         [JsonConverter(typeof(JsonStartConverter<LengthValueProperty<double>>))]
         public IStartValueProperty<double> RestraintGapMinus { get; set; } = new LengthValueProperty<double>();

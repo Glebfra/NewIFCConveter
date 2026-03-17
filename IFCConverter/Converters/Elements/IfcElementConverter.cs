@@ -41,7 +41,7 @@ namespace IFCConverter.Converters.Elements
         public TIfc BuildIfcElement(TStart start)
         {
             Matrix<double> objectMatrix = CreateObjectMatrix(start);
-            
+
             IIfcGeometry geometry = CreateGeometry(start);
             _logger.Info($"Created geometry {geometry.GetType().FullName}");
 
@@ -50,10 +50,10 @@ namespace IFCConverter.Converters.Elements
 
             builder.AssignGeometry(geometry);
             builder.CreateObjectPlacement(_Model, objectMatrix);
-            
+
             return builder.CreateInstance(_Model);
         }
-        
+
         public abstract TStart BuildStartElement(TIfc ifc);
 
         protected string GenerateTag(TStart start)
@@ -73,12 +73,12 @@ namespace IFCConverter.Converters.Elements
                     _ => $"{start.GetType().Name}_{start.ID}"
                 };
         }
-        
+
         private void TryAddMaterial(TStart start, IIfcProductBuilder<TIfc> builder)
         {
-            if (start is not IStartMaterializedEntity materializedEntity) 
+            if (start is not IStartMaterializedEntity materializedEntity)
                 return;
-            
+
             IIfcMaterialBuilder materialBuilder = new IfcMaterialBuilder(materializedEntity.MaterialName, "", "");
             if (materialBuilder.GetOrCreateMaterial(_Model, out IIfcMaterial material))
                 _logger.Info($"Created material with name: {material.Name}");

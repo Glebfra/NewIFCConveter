@@ -13,7 +13,7 @@ namespace Start.Entities.Joints
         [JsonProperty(StartPropertyName.AllowableAxialExpansion)]
         [JsonConverter(typeof(JsonStartConverter<LengthValueProperty<double>>))]
         public IStartValueProperty<double> AllowableAxialExpansion { get; set; } = new LengthValueProperty<double>();
-        
+
         [JsonProperty(StartPropertyName.FrictionForce)]
         [JsonConverter(typeof(JsonStartConverter<ForceValueProperty<double>>))]
         public IStartValueProperty<double> FrictionForce { get; set; } = new ForceValueProperty<double>();

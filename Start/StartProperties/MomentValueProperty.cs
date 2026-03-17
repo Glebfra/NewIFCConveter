@@ -2,7 +2,7 @@
 
 namespace Start.StartProperties
 {
-    public class MomentValueProperty<T> : StartValueAbstractProperty<T> 
+    public class MomentValueProperty<T> : StartValueAbstractProperty<T>
         where T : struct, IComparable<T>
     {
         public override double StartToSIFactor => 1.0;

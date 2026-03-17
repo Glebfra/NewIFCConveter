@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Ifc.API;
 using Ifc.Attributes;
@@ -23,19 +22,19 @@ namespace Ifc.Geometries
         public Vector<double>[] Points;
         public double Diameter;
     }
-    
+
     [IfcRepresentationIdentifier(IfcRepresentationIdentifier.Body)]
     [IfcRepresentationType(IfcRepresentationType.Brep)]
     public class TorsionExpansionJointGeometry : IfcGeometry
     {
-        public TorsionExpansionJointGeometry(IIfcBuilder geometryBuilder, 
-            IIfcRepresentationContext? representationContext = null) 
+        public TorsionExpansionJointGeometry(IIfcBuilder geometryBuilder,
+            IIfcRepresentationContext? representationContext = null)
             : base(geometryBuilder, representationContext)
         {
         }
 
-        public TorsionExpansionJointGeometry(IEnumerable<IIfcBuilder> geometryBuilders, 
-            IIfcRepresentationContext? representationContext = null) 
+        public TorsionExpansionJointGeometry(IEnumerable<IIfcBuilder> geometryBuilders,
+            IIfcRepresentationContext? representationContext = null)
             : base(geometryBuilders, representationContext)
         {
         }
@@ -49,7 +48,7 @@ namespace Ifc.Geometries
             double[] lengths = directions.Select(direction => direction.L2Norm()).ToArray();
             double[] segmentLengths = lengths.Select(length => length / 2.5).ToArray();
 
-            List<IIfcBuilder> builders = new List<IIfcBuilder>();
+            List<IIfcBuilder> builders = new();
             for (int i = 0; i < directions.Length; i++)
             {
                 Vector<double> direction = directions[i].Normalize(2);
@@ -57,10 +56,10 @@ namespace Ifc.Geometries
                 Matrix<double> extrusionMatrix = MatrixExtensions.CreateTransition(extrusionPoint, direction);
                 Matrix<double> profileDefMatrix =
                     MatrixExtensions.CreateTransition(VectorExtensions.Zero, VectorExtensions.Z);
-                
+
                 IIfcCircleProfileDefBuilder<IfcCircleProfileDef> profileDefBuilder =
                     new IfcCircleProfileDefBuilder<IfcCircleProfileDef>(
-                        properties.Diameter, IfcProfileTypeEnum.AREA, 
+                        properties.Diameter, IfcProfileTypeEnum.AREA,
                         $"{nameof(TorsionExpansionJointGeometry)} {nameof(IfcCircleProfileDef)}");
                 profileDefBuilder.CreatePosition(model, profileDefMatrix);
                 IfcCircleProfileDef profileDef = profileDefBuilder.CreateProfileDef(model);
@@ -72,14 +71,15 @@ namespace Ifc.Geometries
                 extrudedAreaSolidBuilder.CreatePosition(model, extrusionMatrix);
 
                 Vector<double> bottomConePoint = extrusionPoint + direction * segmentLengths[i];
-                IfcTriangulatedProperties coneProperties = IfcTriangulatedProperties.CreateClippedCone(new ClippedConeTriangulatedGeometryProperties
-                {
-                    BottomDiameter = properties.Diameter * 1.25,
-                    TopDiameter = properties.Diameter,
-                    Direction = direction,
-                    BottomConeCenter = bottomConePoint,
-                    TopConeCenter = properties.Points[i],
-                });
+                IfcTriangulatedProperties coneProperties = IfcTriangulatedProperties.CreateClippedCone(
+                    new ClippedConeTriangulatedGeometryProperties
+                    {
+                        BottomDiameter = properties.Diameter * 1.25,
+                        TopDiameter = properties.Diameter,
+                        Direction = direction,
+                        BottomConeCenter = bottomConePoint,
+                        TopConeCenter = properties.Points[i]
+                    });
                 IIfcTriangulatedFaceSetBuilder<IfcTriangulatedFaceSet> triangulatedFaceSetBuilder =
                     new IfcTriangulatedFaceSetBuilder<IfcTriangulatedFaceSet>();
                 triangulatedFaceSetBuilder.CreateCoordinates(model, coneProperties.Coordinates);

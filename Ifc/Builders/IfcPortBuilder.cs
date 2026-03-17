@@ -32,14 +32,14 @@ namespace Ifc.Builders
             if (ObjectPlacement == null)
                 throw new NullReferenceException(
                     $"{nameof(IfcPortBuilder)}: {nameof(ObjectPlacement)}. Call {nameof(CreateObjectPlacement)} before {nameof(CreatePort)}");
-            
+
             IfcPort = model.Instances.New<IfcDistributionPort>(port =>
             {
                 port.PredefinedType = DistributionPortTypeEnum;
                 port.FlowDirection = FlowDirectionEnum;
                 port.ObjectPlacement = (IfcObjectPlacement)ObjectPlacement;
             });
-            
+
             return IfcPort;
         }
 

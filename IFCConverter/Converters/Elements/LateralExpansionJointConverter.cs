@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Ifc.API;
 using Ifc.Builders.Elements;
@@ -56,7 +57,7 @@ namespace IFCConverter.Converters.Elements
 
         public override StartLateralExpansionJointEntity BuildStartElement(IfcPipeFitting ifc)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Ifc.API;
 using Ifc.Builders.Elements;
 using Ifc.Geometries;
@@ -7,12 +8,11 @@ using MathNet.Numerics.LinearAlgebra;
 using Start.Entities.Joints;
 using Start.Extensions;
 using Start.Interfaces;
-using Utils;
 using Xbim.Common;
 using Xbim.Ifc4.HvacDomain;
 using Xbim.Ifc4.Interfaces;
-using VectorExtensions = Utils.VectorExtensions;
 using MatrixExtensions = Utils.MatrixExtensions;
+using VectorExtensions = Utils.VectorExtensions;
 
 namespace IFCConverter.Converters.Elements
 {
@@ -29,7 +29,7 @@ namespace IFCConverter.Converters.Elements
 
             double diameter = startSegmentEntities.Max(segment => segment.Diameter).SIProperty;
             AxialCouplingJointGeometry geometry = AxialCouplingJointGeometry.CreateGeometry(_Model,
-                new AxialCouplingJointGeometryProperties()
+                new AxialCouplingJointGeometryProperties
                 {
                     Diameter = diameter,
                     Position = VectorExtensions.Zero,
@@ -50,10 +50,10 @@ namespace IFCConverter.Converters.Elements
                 GenerateName(start), GenerateTag(start), IfcPipeFittingTypeEnum.CONNECTOR
             );
         }
-        
+
         public override StartAxialCouplingJointEntity BuildStartElement(IfcPipeFitting ifc)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

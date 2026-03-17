@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Ifc.API;
 using Ifc.Builders.Elements;
@@ -16,7 +17,8 @@ using VectorExtensions = Utils.VectorExtensions;
 
 namespace IFCConverter.Converters.Elements
 {
-    public class SegmentedExpansionJointConverter : IfcElementConverter<StartAbstractExpansionJointEntity, IfcPipeFitting>
+    public class
+        SegmentedExpansionJointConverter : IfcElementConverter<StartAbstractExpansionJointEntity, IfcPipeFitting>
     {
         public SegmentedExpansionJointConverter(IModel model) : base(model)
         {
@@ -29,7 +31,7 @@ namespace IFCConverter.Converters.Elements
             IEnumerable<Vector<double>> globalPoints = startSegmentEntities
                 .Select(segment => segment.GetNearestPosition(start.Position));
             Vector<double>[] localPoints = globalPoints.Select(point => point - start.Position).ToArray();
-            
+
             double diameter = startSegmentEntities.Max(segment => segment.Diameter).SIProperty;
             SegmentedExpansionJointGeometry geometry = SegmentedExpansionJointGeometry.CreateGeometry(_Model,
                 new SegmentedExpansionJointGeometryProperties
@@ -57,7 +59,7 @@ namespace IFCConverter.Converters.Elements
 
         public override StartAbstractExpansionJointEntity BuildStartElement(IfcPipeFitting ifc)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

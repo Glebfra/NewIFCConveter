@@ -50,7 +50,7 @@ namespace Ifc.Builders.Geometry.Tessellated
                 foreach (double coord in normalVector)
                     itemSet.Add(coord);
             }
-            
+
             return instance;
         }
     }

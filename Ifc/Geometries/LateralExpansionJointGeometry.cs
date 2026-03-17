@@ -21,27 +21,27 @@ namespace Ifc.Geometries
         public Vector<double> Position;
         public double Diameter;
     }
-    
+
     [IfcRepresentationIdentifier(IfcRepresentationIdentifier.Body)]
     [IfcRepresentationType(IfcRepresentationType.Brep)]
     public class LateralExpansionJointGeometry : IfcGeometry
     {
-        public LateralExpansionJointGeometry(IIfcBuilder geometryBuilder, 
-            IIfcRepresentationContext? representationContext = null) 
+        public LateralExpansionJointGeometry(IIfcBuilder geometryBuilder,
+            IIfcRepresentationContext? representationContext = null)
             : base(geometryBuilder, representationContext)
         {
         }
 
-        public LateralExpansionJointGeometry(IEnumerable<IIfcBuilder> geometryBuilders, 
-            IIfcRepresentationContext? representationContext = null) 
+        public LateralExpansionJointGeometry(IEnumerable<IIfcBuilder> geometryBuilders,
+            IIfcRepresentationContext? representationContext = null)
             : base(geometryBuilders, representationContext)
         {
         }
 
-        public static LateralExpansionJointGeometry CreateGeometry(IModel model, 
+        public static LateralExpansionJointGeometry CreateGeometry(IModel model,
             LateralExpansionJointGeometryProperties properties)
         {
-            List<IIfcBuilder> builders = new List<IIfcBuilder>();
+            List<IIfcBuilder> builders = new();
 
             Vector<double> direction = (properties.Points[0] - properties.Position).Normalize(2);
             double length = (properties.Points[1] - properties.Points[0]).L2Norm();
@@ -85,7 +85,7 @@ namespace Ifc.Geometries
                 faceSetBuilder.CreateCoordinates(model, triangulatedProperties.Coordinates);
                 faceSetBuilder.AssignNormals(triangulatedProperties.Normals);
                 faceSetBuilder.AssignTriangleIndices(triangulatedProperties.TriangleIndices);
-                
+
                 builders.Add(faceSetBuilder);
             }
 

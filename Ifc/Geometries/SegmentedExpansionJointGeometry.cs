@@ -20,24 +20,24 @@ namespace Ifc.Geometries
         public Vector<double>[] Points;
         public double Diameter;
     }
-    
+
     [IfcRepresentationIdentifier(IfcRepresentationIdentifier.Body)]
     [IfcRepresentationType(IfcRepresentationType.Brep)]
     public class SegmentedExpansionJointGeometry : IfcGeometry
     {
-        public SegmentedExpansionJointGeometry(IIfcBuilder geometryBuilder, 
-            IIfcRepresentationContext? representationContext = null) 
+        public SegmentedExpansionJointGeometry(IIfcBuilder geometryBuilder,
+            IIfcRepresentationContext? representationContext = null)
             : base(geometryBuilder, representationContext)
         {
         }
 
-        public SegmentedExpansionJointGeometry(IEnumerable<IIfcBuilder> geometryBuilders, 
-            IIfcRepresentationContext? representationContext = null) 
+        public SegmentedExpansionJointGeometry(IEnumerable<IIfcBuilder> geometryBuilders,
+            IIfcRepresentationContext? representationContext = null)
             : base(geometryBuilders, representationContext)
         {
         }
 
-        public static SegmentedExpansionJointGeometry CreateGeometry(IModel model, 
+        public static SegmentedExpansionJointGeometry CreateGeometry(IModel model,
             SegmentedExpansionJointGeometryProperties properties)
         {
             double length = (properties.Points[1] - properties.Points[0]).L2Norm();

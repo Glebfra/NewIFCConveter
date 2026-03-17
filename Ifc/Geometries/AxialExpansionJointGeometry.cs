@@ -21,33 +21,33 @@ namespace Ifc.Geometries
         public Vector<double>[] Points;
         public double Diameter;
     }
-    
+
     [IfcRepresentationIdentifier(IfcRepresentationIdentifier.Body)]
     [IfcRepresentationType(IfcRepresentationType.Brep)]
     public class AxialExpansionJointGeometry : IfcGeometry
     {
-        public AxialExpansionJointGeometry(IIfcBuilder geometryBuilder, 
-            IIfcRepresentationContext? representationContext = null) 
+        public AxialExpansionJointGeometry(IIfcBuilder geometryBuilder,
+            IIfcRepresentationContext? representationContext = null)
             : base(geometryBuilder, representationContext)
         {
         }
 
-        public AxialExpansionJointGeometry(IEnumerable<IIfcBuilder> geometryBuilders, 
-            IIfcRepresentationContext? representationContext = null) 
+        public AxialExpansionJointGeometry(IEnumerable<IIfcBuilder> geometryBuilders,
+            IIfcRepresentationContext? representationContext = null)
             : base(geometryBuilders, representationContext)
         {
         }
 
-        public static AxialExpansionJointGeometry CreateGeometry(IModel model, 
+        public static AxialExpansionJointGeometry CreateGeometry(IModel model,
             DoubleExtrudedJointGeometryProperties properties)
         {
-            List<IIfcBuilder> builders = new List<IIfcBuilder>();
+            List<IIfcBuilder> builders = new();
 
             double length = (properties.Points[1] - properties.Points[0]).L2Norm();
             Vector<double>[] directions = properties.Points
                 .Select(point => point - properties.Position)
                 .ToArray();
-            double[] diameters = new double[] { properties.Diameter, properties.Diameter * 0.75 };
+            double[] diameters = { properties.Diameter, properties.Diameter * 0.75 };
 
             for (int i = 0; i < directions.Length; i++)
             {

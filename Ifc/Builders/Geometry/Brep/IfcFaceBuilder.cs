@@ -22,7 +22,7 @@ namespace Ifc.Builders.Geometry.Brep
                 bound.Bound = points.ToPolyLoop(model)
             );
             _bounds.Add(faceBound);
-            
+
             return faceBound;
         }
 

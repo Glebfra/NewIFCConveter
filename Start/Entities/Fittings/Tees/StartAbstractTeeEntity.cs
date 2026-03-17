@@ -15,8 +15,8 @@ namespace Start.Entities.Fittings
     public abstract class StartAbstractTeeEntity : StartAbstractFittingEntity,
         IStartOneNodeEntity, IStartFittingEntity, IStartMaterializedEntity, IStartClippingEntity
     {
-        private IStartSegmentEntity? _headSegment;
         private readonly IStartSegmentEntity?[] _mainSegments = new IStartSegmentEntity[2];
+        private IStartSegmentEntity? _headSegment;
 
         [JsonIgnore] public abstract double HeadLength { get; }
 

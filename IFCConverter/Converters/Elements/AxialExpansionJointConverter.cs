@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Ifc.API;
 using Ifc.Builders.Elements;
@@ -17,10 +18,11 @@ using VectorExtensions = Utils.VectorExtensions;
 
 namespace IFCConverter.Converters.Elements
 {
-    public sealed class AxialExpansionJointConverter : IfcElementConverter<StartAbstractExpansionJointEntity, IfcPipeFitting>
+    public sealed class
+        AxialExpansionJointConverter : IfcElementConverter<StartAbstractExpansionJointEntity, IfcPipeFitting>
     {
         private readonly Logger _logger = Logger.GetInstance();
-        
+
         public AxialExpansionJointConverter(IModel model) : base(model)
         {
         }
@@ -32,7 +34,7 @@ namespace IFCConverter.Converters.Elements
             IEnumerable<Vector<double>> globalPoints = startSegmentEntities
                 .Select(segment => segment.GetNearestPosition(start.Position));
             Vector<double>[] localPoints = globalPoints.Select(point => point - start.Position).ToArray();
-            
+
             double diameter = startSegmentEntities.Max(segment => segment.Diameter).SIProperty;
             AxialExpansionJointGeometry geometry = AxialExpansionJointGeometry.CreateGeometry(_Model,
                 new DoubleExtrudedJointGeometryProperties
@@ -59,7 +61,7 @@ namespace IFCConverter.Converters.Elements
 
         public override StartAbstractExpansionJointEntity BuildStartElement(IfcPipeFitting ifc)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

@@ -33,7 +33,7 @@ namespace Start.Entities.Joints
         [JsonProperty(StartPropertyName.AllowableCorrFactor)]
         [JsonConverter(typeof(JsonStartConverter<FactorValueProperty<double>>))]
         public IStartValueProperty<double> AllowableCorrFactor { get; set; } = new FactorValueProperty<double>();
-        
+
         //TODO get measurements
         [JsonProperty(StartPropertyName.AxialStiffness)]
         public double AxialStiffness { get; set; }

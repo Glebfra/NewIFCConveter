@@ -44,7 +44,7 @@ namespace IFCConverter.Converters.Elements
         public override IIfcProductBuilder<IfcPipeSegment> CreateBuilder(StartAbstractSegmentEntity start)
         {
             return new IfcPipeSegmentBuilder<IfcPipeSegment>(GenerateName(start), GenerateTag(start),
-                    GetIfcTypeEnum(start));
+                GetIfcTypeEnum(start));
         }
 
         public override StartAbstractSegmentEntity BuildStartElement(IfcPipeSegment ifc)

@@ -20,24 +20,25 @@ namespace Ifc.Geometries
         public Vector<double> Direction;
         public double Diameter;
     }
-    
+
     [IfcRepresentationIdentifier(IfcRepresentationIdentifier.Body)]
     [IfcRepresentationType(IfcRepresentationType.Brep)]
     public class AxialCouplingJointGeometry : IfcGeometry
     {
-        public AxialCouplingJointGeometry(IIfcBuilder geometryBuilder, 
-            IIfcRepresentationContext? representationContext = null) 
+        public AxialCouplingJointGeometry(IIfcBuilder geometryBuilder,
+            IIfcRepresentationContext? representationContext = null)
             : base(geometryBuilder, representationContext)
         {
         }
 
-        public AxialCouplingJointGeometry(IEnumerable<IIfcBuilder> geometryBuilders, 
-            IIfcRepresentationContext? representationContext = null) 
+        public AxialCouplingJointGeometry(IEnumerable<IIfcBuilder> geometryBuilders,
+            IIfcRepresentationContext? representationContext = null)
             : base(geometryBuilders, representationContext)
         {
         }
 
-        public static AxialCouplingJointGeometry CreateGeometry(IModel model, AxialCouplingJointGeometryProperties properties)
+        public static AxialCouplingJointGeometry CreateGeometry(IModel model,
+            AxialCouplingJointGeometryProperties properties)
         {
             double length = properties.Diameter / 10;
             double innerDiameter = properties.Diameter;
@@ -45,7 +46,8 @@ namespace Ifc.Geometries
             double wallThickness = outerDiameter - innerDiameter;
 
             Vector<double> extrudedAreaPoint = properties.Position - properties.Direction * (length / 2);
-            Matrix<double> extrudedAreaMatrix = MatrixExtensions.CreateTransition(extrudedAreaPoint, properties.Direction);
+            Matrix<double> extrudedAreaMatrix =
+                MatrixExtensions.CreateTransition(extrudedAreaPoint, properties.Direction);
             Matrix<double> profileDefMatrix =
                 MatrixExtensions.CreateTransition(VectorExtensions.Zero, VectorExtensions.Z);
 

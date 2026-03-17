@@ -63,7 +63,7 @@ namespace IFCConverter.Converters.Elements
         public override IIfcProductBuilder<IfcPipeFitting> CreateBuilder(StartAbstractBendEntity start)
         {
             return new IfcPipeFittingBuilder<IfcPipeFitting>(GenerateName(start), GenerateTag(start),
-                    IfcPipeFittingTypeEnum.BEND);
+                IfcPipeFittingTypeEnum.BEND);
         }
 
         public override StartAbstractBendEntity BuildStartElement(IfcPipeFitting ifc)
