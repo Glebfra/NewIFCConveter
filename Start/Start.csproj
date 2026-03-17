@@ -75,6 +75,7 @@
         <Compile Include="Entities\Joints\StartAxialExpansionSlipJointEntity.cs" />
         <Compile Include="Entities\Joints\StartBallExpansionJointEntity.cs" />
         <Compile Include="Entities\Joints\StartLateralExpansionJointEntity.cs" />
+        <Compile Include="Entities\Joints\StartNonStandardExpansionJointEntity.cs" />
         <Compile Include="Entities\Joints\StartTorsionExpansionJointEntity.cs" />
         <Compile Include="Entities\Fittings\Bends\StartAbstractBendEntity.cs" />
         <Compile Include="Entities\Fittings\Bends\StartElbowEntity.cs" />
@@ -98,6 +99,7 @@
         <Compile Include="Entities\Fittings\Tees\StartSweepoletEntity.cs" />
         <Compile Include="Entities\Fittings\Tees\StartWeldedTeeEntity.cs" />
         <Compile Include="Entities\Fittings\Tees\StartWeldoletEntity.cs" />
+        <Compile Include="Entities\Joints\StartUniversalExpansionJointEntity.cs" />
         <Compile Include="Entities\Segments\StartAbstractSegmentEntity.cs" />
         <Compile Include="Entities\Segments\StartAbstractSegmentUndefinedEntity.cs" />
         <Compile Include="Entities\Segments\StartConeElementEnitity.cs" />
@@ -107,6 +109,7 @@
         <Compile Include="Entities\Segments\StartRigidElementEntity.cs" />
         <Compile Include="Entities\StartAbstractEntity.cs" />
         <Compile Include="Entities\StartNodeEntity.cs" />
+        <Compile Include="Entities\StartNonStandardRestraintModule.cs" />
         <Compile Include="Extensions\StartDataArrayItemExtensions.cs" />
         <Compile Include="Extensions\StartElementTypeExtensions.cs" />
         <Compile Include="Extensions\StartEntitiesExtensions.cs" />

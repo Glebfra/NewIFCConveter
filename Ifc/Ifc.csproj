@@ -119,6 +119,7 @@
         <Compile Include="Geometries\AxialCouplingJointGeometry.cs" />
         <Compile Include="Geometries\AxialExpansionJointGeometry.cs" />
         <Compile Include="Geometries\LateralExpansionJointGeometry.cs" />
+        <Compile Include="Geometries\SegmentedExpansionJointGeometry.cs" />
         <Compile Include="Geometries\SphericalPipesJointGeometry.cs" />
         <Compile Include="Geometries\BendGeometry.cs" />
         <Compile Include="Geometries\ConeGeometry.cs" />

@@ -16,6 +16,7 @@ namespace IFCConverter.Converters
         {
             return startEntity switch
             {
+                // Expansion Joint Entities
                 StartAngularExpansionJointEntity => new SphericalPipesJointConverter(model),
                 StartBallExpansionJointEntity => new SphericalPipesJointConverter(model),
                 StartTorsionExpansionJointEntity => new TorsionExpansionJointConverter(model),
@@ -23,12 +24,16 @@ namespace IFCConverter.Converters
                 StartAxialExpansionSlipJointEntity => new AxialExpansionJointConverter(model),
                 StartAxialCouplingJointEntity => new AxialCouplingJointConverter(model),
                 StartLateralExpansionJointEntity => new LateralExpansionJointConverter(model),
+                StartUniversalExpansionJointEntity => new SegmentedExpansionJointConverter(model),
+                StartNonStandardExpansionJointEntity => new SegmentedExpansionJointConverter(model),
 
+                // Fitting Entities
                 StartValveEntity => new ValveConverter(model),
                 StartAbstractReducerEntity => new ReducerConverter(model),
                 StartAbstractBendEntity => new BendConverter(model),
                 StartAbstractTeeEntity => new TeeConverter(model),
 
+                // Segment Entities
                 StartConeElementEntity => new ConeElementConverter(model),
                 StartAbstractSegmentEntity => new PipeConverter(model),
                 _ => null
