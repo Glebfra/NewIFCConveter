@@ -22,6 +22,7 @@ namespace IFCConverter.Converters
                 StartAxialExpansionJointEntity => new AxialExpansionJointConverter(model),
                 StartAxialExpansionSlipJointEntity => new AxialExpansionJointConverter(model),
                 StartAxialCouplingJointEntity => new AxialCouplingJointConverter(model),
+                StartLateralExpansionJointEntity => new LateralExpansionJointConverter(model),
 
                 StartValveEntity => new ValveConverter(model),
                 StartAbstractReducerEntity => new ReducerConverter(model),

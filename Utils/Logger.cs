@@ -13,7 +13,7 @@ namespace Utils
 
     public class Logger
     {
-        public static LoggerLevel LoggerLevel = LoggerLevel.SYSTEM;
+        public static LoggerLevel LoggerLevel = LoggerLevel.INFO;
 
         private static Logger? _instance;
         private int _countErrors;

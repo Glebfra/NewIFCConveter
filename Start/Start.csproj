@@ -74,6 +74,7 @@
         <Compile Include="Entities\Joints\StartAxialExpansionJointEntity.cs" />
         <Compile Include="Entities\Joints\StartAxialExpansionSlipJointEntity.cs" />
         <Compile Include="Entities\Joints\StartBallExpansionJointEntity.cs" />
+        <Compile Include="Entities\Joints\StartLateralExpansionJointEntity.cs" />
         <Compile Include="Entities\Joints\StartTorsionExpansionJointEntity.cs" />
         <Compile Include="Entities\Fittings\Bends\StartAbstractBendEntity.cs" />
         <Compile Include="Entities\Fittings\Bends\StartElbowEntity.cs" />

@@ -14,7 +14,7 @@ namespace Start.Entities.Joints
     {
         [JsonProperty(StartPropertyName.Length)]
         [JsonConverter(typeof(JsonStartConverter<LengthValueProperty<double>>))]
-        public IStartValueProperty<double> Length { get; set; } = new LengthValueProperty<double>();
+        public virtual IStartValueProperty<double> Length { get; set; } = new LengthValueProperty<double>();
 
         public void ClipEntity(IStartClippableEntity clippable)
         {
