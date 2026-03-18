@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics.Contracts;
 using IFCConverter.Converters.Elements;
 using IFCConverter.Interfaces;
+using Start.Entities.Anchors;
 using Start.Entities.Fittings;
 using Start.Entities.Joints;
 using Start.Entities.Segments;
@@ -16,6 +17,9 @@ namespace IFCConverter.Converters
         {
             return startEntity switch
             {
+                // Anchors
+                StartFixedAnchorEntity => new FixedAnchorConverter(model),
+                
                 // Expansion Joint Entities
                 StartAngularExpansionJointEntity => new SphericalPipesJointConverter(model),
                 StartBallExpansionJointEntity => new SphericalPipesJointConverter(model),
