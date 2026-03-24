@@ -7,8 +7,8 @@ using Start.StartProperties;
 
 namespace Start.Entities.Anchors
 {
-    [StartElement(StartElementTypeEnum.HINGED_ANCHOR)]
-    public class StartHingedAnchorEntity : StartAbstractAnchorEntity
+    [StartElement(StartElementTypeEnum.MOMENT_FREE_ANCHOR)]
+    public class StartMomentFreeAnchorEntity : StartAbstractAnchorEntity
     {
         [JsonProperty(StartPropertyName.Fx)]
         [JsonConverter(typeof(JsonStartConverter<ForceValueProperty<double>>))]

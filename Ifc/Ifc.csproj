@@ -120,8 +120,9 @@
         <Compile Include="Geometries\AxialCouplingJointGeometry.cs" />
         <Compile Include="Geometries\AxialExpansionJointGeometry.cs" />
         <Compile Include="Geometries\FixedAnchorGeometry.cs" />
-        <Compile Include="Geometries\HingedAnchorGeometry.cs" />
+        <Compile Include="Geometries\MomentFreeAnchorGeometry.cs" />
         <Compile Include="Geometries\LateralExpansionJointGeometry.cs" />
+        <Compile Include="Geometries\RestingSupportAnchorGeometry.cs" />
         <Compile Include="Geometries\SegmentedExpansionJointGeometry.cs" />
         <Compile Include="Geometries\SphericalPipesJointGeometry.cs" />
         <Compile Include="Geometries\BendGeometry.cs" />

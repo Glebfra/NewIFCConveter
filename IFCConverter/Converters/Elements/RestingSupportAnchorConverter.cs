@@ -1,10 +1,8 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Ifc.API;
 using Ifc.Builders.Elements;
 using Ifc.Geometries;
 using Ifc.Interfaces;
-using MathNet.Numerics;
 using MathNet.Numerics.LinearAlgebra;
 using Start.Entities.Anchors;
 using Start.Interfaces;
@@ -17,13 +15,13 @@ using VectorExtensions = Utils.VectorExtensions;
 
 namespace IFCConverter.Converters.Elements
 {
-    public class HingedAnchorConverter : IfcElementConverter<StartHingedAnchorEntity, IfcDiscreteAccessory>
+    public class RestingSupportAnchorConverter : IfcElementConverter<StartRestingSupportAnchorEntity, IfcDiscreteAccessory>
     {
-        public HingedAnchorConverter(IModel model) : base(model)
+        public RestingSupportAnchorConverter(IModel model) : base(model)
         {
         }
 
-        public override IIfcGeometry CreateGeometry(StartHingedAnchorEntity start)
+        public override IIfcGeometry CreateGeometry(StartRestingSupportAnchorEntity start)
         {
             IStartSegmentEntity[] segmentEntities = start.ConnectedEntities.OfType<IStartSegmentEntity>().ToArray();
             Matrix<double> segmentMatrix = segmentEntities[0].TransformationMatrix;
@@ -39,12 +37,13 @@ namespace IFCConverter.Converters.Elements
             }
             else
             {
-                double displacement = CalculateDisplacement(segmentMatrix.GetZ(), diameter);
+                double displacement = MathExtensions.CalculateAnchorDisplacement(segmentMatrix.GetZ(), diameter);
                 position = -displacement * VectorExtensions.Z;
                 doubleSidedDisplacement = VectorExtensions.Zero;
             }
-            HingedAnchorGeometry geometry = HingedAnchorGeometry.CreateGeometry(_Model,
-                new HingedAnchorGeometryProperties
+
+            RestingSupportAnchorGeometry geometry = RestingSupportAnchorGeometry.CreateGeometry(_Model,
+                new RestingSupportGeometryProperties
                 {
                     Position = position,
                     Direction = VectorExtensions.Z,
@@ -53,33 +52,25 @@ namespace IFCConverter.Converters.Elements
                     DoubleSidedDisplacement = doubleSidedDisplacement
                 });
             geometry.AssignColor(Color.FromHEX("4ab636"));
-
+            
             return geometry;
         }
 
-        public override Matrix<double> CreateObjectMatrix(StartHingedAnchorEntity start)
+        public override Matrix<double> CreateObjectMatrix(StartRestingSupportAnchorEntity start)
         {
             return MatrixExtensions.CreateTransition(start.Position);
         }
 
-        public override IIfcProductBuilder<IfcDiscreteAccessory> CreateBuilder(StartHingedAnchorEntity start)
+        public override IIfcProductBuilder<IfcDiscreteAccessory> CreateBuilder(StartRestingSupportAnchorEntity start)
         {
             return new IfcDiscreteAccessoryBuilder<IfcDiscreteAccessory>(
                 GenerateName(start), GenerateTag(start), IfcDiscreteAccessoryTypeEnum.ANCHORPLATE
             );
         }
 
-        public override StartHingedAnchorEntity BuildStartElement(IfcDiscreteAccessory ifc)
+        public override StartRestingSupportAnchorEntity BuildStartElement(IfcDiscreteAccessory ifc)
         {
             throw new System.NotImplementedException();
-        }
-
-        private static double CalculateDisplacement(Vector<double> segmentDirection, double diameter)
-        {
-            double angle = segmentDirection.Angle(VectorExtensions.Z);
-            if (angle.AlmostEqual(0, 1e-6)) // a=0 => sin(a)=0
-                return 0;
-            return diameter / (2 * Math.Sin(angle)); // r / sin(a)
         }
     }
 }

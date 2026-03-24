@@ -87,8 +87,9 @@
         <Compile Include="Converters\Elements\AxialCouplingJointConverter.cs" />
         <Compile Include="Converters\Elements\AxialExpansionJointConverter.cs" />
         <Compile Include="Converters\Elements\FixedAnchorConverter.cs" />
-        <Compile Include="Converters\Elements\HingedAnchorConverter.cs" />
+        <Compile Include="Converters\Elements\MomentFreeAnchorConverter.cs" />
         <Compile Include="Converters\Elements\LateralExpansionJointConverter.cs" />
+        <Compile Include="Converters\Elements\RestingSupportAnchorConverter.cs" />
         <Compile Include="Converters\Elements\SegmentedExpansionJointConverter.cs" />
         <Compile Include="Converters\Elements\SphericalPipesJointConverter.cs" />
         <Compile Include="Converters\Elements\BendConverter.cs" />
