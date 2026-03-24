@@ -97,6 +97,7 @@
         <Compile Include="Converters\Elements\IfcElementConverter.cs" />
         <Compile Include="Converters\Elements\PipeConverter.cs" />
         <Compile Include="Converters\Elements\ReducerConverter.cs" />
+        <Compile Include="Converters\Elements\SpringAnchorConverter.cs" />
         <Compile Include="Converters\Elements\TeeConverter.cs" />
         <Compile Include="Converters\Elements\TorsionExpansionJointConverter.cs" />
         <Compile Include="Converters\Elements\ValveConverter.cs" />

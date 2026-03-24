@@ -129,6 +129,7 @@
         <Compile Include="Geometries\ConeGeometry.cs" />
         <Compile Include="Geometries\IfcGeometry.cs" />
         <Compile Include="Geometries\PipeGeometry.cs" />
+        <Compile Include="Geometries\SpringAnchorGeometry.cs" />
         <Compile Include="Geometries\TeeGeometry.cs" />
         <Compile Include="Geometries\IfcTriangulatedProperties.cs" />
         <Compile Include="Geometries\TorsionExpansionJointGeometry.cs" />
