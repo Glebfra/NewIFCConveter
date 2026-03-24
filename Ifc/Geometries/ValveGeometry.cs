@@ -24,6 +24,8 @@ namespace Ifc.Geometries
     [IfcRepresentationType(IfcRepresentationType.Tessellation)]
     public class ValveGeometry : IfcGeometry
     {
+        private const double DiameterToConeDiameterFactor = 1.5;
+        
         public ValveGeometry(IIfcBuilder geometryBuilder, IIfcRepresentationContext? representationContext = null)
             : base(geometryBuilder, representationContext)
         {
@@ -43,7 +45,7 @@ namespace Ifc.Geometries
                 {
                     TopConePoint = properties.TopConePoint,
                     BottomConeCenter = botConePoint,
-                    Diameter = properties.Diameter * 1.5
+                    Diameter = properties.Diameter * DiameterToConeDiameterFactor
                 }));
 
             IEnumerable<IIfcBuilder> builders = triangulatedProperties

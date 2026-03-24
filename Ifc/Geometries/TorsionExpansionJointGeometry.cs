@@ -27,6 +27,8 @@ namespace Ifc.Geometries
     [IfcRepresentationType(IfcRepresentationType.Brep)]
     public class TorsionExpansionJointGeometry : IfcGeometry
     {
+        private const double DiameterToBottomConeDiameterFactor = 1.25;
+        
         public TorsionExpansionJointGeometry(IIfcBuilder geometryBuilder,
             IIfcRepresentationContext? representationContext = null)
             : base(geometryBuilder, representationContext)
@@ -74,7 +76,7 @@ namespace Ifc.Geometries
                 IfcTriangulatedProperties coneProperties = IfcTriangulatedProperties.CreateClippedCone(
                     new ClippedConeTriangulatedGeometryProperties
                     {
-                        BottomDiameter = properties.Diameter * 1.25,
+                        BottomDiameter = properties.Diameter * DiameterToBottomConeDiameterFactor,
                         TopDiameter = properties.Diameter,
                         Direction = direction,
                         BottomConeCenter = bottomConePoint,

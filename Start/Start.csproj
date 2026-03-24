@@ -70,6 +70,7 @@
         <Compile Include="Converters\JsonStartConverter.cs" />
         <Compile Include="Entities\Anchors\StartAbstractAnchorEntity.cs" />
         <Compile Include="Entities\Anchors\StartFixedAnchorEntity.cs" />
+        <Compile Include="Entities\Anchors\StartHingedAnchorEntity.cs" />
         <Compile Include="Entities\Joints\StartAbstractExpansionJointEntity.cs" />
         <Compile Include="Entities\Joints\StartAngularExpansionJointEntity.cs" />
         <Compile Include="Entities\Joints\StartAxialCouplingJointEntity.cs" />
