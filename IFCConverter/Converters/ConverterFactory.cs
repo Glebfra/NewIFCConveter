@@ -22,6 +22,7 @@ namespace IFCConverter.Converters
                 StartMomentFreeAnchorEntity => new MomentFreeAnchorConverter(model),
                 StartRestingSupportAnchorEntity => new RestingSupportAnchorConverter(model),
                 StartAbstractSpringAnchorEntity => new SpringAnchorConverter(model),
+                StartRigidHangerAnchorEntity => new RigidHangerAnchorConverter(model),
                 
                 // Expansion Joint Entities
                 StartAngularExpansionJointEntity => new SphericalPipesJointConverter(model),
