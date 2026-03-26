@@ -69,8 +69,11 @@
         <Compile Include="Attributes\StartIgnoreAttribute.cs" />
         <Compile Include="Converters\JsonStartConverter.cs" />
         <Compile Include="Entities\Anchors\StartAbstractAnchorEntity.cs" />
+        <Compile Include="Entities\Anchors\StartAbstractConstantSpringAnchorEntity.cs" />
         <Compile Include="Entities\Anchors\StartAbstractDirectionalGuideAnchorEntity.cs" />
         <Compile Include="Entities\Anchors\StartAbstractSpringAnchorEntity.cs" />
+        <Compile Include="Entities\Anchors\StartConstantSpringHangerAnchorEntity.cs" />
+        <Compile Include="Entities\Anchors\StartConstantSpringSupportAnchorEntity.cs" />
         <Compile Include="Entities\Anchors\StartDoubleDirectionalGuideAnchorEntity.cs" />
         <Compile Include="Entities\Anchors\StartFixedAnchorEntity.cs" />
         <Compile Include="Entities\Anchors\StartMomentFreeAnchorEntity.cs" />

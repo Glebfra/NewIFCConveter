@@ -16,7 +16,7 @@ using VectorExtensions = Utils.VectorExtensions;
 
 namespace Ifc.Geometries
 {
-    public struct RigidHangerAnchorGeometryProperties
+    public struct ConstantSpringSupportAnchorGeometryProperties
     {
         public Vector<double> Position;
         public Vector<double> Direction;
@@ -27,35 +27,35 @@ namespace Ifc.Geometries
     
     [IfcRepresentationIdentifier(IfcRepresentationIdentifier.Body)]
     [IfcRepresentationType(IfcRepresentationType.Tessellation)]
-    public class RigidHangerAnchorGeometry : IfcGeometry
+    public class ConstantSpringAnchorGeometry : IfcGeometry
     {
         private const double LengthToBaseLengthFactor = 0.1;
-        private const double DiameterToLengthFactor = 1.5;
+        private const double DiameterToLengthFactor = 1.75;
         private const double DiameterToBaseXDimFactor = 1.5;
         private const double XDimToYDimFactor = 0.5;
         private const double DiameterToConeDiameterFactor = 0.5;
         private const double DiameterToStickDiameterFactor = 0.2;
         
-        public RigidHangerAnchorGeometry(IIfcBuilder geometryBuilder, 
+        public ConstantSpringAnchorGeometry(IIfcBuilder geometryBuilder, 
             IIfcRepresentationContext? representationContext = null) 
             : base(geometryBuilder, representationContext)
         {
         }
 
-        public RigidHangerAnchorGeometry(IEnumerable<IIfcBuilder> geometryBuilders,
+        public ConstantSpringAnchorGeometry(IEnumerable<IIfcBuilder> geometryBuilders, 
             IIfcRepresentationContext? representationContext = null) 
             : base(geometryBuilders, representationContext)
         {
         }
 
-        public static RigidHangerAnchorGeometry CreateGeometry(IModel model,
-            RigidHangerAnchorGeometryProperties properties)
+        public static ConstantSpringAnchorGeometry CreateGeometry(IModel model,
+            ConstantSpringSupportAnchorGeometryProperties properties)
         {
             List<IIfcBuilder> builders = new List<IIfcBuilder>();
             
             double length = properties.Diameter * DiameterToLengthFactor;
             double baseLength = length * LengthToBaseLengthFactor;
-            double coneLength = (length - baseLength) / 2;
+            double coneLength = (length - baseLength) / 3;
             double stickLength = coneLength;
 
             double XDim = properties.Diameter * DiameterToBaseXDimFactor;
@@ -64,7 +64,7 @@ namespace Ifc.Geometries
             double coneDiameter = properties.Diameter * DiameterToConeDiameterFactor;
             double stickDiameter = properties.Diameter * DiameterToStickDiameterFactor;
 
-            Vector<double>[] topConePoints = properties.IsDoubleSided
+            Vector<double>[] topConeTopPoints = properties.IsDoubleSided
                 ? new Vector<double>[] 
                 { 
                     properties.Position + properties.DoubleSidedDisplacement, 
@@ -72,21 +72,27 @@ namespace Ifc.Geometries
                 }
                 : new Vector<double>[] { properties.Position };
             
-            Vector<double>[] botConePoints = topConePoints
+            Vector<double>[] topConeBotPoints = topConeTopPoints
                 .Select(topConePoint => topConePoint - properties.Direction * coneLength)
                 .ToArray();
-            Vector<double>[] botStickPoints = botConePoints
+            Vector<double>[] botStickPoints = topConeBotPoints
                 .Select(botConePoint => botConePoint - properties.Direction * stickLength)
                 .ToArray();
-            Vector<double>[] basePoints = botStickPoints
-                .Select(botStickPoint => botStickPoint - properties.Direction * baseLength)
+            Vector<double>[] botConeBotPoints = botStickPoints;
+            Vector<double>[] botConeTopPoints = botConeBotPoints
+                .Select(botConeBotPoint => botConeBotPoint - properties.Direction * coneLength)
+                .ToArray();
+            Vector<double>[] basePoints = botConeTopPoints
+                .Select(botConeTopPoint => botConeTopPoint - properties.Direction * baseLength)
                 .ToArray();
 
-            for (int i = 0; i < topConePoints.Length; i++)
+            for (int i = 0; i < topConeTopPoints.Length; i++)
             {
-                Vector<double> topConePoint = topConePoints[i];
-                Vector<double> botConePoint = botConePoints[i];
+                Vector<double> topConeTopPoint = topConeTopPoints[i];
+                Vector<double> topConeBotPoint = topConeBotPoints[i];
                 Vector<double> botStickPoint = botStickPoints[i];
+                Vector<double> botConeBotPoint = botConeBotPoints[i];
+                Vector<double> botConeTopPoint = botConeTopPoints[i];
                 Vector<double> basePoint = basePoints[i];
                 
                 Matrix<double> profileDefMatrix =
@@ -103,6 +109,20 @@ namespace Ifc.Geometries
                     );
                 baseProfileDefBuilder.CreatePosition(model, profileDefMatrix);
                 IfcRectangleProfileDef baseProfileDef = baseProfileDefBuilder.CreateProfileDef(model);
+                
+                IfcTriangulatedProperties botConeProperties = IfcTriangulatedProperties.CreateCone(
+                    new ConeTriangulatedGeometryProperties
+                    {
+                        Diameter = coneDiameter,
+                        BottomConeCenter = botConeBotPoint,
+                        TopConePoint = botConeTopPoint
+                    });
+                IIfcTriangulatedFaceSetBuilder<IfcTriangulatedFaceSet> botConeTriangulatedFaceSetBuilder =
+                    new IfcTriangulatedFaceSetBuilder<IfcTriangulatedFaceSet>();
+                botConeTriangulatedFaceSetBuilder.CreateCoordinates(model, botConeProperties.Coordinates);
+                botConeTriangulatedFaceSetBuilder.AssignNormals(botConeProperties.Normals);
+                botConeTriangulatedFaceSetBuilder.AssignTriangleIndices(botConeProperties.TriangleIndices);
+                builders.Add(botConeTriangulatedFaceSetBuilder);
                 
                 IIfcExtrudedAreaSolidBuilder<IfcExtrudedAreaSolid> baseExtrudedAreaSolidBuilder =
                     new IfcExtrudedAreaSolidBuilder<IfcExtrudedAreaSolid>(baseLength, VectorExtensions.Z, baseProfileDef);
@@ -123,22 +143,22 @@ namespace Ifc.Geometries
                 stickExtrudedAreaSolidBuilder.CreatePosition(model, stickExtrudedAreaSolidMatrix);
                 builders.Add(stickExtrudedAreaSolidBuilder);
                 
-                IfcTriangulatedProperties coneProperties = IfcTriangulatedProperties.CreateCone(
+                IfcTriangulatedProperties topConeProperties = IfcTriangulatedProperties.CreateCone(
                     new ConeTriangulatedGeometryProperties
                     {
                         Diameter = coneDiameter,
-                        BottomConeCenter = botConePoint,
-                        TopConePoint = topConePoint
+                        BottomConeCenter = topConeBotPoint,
+                        TopConePoint = topConeTopPoint
                     });
-                IIfcTriangulatedFaceSetBuilder<IfcTriangulatedFaceSet> coneTriangulatedFaceSetBuilder =
+                IIfcTriangulatedFaceSetBuilder<IfcTriangulatedFaceSet> topConeTriangulatedFaceSetBuilder =
                     new IfcTriangulatedFaceSetBuilder<IfcTriangulatedFaceSet>();
-                coneTriangulatedFaceSetBuilder.CreateCoordinates(model, coneProperties.Coordinates);
-                coneTriangulatedFaceSetBuilder.AssignNormals(coneProperties.Normals);
-                coneTriangulatedFaceSetBuilder.AssignTriangleIndices(coneProperties.TriangleIndices);
-                builders.Add(coneTriangulatedFaceSetBuilder);
+                topConeTriangulatedFaceSetBuilder.CreateCoordinates(model, topConeProperties.Coordinates);
+                topConeTriangulatedFaceSetBuilder.AssignNormals(topConeProperties.Normals);
+                topConeTriangulatedFaceSetBuilder.AssignTriangleIndices(topConeProperties.TriangleIndices);
+                builders.Add(topConeTriangulatedFaceSetBuilder);
             }
 
-            return new RigidHangerAnchorGeometry(builders);
+            return new ConstantSpringAnchorGeometry(builders);
         }
     }
 }

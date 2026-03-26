@@ -119,6 +119,7 @@
         <Compile Include="Extensions\IfcVectorExtensions.cs" />
         <Compile Include="Geometries\AxialCouplingJointGeometry.cs" />
         <Compile Include="Geometries\AxialExpansionJointGeometry.cs" />
+        <Compile Include="Geometries\ConstantSpringAnchorGeometry.cs" />
         <Compile Include="Geometries\FixedAnchorGeometry.cs" />
         <Compile Include="Geometries\MomentFreeAnchorGeometry.cs" />
         <Compile Include="Geometries\LateralExpansionJointGeometry.cs" />

@@ -86,6 +86,7 @@
         <Compile Include="Converters\ConverterFactory.cs" />
         <Compile Include="Converters\Elements\AxialCouplingJointConverter.cs" />
         <Compile Include="Converters\Elements\AxialExpansionJointConverter.cs" />
+        <Compile Include="Converters\Elements\ConstantSpringAnchorConverter.cs" />
         <Compile Include="Converters\Elements\DirectionalGuideAnchorConverter.cs" />
         <Compile Include="Converters\Elements\FixedAnchorConverter.cs" />
         <Compile Include="Converters\Elements\MomentFreeAnchorConverter.cs" />
