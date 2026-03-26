@@ -14,7 +14,7 @@ using Xbim.Ifc4.RepresentationResource;
 
 namespace Ifc.Geometries
 {
-    public abstract class IfcGeometry : IIfcGeometry
+    public class IfcGeometry : IIfcGeometry
     {
         public IfcGeometry(IIfcBuilder geometryBuilder, IIfcRepresentationContext? representationContext = null)
         {

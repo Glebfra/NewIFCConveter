@@ -23,6 +23,7 @@ namespace IFCConverter.Converters
                 StartRestingSupportAnchorEntity => new RestingSupportAnchorConverter(model),
                 StartAbstractSpringAnchorEntity => new SpringAnchorConverter(model),
                 StartRigidHangerAnchorEntity => new RigidHangerAnchorConverter(model),
+                StartAbstractDirectionalGuideAnchorEntity => new DirectionalGuideAnchorConverter(model),
                 
                 // Expansion Joint Entities
                 StartAngularExpansionJointEntity => new SphericalPipesJointConverter(model),

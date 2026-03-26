@@ -125,6 +125,7 @@
         <Compile Include="Geometries\RestingSupportAnchorGeometry.cs" />
         <Compile Include="Geometries\RigidHangerAnchorGeometry.cs" />
         <Compile Include="Geometries\SegmentedExpansionJointGeometry.cs" />
+        <Compile Include="Geometries\DirectionalGuideAnchorGeometry.cs" />
         <Compile Include="Geometries\SphericalPipesJointGeometry.cs" />
         <Compile Include="Geometries\BendGeometry.cs" />
         <Compile Include="Geometries\ConeGeometry.cs" />
