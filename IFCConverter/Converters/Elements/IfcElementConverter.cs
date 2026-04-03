@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Diagnostics.Contracts;
+using System.Reflection;
 using Ifc.Builders;
 using Ifc.Interfaces;
 using IFCConverter.Interfaces;
@@ -34,8 +35,13 @@ namespace IFCConverter.Converters.Elements
             return BuildStartElement((TIfc)ifc)!;
         }
 
+        [Pure]
         public abstract IIfcGeometry CreateGeometry(TStart start);
+        
+        [Pure]
         public abstract Matrix<double> CreateObjectMatrix(TStart start);
+        
+        [Pure]
         public abstract IIfcProductBuilder<TIfc> CreateBuilder(TStart start);
 
         public TIfc BuildIfcElement(TStart start)

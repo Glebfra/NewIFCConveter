@@ -15,7 +15,8 @@ using VectorExtensions = Utils.VectorExtensions;
 
 namespace IFCConverter.Converters.Elements
 {
-    public class SpringAnchorConverter : IfcElementConverter<StartAbstractSpringAnchorEntity, IfcDiscreteAccessory>
+    public sealed class SpringAnchorConverter : 
+        IfcElementConverter<StartAbstractSpringAnchorEntity, IfcDiscreteAccessory>
     {
         public SpringAnchorConverter(IModel model) : base(model)
         {

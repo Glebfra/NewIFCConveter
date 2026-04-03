@@ -15,7 +15,8 @@ using VectorExtensions = Utils.VectorExtensions;
 
 namespace IFCConverter.Converters.Elements
 {
-    public class MomentFreeAnchorConverter : IfcElementConverter<StartMomentFreeAnchorEntity, IfcDiscreteAccessory>
+    public sealed class MomentFreeAnchorConverter : 
+        IfcElementConverter<StartMomentFreeAnchorEntity, IfcDiscreteAccessory>
     {
         public MomentFreeAnchorConverter(IModel model) : base(model)
         {

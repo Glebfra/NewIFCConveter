@@ -15,7 +15,8 @@ using VectorExtensions = Utils.VectorExtensions;
 
 namespace IFCConverter.Converters.Elements
 {
-    public class RestingSupportAnchorConverter : IfcElementConverter<StartRestingSupportAnchorEntity, IfcDiscreteAccessory>
+    public sealed class RestingSupportAnchorConverter : 
+        IfcElementConverter<StartRestingSupportAnchorEntity, IfcDiscreteAccessory>
     {
         public RestingSupportAnchorConverter(IModel model) : base(model)
         {

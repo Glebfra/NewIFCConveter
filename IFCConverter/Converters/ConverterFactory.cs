@@ -25,6 +25,7 @@ namespace IFCConverter.Converters
                 StartRigidHangerAnchorEntity => new RigidHangerAnchorConverter(model),
                 StartAbstractDirectionalGuideAnchorEntity => new DirectionalGuideAnchorConverter(model),
                 StartAbstractConstantSpringAnchorEntity => new ConstantSpringAnchorConverter(model),
+                StartNonstandardAnchorEntity => new NonstandardAnchorConverter(model),
                 
                 // Expansion Joint Entities
                 StartAngularExpansionJointEntity => new SphericalPipesJointConverter(model),

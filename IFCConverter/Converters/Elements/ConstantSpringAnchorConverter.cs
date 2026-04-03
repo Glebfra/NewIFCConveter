@@ -16,7 +16,8 @@ using VectorExtensions = Utils.VectorExtensions;
 
 namespace IFCConverter.Converters.Elements
 {
-    public class ConstantSpringAnchorConverter : IfcElementConverter<StartAbstractConstantSpringAnchorEntity, IfcDiscreteAccessory>
+    public sealed class ConstantSpringAnchorConverter : 
+        IfcElementConverter<StartAbstractConstantSpringAnchorEntity, IfcDiscreteAccessory>
     {
         public ConstantSpringAnchorConverter(IModel model) : base(model)
         {

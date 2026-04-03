@@ -18,12 +18,6 @@ namespace Start.Entities
         public IStartEnumProperty<StartRestraintAxesTypeEnum> Local { get; set; } =
             new EnumProperty<StartRestraintAxesTypeEnum>();
 
-        [JsonProperty(StartPropertyName.SectionStartNode)]
-        public int SectionStartNode { get; set; }
-
-        [JsonProperty(StartPropertyName.SectionEndNode)]
-        public int SectionEndNode { get; set; }
-
         [JsonProperty(StartPropertyName.RestraintAngleX)]
         [JsonConverter(typeof(JsonStartConverter<AngleValueProperty<double>>))]
         public IStartValueProperty<double> AngleX { get; set; } = new AngleValueProperty<double>();

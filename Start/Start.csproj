@@ -74,6 +74,7 @@
         <Compile Include="Entities\Anchors\StartAbstractSpringAnchorEntity.cs" />
         <Compile Include="Entities\Anchors\StartConstantSpringHangerAnchorEntity.cs" />
         <Compile Include="Entities\Anchors\StartConstantSpringSupportAnchorEntity.cs" />
+        <Compile Include="Entities\Anchors\StartNonstandardAnchorEntity.cs" />
         <Compile Include="Entities\Anchors\StartDoubleDirectionalGuideAnchorEntity.cs" />
         <Compile Include="Entities\Anchors\StartFixedAnchorEntity.cs" />
         <Compile Include="Entities\Anchors\StartMomentFreeAnchorEntity.cs" />

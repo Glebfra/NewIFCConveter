@@ -15,7 +15,8 @@ using VectorExtensions = Utils.VectorExtensions;
 
 namespace IFCConverter.Converters.Elements
 {
-    public class RigidHangerAnchorConverter : IfcElementConverter<StartRigidHangerAnchorEntity, IfcDiscreteAccessory>
+    public sealed class RigidHangerAnchorConverter : 
+        IfcElementConverter<StartRigidHangerAnchorEntity, IfcDiscreteAccessory>
     {
         public RigidHangerAnchorConverter(IModel model) : base(model)
         {

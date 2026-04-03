@@ -17,8 +17,8 @@ using VectorExtensions = Utils.VectorExtensions;
 
 namespace IFCConverter.Converters.Elements
 {
-    public class
-        SegmentedExpansionJointConverter : IfcElementConverter<StartAbstractExpansionJointEntity, IfcPipeFitting>
+    public sealed class SegmentedExpansionJointConverter : 
+        IfcElementConverter<StartAbstractExpansionJointEntity, IfcPipeFitting>
     {
         public SegmentedExpansionJointConverter(IModel model) : base(model)
         {

@@ -15,7 +15,8 @@ using MatrixExtensions = Utils.MatrixExtensions;
 
 namespace IFCConverter.Converters.Elements
 {
-    public class DirectionalGuideAnchorConverter : IfcElementConverter<StartAbstractDirectionalGuideAnchorEntity, IfcDiscreteAccessory>
+    public sealed class DirectionalGuideAnchorConverter : 
+        IfcElementConverter<StartAbstractDirectionalGuideAnchorEntity, IfcDiscreteAccessory>
     {
         public DirectionalGuideAnchorConverter(IModel model) : base(model)
         {
