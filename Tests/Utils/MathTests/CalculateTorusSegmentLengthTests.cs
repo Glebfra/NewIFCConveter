@@ -2,10 +2,10 @@
 using NUnit.Framework;
 using Utils;
 
-namespace Tests.Utils
+namespace Tests.Utils.MathTests
 {
     [TestFixture]
-    public class MathTests
+    public class CalculateTorusSegmentLengthTests
     {
         [Test]
         public void CalculateTorusSegmentLength_ShouldReturnZeroWhenRadiusIsZero()

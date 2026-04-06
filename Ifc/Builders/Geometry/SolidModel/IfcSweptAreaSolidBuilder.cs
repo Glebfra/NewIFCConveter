@@ -20,14 +20,8 @@ namespace Ifc.Builders.Geometry.SolidModel
 
         public virtual IIfcAxis2Placement3D CreatePosition(IModel model, Matrix<double> matrix)
         {
-            using (ITransaction transaction =
-                   model.BeginTransaction($"{nameof(IfcSweptAreaSolidBuilder<T>)} : {nameof(CreatePosition)}"))
-            {
-                Position = matrix.ToAxis2Placement3D(model);
-                transaction.Commit();
-
-                return Position;
-            }
+            Position = matrix.ToAxis2Placement3D(model);
+            return Position;
         }
 
         public override T CreateSolidModel(IModel model)
@@ -37,16 +31,9 @@ namespace Ifc.Builders.Geometry.SolidModel
                     $"{nameof(IfcSweptAreaSolidBuilder<T>)}: {nameof(Position)}. Call {nameof(CreatePosition)} before {nameof(CreateSolidModel)}");
 
             T solid = base.CreateSolidModel(model);
-
-            using (ITransaction transaction =
-                   model.BeginTransaction($"{nameof(IfcSweptAreaSolidBuilder<T>)} : {nameof(CreateSolidModel)}"))
-            {
-                solid.Position = Position;
-                solid.SweptArea = ProfileDef;
-                transaction.Commit();
-
-                return solid;
-            }
+            solid.Position = Position;
+            solid.SweptArea = ProfileDef;
+            return solid;
         }
     }
 }

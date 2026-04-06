@@ -21,14 +21,8 @@ namespace Ifc.Builders.Geometry.SolidModel
 
         public IIfcAxis1Placement CreateAxis(IModel model, Vector<double> axisPosition, Vector<double> axisDirection)
         {
-            using (ITransaction transaction =
-                   model.BeginTransaction($"{nameof(IfcRevolvedAreaSolidBuilder<T>)} : {nameof(CreateAxis)}"))
-            {
-                Axis = IfcVectorExtensions.CreateAxis1Placement(model, axisPosition, axisDirection);
-                transaction.Commit();
-
-                return Axis;
-            }
+            Axis = IfcVectorExtensions.CreateAxis1Placement(model, axisPosition, axisDirection);
+            return Axis;
         }
 
         public override T CreateSolidModel(IModel model)
@@ -39,17 +33,9 @@ namespace Ifc.Builders.Geometry.SolidModel
                 );
 
             T solid = base.CreateSolidModel(model);
-
-            using (ITransaction transaction = model.BeginTransaction(
-                       $"{nameof(IfcRevolvedAreaSolidBuilder<T>)} : {nameof(CreateSolidModel)}"
-                   ))
-            {
-                solid.Angle = Angle;
-                solid.Axis = Axis;
-                transaction.Commit();
-
-                return solid;
-            }
+            solid.Angle = Angle;
+            solid.Axis = Axis;
+            return solid;
         }
     }
 }

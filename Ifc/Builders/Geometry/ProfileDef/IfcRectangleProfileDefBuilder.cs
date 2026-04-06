@@ -22,15 +22,8 @@ namespace Ifc.Builders.Geometry.ProfileDef
         public override T CreateProfileDef(IModel model)
         {
             T instance = base.CreateProfileDef(model);
-
-            const string transactionName = $"{nameof(IfcRectangleProfileDefBuilder<T>)}: {nameof(CreateProfileDef)}";
-            using (ITransaction transaction = model.BeginTransaction(transactionName))
-            {
-                instance.XDim = XDim;
-                instance.YDim = YDim;
-                transaction.Commit();
-            }
-
+            instance.XDim = XDim;
+            instance.YDim = YDim;
             return instance;
         }
     }

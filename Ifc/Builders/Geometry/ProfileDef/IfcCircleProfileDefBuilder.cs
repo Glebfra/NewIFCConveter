@@ -19,15 +19,8 @@ namespace Ifc.Builders.Geometry.ProfileDef
         public override T CreateProfileDef(IModel model)
         {
             T profileDef = base.CreateProfileDef(model);
-
-            using (ITransaction transaction =
-                   model.BeginTransaction($"{nameof(IfcCircleProfileDefBuilder<T>)} : {nameof(CreateProfileDef)}"))
-            {
-                profileDef.Radius = Radius;
-                transaction.Commit();
-
-                return profileDef;
-            }
+            profileDef.Radius = Radius;
+            return profileDef;
         }
     }
 }

@@ -23,18 +23,12 @@ namespace Ifc.Builders.Geometry.ProfileDef
 
         public virtual T CreateProfileDef(IModel model)
         {
-            using (ITransaction transaction =
-                   model.BeginTransaction($"{nameof(IfcProfileDefBuilder<T>)} : {nameof(CreateProfileDef)}"))
+            ProfileDef = model.Instances.New<T>(def =>
             {
-                ProfileDef = model.Instances.New<T>(def =>
-                {
-                    def.ProfileName = ProfileName;
-                    def.ProfileType = ProfileTypeEnum;
-                });
-                transaction.Commit();
-
-                return ProfileDef;
-            }
+                def.ProfileName = ProfileName;
+                def.ProfileType = ProfileTypeEnum;
+            });
+            return ProfileDef;
         }
 
         public object Build(IModel model)

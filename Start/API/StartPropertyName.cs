@@ -156,5 +156,6 @@
         public const string AngleAllowableCorrFactor = "1417";
         public const string StiffnessShearFactor = "1418";
         public const string ShearAllowableCorrFactor = "1419";
+        public const string FrictionForce = "1435";
     }
 }

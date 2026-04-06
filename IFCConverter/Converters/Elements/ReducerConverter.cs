@@ -22,7 +22,7 @@ namespace IFCConverter.Converters.Elements
         {
         }
 
-        public override IfcPipeFitting BuildIfcElement(StartAbstractReducerEntity start)
+        public override IIfcGeometry CreateGeometry(StartAbstractReducerEntity start)
         {
             Vector<double> forward = (
                 start.Points.ElementAt(1) - start.Points.ElementAt(0)
@@ -38,22 +38,18 @@ namespace IFCConverter.Converters.Elements
                 Diameters = start.Diameters.ToArray()
             });
             geometry.AssignColor(Color.FromHEX("5f4e7c"));
-            _logger.Info($"Created geometry {geometry.GetType().FullName}");
+            return geometry;
+        }
 
-            Matrix<double> objectMatrix = MatrixExtensions.CreateTransition(start.Position);
-            _logger.Info($"Created object matrix: {objectMatrix.ToRowString()}");
+        public override Matrix<double> CreateObjectMatrix(StartAbstractReducerEntity start)
+        {
+            return MatrixExtensions.CreateTransition(start.Position);
+        }
 
-            IIfcPipeFittingBuilder<IfcPipeFitting> builder =
-                new IfcPipeFittingBuilder<IfcPipeFitting>(GenerateName(start), GenerateTag(start),
-                    IfcPipeFittingTypeEnum.CONNECTOR);
-            _logger.Info($"Created builder: {builder.GetType().FullName}");
-            TryAddMaterial(start, builder);
-
-            IIfcObjectPlacement objectPlacement = builder.CreateObjectPlacement(_Model, objectMatrix);
-            builder.AssignPlacement(objectPlacement);
-            builder.AssignGeometry(geometry);
-
-            return builder.CreateInstance(_Model);
+        public override IIfcProductBuilder<IfcPipeFitting> CreateBuilder(StartAbstractReducerEntity start)
+        {
+            return new IfcPipeFittingBuilder<IfcPipeFitting>(GenerateName(start), GenerateTag(start),
+                IfcPipeFittingTypeEnum.CONNECTOR);
         }
 
         public override StartAbstractReducerEntity BuildStartElement(IfcPipeFitting ifc)

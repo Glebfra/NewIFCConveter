@@ -13,14 +13,8 @@ namespace Ifc.Builders.Geometry.Curve
 
         public virtual T CreateCurve(IModel model)
         {
-            using (ITransaction transaction =
-                   model.BeginTransaction($"{nameof(IfcCurveBuilder<T>)} : {nameof(CreateCurve)}"))
-            {
-                IfcCurve = model.Instances.New<T>();
-                transaction.Commit();
-
-                return IfcCurve;
-            }
+            IfcCurve = model.Instances.New<T>();
+            return IfcCurve;
         }
 
         public object Build(IModel model)

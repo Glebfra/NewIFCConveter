@@ -15,7 +15,7 @@ using VectorExtensions = Utils.VectorExtensions;
 
 namespace Ifc.Geometries
 {
-    public struct AngularExpansionJointGeometryProperties
+    public struct SphericalPipesJointGeometryProperties
     {
         public double PipeDiameter;
         public double SphereDiameter;
@@ -26,22 +26,22 @@ namespace Ifc.Geometries
 
     [IfcRepresentationIdentifier(IfcRepresentationIdentifier.Body)]
     [IfcRepresentationType(IfcRepresentationType.Tessellation)]
-    public class AngularExpansionJointGeometry : IfcGeometry
+    public class SphericalPipesJointGeometry : IfcGeometry
     {
-        public AngularExpansionJointGeometry(IIfcBuilder geometryBuilder,
+        public SphericalPipesJointGeometry(IIfcBuilder geometryBuilder,
             IIfcRepresentationContext? representationContext = null)
             : base(geometryBuilder, representationContext)
         {
         }
 
-        public AngularExpansionJointGeometry(IEnumerable<IIfcBuilder> geometryBuilders,
+        public SphericalPipesJointGeometry(IEnumerable<IIfcBuilder> geometryBuilders,
             IIfcRepresentationContext? representationContext = null)
             : base(geometryBuilders, representationContext)
         {
         }
 
-        public static AngularExpansionJointGeometry CreateGeometry(IModel model,
-            AngularExpansionJointGeometryProperties properties)
+        public static SphericalPipesJointGeometry CreateGeometry(IModel model,
+            SphericalPipesJointGeometryProperties properties)
         {
             List<IIfcBuilder> builders = new();
 
@@ -56,7 +56,7 @@ namespace Ifc.Geometries
                 IIfcCircleProfileDefBuilder<IfcCircleProfileDef> circleProfileDefBuilder =
                     new IfcCircleProfileDefBuilder<IfcCircleProfileDef>(
                         properties.PipeDiameter / 2, IfcProfileTypeEnum.AREA,
-                        $"{nameof(AngularExpansionJointGeometry)} {nameof(IfcCircleProfileDef)}"
+                        $"{nameof(SphericalPipesJointGeometry)} {nameof(IfcCircleProfileDef)}"
                     );
                 circleProfileDefBuilder.CreatePosition(model, circleProfileDefMatrix);
                 IfcCircleProfileDef profileDef = circleProfileDefBuilder.CreateProfileDef(model);
@@ -84,7 +84,7 @@ namespace Ifc.Geometries
             triangulatedFaceSetBuilder.AssignTriangleIndices(sphereTriangulatedProperties.TriangleIndices);
             builders.Add(triangulatedFaceSetBuilder);
 
-            return new AngularExpansionJointGeometry(builders);
+            return new SphericalPipesJointGeometry(builders);
         }
     }
 }

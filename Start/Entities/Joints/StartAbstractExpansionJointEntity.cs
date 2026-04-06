@@ -7,14 +7,14 @@ using Start.Converters;
 using Start.Interfaces;
 using Start.StartProperties;
 
-namespace Start.Entities.ExpansionJoints
+namespace Start.Entities.Joints
 {
     public abstract class StartAbstractExpansionJointEntity : StartAbstractEntity,
         IStartOneNodeEntity, IStartClippingEntity
     {
         [JsonProperty(StartPropertyName.Length)]
         [JsonConverter(typeof(JsonStartConverter<LengthValueProperty<double>>))]
-        public IStartValueProperty<double> Length { get; set; } = new LengthValueProperty<double>();
+        public virtual IStartValueProperty<double> Length { get; set; } = new LengthValueProperty<double>();
 
         public void ClipEntity(IStartClippableEntity clippable)
         {

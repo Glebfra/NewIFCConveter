@@ -1,13 +1,21 @@
-﻿using System.Reflection;
+﻿using System.Collections.Generic;
+using System.Diagnostics.Contracts;
+using System.Linq;
+using System.Reflection;
 using Ifc.Builders;
+using Ifc.Builders.Properties;
 using Ifc.Interfaces;
 using IFCConverter.Interfaces;
+using MathNet.Numerics.LinearAlgebra;
 using Start.Attributes;
 using Start.Interfaces;
 using Utils;
 using Xbim.Common;
 using Xbim.Ifc.Extensions;
 using Xbim.Ifc4.Interfaces;
+using Xbim.Ifc4.Kernel;
+using Xbim.Ifc4.MeasureResource;
+using Xbim.Ifc4.PropertyResource;
 
 namespace IFCConverter.Converters.Elements
 {
@@ -33,19 +41,35 @@ namespace IFCConverter.Converters.Elements
             return BuildStartElement((TIfc)ifc)!;
         }
 
-        public abstract TIfc BuildIfcElement(TStart start);
-        public abstract TStart BuildStartElement(TIfc ifc);
+        [Pure]
+        public abstract IIfcGeometry CreateGeometry(TStart start);
+        
+        [Pure]
+        public abstract Matrix<double> CreateObjectMatrix(TStart start);
+        
+        [Pure]
+        public abstract IIfcProductBuilder<TIfc> CreateBuilder(TStart start);
 
-        protected void TryAddMaterial(TStart start, IIfcProductBuilder<TIfc> builder)
+        public TIfc BuildIfcElement(TStart start)
         {
-            if (start is IStartMaterializedEntity materializedEntity)
-            {
-                IIfcMaterialBuilder materialBuilder = new IfcMaterialBuilder(materializedEntity.MaterialName, "", "");
-                if (materialBuilder.GetOrCreateMaterial(_Model, out IIfcMaterial material))
-                    _logger.Info($"Created material with name: {material.Name}");
-                builder.AssignMaterial(material);
-            }
+            Matrix<double> objectMatrix = CreateObjectMatrix(start);
+
+            IIfcGeometry geometry = CreateGeometry(start);
+            _logger.Info($"Created geometry {geometry.GetType().FullName}");
+
+            IIfcProductBuilder<TIfc> builder = CreateBuilder(start);
+            TryAddMaterial(start, builder);
+
+            builder.AssignGeometry(geometry);
+            builder.CreateObjectPlacement(_Model, objectMatrix);
+
+            IIfcPropertySet psetStart = CreateStartPropertySet(start);
+            builder.PropertySets.Add(psetStart);
+
+            return builder.CreateInstance(_Model);
         }
+
+        public abstract TStart BuildStartElement(TIfc ifc);
 
         protected string GenerateTag(TStart start)
         {
@@ -63,6 +87,32 @@ namespace IFCConverter.Converters.Elements
                     IStartOneNodeEntity oneNodeEntity => $"{start.GetType().Name}_{oneNodeEntity.Node.Name}",
                     _ => $"{start.GetType().Name}_{start.ID}"
                 };
+        }
+
+        private void TryAddMaterial(TStart start, IIfcProductBuilder<TIfc> builder)
+        {
+            if (start is not IStartMaterializedEntity materializedEntity)
+                return;
+
+            IIfcMaterialBuilder materialBuilder = new IfcMaterialBuilder(materializedEntity.MaterialName, "", "");
+            if (materialBuilder.GetOrCreateMaterial(_Model, out IIfcMaterial material))
+                _logger.Info($"Created material with name: {material.Name}");
+            builder.AssignMaterial(material);
+        }
+
+        private IIfcPropertySet CreateStartPropertySet(TStart start)
+        {
+            IDictionary<string, string> psetData = start.GetData();
+            IEnumerable<IIfcPropertySingleValueBuilder<IIfcPropertySingleValue>> propertyBuilders = psetData
+                .Select(pair =>
+                {
+                    string propertyName = pair.Key;
+                    IfcText propertyValue = new IfcText(pair.Value);
+                    string propertyDescription = "";
+                    return new IfcPropertySingleValueBuilder<IfcPropertySingleValue>(propertyName, propertyDescription, propertyValue, null);
+                });
+            IIfcPropertySetBuilder propertySetBuilder = new IfcPropertySetBuilder("Pset_Start", propertyBuilders);
+            return propertySetBuilder.CreatePropertySet(_Model);
         }
     }
 }
