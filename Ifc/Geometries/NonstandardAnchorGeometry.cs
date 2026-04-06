@@ -13,7 +13,6 @@ using Xbim.Ifc4.ProfileResource;
 using MatrixExtensions = Utils.MatrixExtensions;
 using VectorExtensions = Utils.VectorExtensions;
 
-
 namespace Ifc.Geometries
 {
     public struct NonstandardAnchorGeometryProperties
@@ -22,7 +21,7 @@ namespace Ifc.Geometries
         public Vector<double>[] Directions;
         public double Diameter;
     }
-    
+
     [IfcRepresentationIdentifier(IfcRepresentationIdentifier.Body)]
     [IfcRepresentationType(IfcRepresentationType.Tessellation)]
     public class NonstandardAnchorGeometry : IfcGeometry
@@ -32,32 +31,32 @@ namespace Ifc.Geometries
         private const double XDimToYDimFactor = 1.0;
         private const double DiameterToConeDiameterFactor = 0.5;
         private const double DiameterToStickDiameterFactor = 0.2;
-        
-        public NonstandardAnchorGeometry(IIfcBuilder geometryBuilder, 
-            IIfcRepresentationContext? representationContext = null) 
+
+        public NonstandardAnchorGeometry(IIfcBuilder geometryBuilder,
+            IIfcRepresentationContext? representationContext = null)
             : base(geometryBuilder, representationContext)
         {
         }
 
-        public NonstandardAnchorGeometry(IEnumerable<IIfcBuilder> geometryBuilders, 
-            IIfcRepresentationContext? representationContext = null) 
+        public NonstandardAnchorGeometry(IEnumerable<IIfcBuilder> geometryBuilders,
+            IIfcRepresentationContext? representationContext = null)
             : base(geometryBuilders, representationContext)
         {
         }
-        
+
         public static NonstandardAnchorGeometry CreateGeometry(IModel model,
             NonstandardAnchorGeometryProperties properties)
         {
-            List<IIfcBuilder> builders = new List<IIfcBuilder>();
-            
+            List<IIfcBuilder> builders = new();
+
             double length = properties.Diameter * DiameterToLengthFactor;
             double baseLength = length / 10;
             double coneLength = (length - baseLength) / 2;
             double stickLength = coneLength;
-            
+
             double XDim = properties.Diameter * DiameterToBaseXDimFactor;
             double YDim = XDim * XDimToYDimFactor;
-            
+
             double coneDiameter = properties.Diameter * DiameterToConeDiameterFactor;
             double stickDiameter = properties.Diameter * DiameterToStickDiameterFactor;
 
@@ -68,14 +67,14 @@ namespace Ifc.Geometries
                 Vector<double> botConePoint = topConePoint - direction * coneLength;
                 Vector<double> botStickPoint = botConePoint - direction * stickLength;
                 Vector<double> botBasePoint = botStickPoint - direction * baseLength;
-                
+
                 Matrix<double> profileDefMatrix =
                     MatrixExtensions.CreateTransition(VectorExtensions.Zero, VectorExtensions.Z);
                 Matrix<double> baseExtrudedAreaSolidMatrix =
                     MatrixExtensions.CreateTransition(botBasePoint, direction);
                 Matrix<double> stickExtrudedAreaSolidMatrix =
                     MatrixExtensions.CreateTransition(botStickPoint, direction);
-                
+
                 IIfcRectangleProfileDefBuilder<IfcRectangleProfileDef> baseProfileDefBuilder =
                     new IfcRectangleProfileDefBuilder<IfcRectangleProfileDef>(
                         XDim, YDim, IfcProfileTypeEnum.AREA,
@@ -83,15 +82,16 @@ namespace Ifc.Geometries
                     );
                 baseProfileDefBuilder.CreatePosition(model, profileDefMatrix);
                 IfcRectangleProfileDef baseProfileDef = baseProfileDefBuilder.CreateProfileDef(model);
-                
+
                 IIfcExtrudedAreaSolidBuilder<IfcExtrudedAreaSolid> baseExtrudedAreaSolidBuilder =
-                    new IfcExtrudedAreaSolidBuilder<IfcExtrudedAreaSolid>(baseLength, VectorExtensions.Z, baseProfileDef);
+                    new IfcExtrudedAreaSolidBuilder<IfcExtrudedAreaSolid>(baseLength, VectorExtensions.Z,
+                        baseProfileDef);
                 baseExtrudedAreaSolidBuilder.CreatePosition(model, baseExtrudedAreaSolidMatrix);
                 builders.Add(baseExtrudedAreaSolidBuilder);
-                
+
                 IIfcCircleProfileDefBuilder<IfcCircleProfileDef> stickProfileDefBuilder =
                     new IfcCircleProfileDefBuilder<IfcCircleProfileDef>(
-                        stickDiameter / 2, IfcProfileTypeEnum.AREA, 
+                        stickDiameter / 2, IfcProfileTypeEnum.AREA,
                         $"{nameof(RestingSupportAnchorGeometry)} {nameof(IfcCircleProfileDef)}"
                     );
                 stickProfileDefBuilder.CreatePosition(model, profileDefMatrix);
@@ -102,7 +102,7 @@ namespace Ifc.Geometries
                         stickProfileDef);
                 stickExtrudedAreaSolidBuilder.CreatePosition(model, stickExtrudedAreaSolidMatrix);
                 builders.Add(stickExtrudedAreaSolidBuilder);
-                
+
                 IfcTriangulatedProperties coneProperties = IfcTriangulatedProperties.CreateCone(
                     new ConeTriangulatedGeometryProperties
                     {

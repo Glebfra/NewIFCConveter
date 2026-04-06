@@ -2,7 +2,7 @@
 
 namespace IFCConverter.Interfaces
 {
-    public interface IIfcElementConverter
+    internal interface IIfcElementConverter
     {
         [Pure]
         public object BuildIfc(object start);

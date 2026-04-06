@@ -28,7 +28,7 @@ namespace Ifc.Geometries
     {
         private const double DiameterToFirstDiameterFactor = 1.0;
         private const double DiameterToSecondDiameterFactor = 0.75;
-        
+
         public AxialExpansionJointGeometry(IIfcBuilder geometryBuilder,
             IIfcRepresentationContext? representationContext = null)
             : base(geometryBuilder, representationContext)
@@ -45,14 +45,14 @@ namespace Ifc.Geometries
             DoubleExtrudedJointGeometryProperties properties)
         {
             List<IIfcBuilder> builders = new();
-            
+
             double length = (properties.Points[1] - properties.Points[0]).L2Norm();
             Vector<double>[] directions = properties.Points
                 .Select(point => point - properties.Position)
                 .ToArray();
-            double[] diameters = 
-            { 
-                properties.Diameter * DiameterToFirstDiameterFactor, 
+            double[] diameters =
+            {
+                properties.Diameter * DiameterToFirstDiameterFactor,
                 properties.Diameter * DiameterToSecondDiameterFactor
             };
 

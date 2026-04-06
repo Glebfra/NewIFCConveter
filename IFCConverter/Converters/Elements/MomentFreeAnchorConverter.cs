@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Ifc.API;
 using Ifc.Builders.Elements;
 using Ifc.Geometries;
@@ -15,7 +16,7 @@ using VectorExtensions = Utils.VectorExtensions;
 
 namespace IFCConverter.Converters.Elements
 {
-    public sealed class MomentFreeAnchorConverter : 
+    internal sealed class MomentFreeAnchorConverter :
         IfcElementConverter<StartMomentFreeAnchorEntity, IfcDiscreteAccessory>
     {
         public MomentFreeAnchorConverter(IModel model) : base(model)
@@ -42,6 +43,7 @@ namespace IFCConverter.Converters.Elements
                 position = -displacement * VectorExtensions.Z;
                 doubleSidedDisplacement = VectorExtensions.Zero;
             }
+
             MomentFreeAnchorGeometry geometry = MomentFreeAnchorGeometry.CreateGeometry(_Model,
                 new HingedAnchorGeometryProperties
                 {
@@ -70,7 +72,7 @@ namespace IFCConverter.Converters.Elements
 
         public override StartMomentFreeAnchorEntity BuildStartElement(IfcDiscreteAccessory ifc)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

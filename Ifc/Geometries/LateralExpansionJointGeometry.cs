@@ -27,7 +27,7 @@ namespace Ifc.Geometries
     public class LateralExpansionJointGeometry : IfcGeometry
     {
         private const double DiameterToSphereDiameterFactor = 1.25;
-        
+
         public LateralExpansionJointGeometry(IIfcBuilder geometryBuilder,
             IIfcRepresentationContext? representationContext = null)
             : base(geometryBuilder, representationContext)

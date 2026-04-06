@@ -8,7 +8,7 @@ using Start.StartProperties;
 namespace Start.Entities.Joints
 {
     [StartElement(StartElementTypeEnum.AXIAL_COUPLING_JOINT)]
-    public class StartAxialCouplingJointEntity : StartAbstractExpansionJointEntity
+    public sealed class StartAxialCouplingJointEntity : StartAbstractExpansionJointEntity
     {
         [JsonProperty(StartPropertyName.AllowableAxialExpansion)]
         [JsonConverter(typeof(JsonStartConverter<LengthValueProperty<double>>))]

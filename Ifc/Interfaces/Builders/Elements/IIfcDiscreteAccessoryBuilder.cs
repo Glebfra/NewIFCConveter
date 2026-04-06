@@ -2,7 +2,7 @@
 
 namespace Ifc.Interfaces
 {
-    public interface IIfcDiscreteAccessoryBuilder<out T> : IIfcElementBuilder<T> 
+    public interface IIfcDiscreteAccessoryBuilder<out T> : IIfcElementBuilder<T>
         where T : IIfcDiscreteAccessory
     {
         public IfcDiscreteAccessoryTypeEnum PredefinedType { get; }

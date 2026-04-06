@@ -8,7 +8,7 @@ using Start.StartProperties;
 namespace Start.Entities.Fittings
 {
     [StartElement(StartElementTypeEnum.VALVE)]
-    public class StartValveEntity : StartAbstractFittingEntity,
+    public sealed class StartValveEntity : StartAbstractFittingEntity,
         IStartClippingEntity
     {
         [JsonProperty(StartPropertyName.Diameter)]

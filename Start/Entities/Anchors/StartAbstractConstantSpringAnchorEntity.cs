@@ -6,12 +6,12 @@ using Start.StartProperties;
 
 namespace Start.Entities.Anchors
 {
-    public class StartAbstractConstantSpringAnchorEntity : StartAbstractAnchorEntity
+    public abstract class StartAbstractConstantSpringAnchorEntity : StartAbstractAnchorEntity
     {
         [JsonProperty(StartPropertyName.FrictionMoment)]
         [JsonConverter(typeof(JsonStartConverter<MomentValueProperty<double>>))]
         public IStartValueProperty<double> FrictionMoment { get; set; } = new MomentValueProperty<double>();
-        
+
         [JsonProperty(StartPropertyName.SupportsNumber)]
         public int SupportsNumber { get; set; }
     }

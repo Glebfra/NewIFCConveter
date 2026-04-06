@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Ifc.API;
 using Ifc.Builders.Elements;
 using Ifc.Geometries;
@@ -15,7 +16,7 @@ using VectorExtensions = Utils.VectorExtensions;
 
 namespace IFCConverter.Converters.Elements
 {
-    public sealed class RestingSupportAnchorConverter : 
+    internal sealed class RestingSupportAnchorConverter :
         IfcElementConverter<StartRestingSupportAnchorEntity, IfcDiscreteAccessory>
     {
         public RestingSupportAnchorConverter(IModel model) : base(model)
@@ -54,7 +55,7 @@ namespace IFCConverter.Converters.Elements
                     DoubleSidedDisplacement = doubleSidedDisplacement
                 });
             geometry.AssignColor(Color.FromHEX("4ab636"));
-            
+
             return geometry;
         }
 
@@ -72,7 +73,7 @@ namespace IFCConverter.Converters.Elements
 
         public override StartRestingSupportAnchorEntity BuildStartElement(IfcDiscreteAccessory ifc)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

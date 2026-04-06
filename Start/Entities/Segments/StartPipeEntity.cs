@@ -13,7 +13,7 @@ namespace Start.Entities.Segments
     ///     interface.
     /// </summary>
     [StartElement(StartElementTypeEnum.PIPE_ELEMENT)]
-    public class StartPipeEntity : StartAbstractSegmentEntity,
+    public sealed class StartPipeEntity : StartAbstractSegmentEntity,
         IStartMaterializedEntity
     {
         /// <summary>

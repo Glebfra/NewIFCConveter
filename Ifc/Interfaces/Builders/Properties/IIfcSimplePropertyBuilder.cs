@@ -5,6 +5,5 @@ namespace Ifc.Interfaces
     public interface IIfcSimplePropertyBuilder<out T> : IIfcPropertyBuilder<T>
         where T : IIfcSimpleProperty
     {
-        
     }
 }

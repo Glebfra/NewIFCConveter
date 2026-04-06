@@ -4,8 +4,7 @@ using Start.Attributes;
 namespace Start.Entities.Anchors
 {
     [StartElement(StartElementTypeEnum.SPRING_HANGER)]
-    public class StartSpringHangerAnchorEntity : StartAbstractSpringAnchorEntity
+    public sealed class StartSpringHangerAnchorEntity : StartAbstractSpringAnchorEntity
     {
-        
     }
 }

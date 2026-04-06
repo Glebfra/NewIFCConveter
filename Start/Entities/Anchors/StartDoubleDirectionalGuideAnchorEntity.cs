@@ -4,8 +4,7 @@ using Start.Attributes;
 namespace Start.Entities.Anchors
 {
     [StartElement(StartElementTypeEnum.GUIDE_DOUBLE_DIRECTION_SUPPORT)]
-    public class StartDoubleDirectionalGuideAnchorEntity : StartAbstractDirectionalGuideAnchorEntity
+    public sealed class StartDoubleDirectionalGuideAnchorEntity : StartAbstractDirectionalGuideAnchorEntity
     {
-        
     }
 }

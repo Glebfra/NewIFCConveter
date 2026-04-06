@@ -24,7 +24,7 @@ namespace Ifc.Geometries
         public bool IsDoubleSided;
         public Vector<double> DoubleSidedDisplacement;
     }
-    
+
     [IfcRepresentationIdentifier(IfcRepresentationIdentifier.Body)]
     [IfcRepresentationType(IfcRepresentationType.Tessellation)]
     public class MomentFreeAnchorGeometry : IfcGeometry
@@ -33,22 +33,22 @@ namespace Ifc.Geometries
         private const double DiameterToBaseXDimFactor = 1.5;
         private const double XDimToYDimFactor = 1.0;
         private const double DiameterToConeDiameterFactor = 1.0;
-        
-        public MomentFreeAnchorGeometry(IIfcBuilder geometryBuilder, 
-            IIfcRepresentationContext? representationContext = null) 
+
+        public MomentFreeAnchorGeometry(IIfcBuilder geometryBuilder,
+            IIfcRepresentationContext? representationContext = null)
             : base(geometryBuilder, representationContext)
         {
         }
 
         public MomentFreeAnchorGeometry(IEnumerable<IIfcBuilder> geometryBuilders,
-            IIfcRepresentationContext? representationContext = null) 
+            IIfcRepresentationContext? representationContext = null)
             : base(geometryBuilders, representationContext)
         {
         }
 
         public static MomentFreeAnchorGeometry CreateGeometry(IModel model, HingedAnchorGeometryProperties properties)
         {
-            List<IIfcBuilder> builders = new List<IIfcBuilder>();
+            List<IIfcBuilder> builders = new();
 
             double length = properties.Diameter * DiameterToLengthFactor;
             double baseLength = length / 10;
@@ -59,12 +59,12 @@ namespace Ifc.Geometries
             double coneDiameter = properties.Diameter * DiameterToConeDiameterFactor;
 
             Vector<double>[] topConePoints = properties.IsDoubleSided
-                ? new Vector<double>[] 
-                { 
-                    properties.Position + properties.DoubleSidedDisplacement, 
+                ? new[]
+                {
+                    properties.Position + properties.DoubleSidedDisplacement,
                     properties.Position - properties.DoubleSidedDisplacement
                 }
-                : new Vector<double>[] { properties.Position };
+                : new[] { properties.Position };
             Vector<double>[] botConePoints = topConePoints
                 .Select(topConePoint => topConePoint - properties.Direction * (length - baseLength))
                 .ToArray();
@@ -77,7 +77,7 @@ namespace Ifc.Geometries
                 Vector<double> topConePoint = topConePoints[i];
                 Vector<double> botConePoint = botConePoints[i];
                 Vector<double> basePoint = basePoints[i];
-                
+
                 Matrix<double> baseExtrudedAreaSolidMatrix =
                     MatrixExtensions.CreateTransition(basePoint, properties.Direction);
                 Matrix<double> baseProfileDefMatrix =
@@ -90,9 +90,10 @@ namespace Ifc.Geometries
                     );
                 baseProfileDefBuilder.CreatePosition(model, baseProfileDefMatrix);
                 IfcRectangleProfileDef baseProfileDef = baseProfileDefBuilder.CreateProfileDef(model);
-            
+
                 IIfcExtrudedAreaSolidBuilder<IfcExtrudedAreaSolid> baseExtrudedAreaSolidBuilder =
-                    new IfcExtrudedAreaSolidBuilder<IfcExtrudedAreaSolid>(baseLength, VectorExtensions.Z, baseProfileDef);
+                    new IfcExtrudedAreaSolidBuilder<IfcExtrudedAreaSolid>(baseLength, VectorExtensions.Z,
+                        baseProfileDef);
                 baseExtrudedAreaSolidBuilder.CreatePosition(model, baseExtrudedAreaSolidMatrix);
                 builders.Add(baseExtrudedAreaSolidBuilder);
 

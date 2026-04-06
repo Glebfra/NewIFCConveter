@@ -16,7 +16,8 @@ using VectorExtensions = Utils.VectorExtensions;
 
 namespace IFCConverter.Converters.Elements
 {
-    public sealed class AxialCouplingJointConverter : IfcElementConverter<StartAxialCouplingJointEntity, IfcPipeFitting>
+    internal sealed class
+        AxialCouplingJointConverter : IfcElementConverter<StartAxialCouplingJointEntity, IfcPipeFitting>
     {
         public AxialCouplingJointConverter(IModel model) : base(model)
         {

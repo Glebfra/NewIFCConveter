@@ -8,15 +8,16 @@ namespace Ifc.Builders.Properties
     public class IfcPropertySingleValueBuilder<T> : IfcSimplePropertyBuilder<T>, IIfcPropertySingleValueBuilder<T>
         where T : IIfcPropertySingleValue, IInstantiableEntity
     {
-        public IIfcValue NominalValue { get; }
-        public IIfcUnit Unit { get; }
-        
-        public IfcPropertySingleValueBuilder(IfcIdentifier name, IfcText description, IIfcValue nominalValue, IIfcUnit unit) 
+        public IfcPropertySingleValueBuilder(IfcIdentifier name, IfcText description, IIfcValue nominalValue,
+            IIfcUnit unit)
             : base(name, description)
         {
             NominalValue = nominalValue;
             Unit = unit;
         }
+
+        public IIfcValue NominalValue { get; }
+        public IIfcUnit Unit { get; }
 
         public override T CreateInstance(IModel model)
         {

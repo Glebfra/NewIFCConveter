@@ -15,7 +15,7 @@ using VectorExtensions = Utils.VectorExtensions;
 
 namespace IFCConverter.Converters.Elements
 {
-    public sealed class PipeConverter : IfcElementConverter<StartAbstractSegmentEntity, IfcPipeSegment>
+    internal sealed class PipeConverter : IfcElementConverter<StartAbstractSegmentEntity, IfcPipeSegment>
     {
         private readonly Logger _logger = Logger.GetInstance();
 

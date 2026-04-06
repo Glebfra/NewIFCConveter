@@ -20,7 +20,7 @@ namespace Ifc.Geometries
         public Vector<double> Direction;
         public double Diameter;
     }
-    
+
     [IfcRepresentationIdentifier(IfcRepresentationIdentifier.Body)]
     [IfcRepresentationType(IfcRepresentationType.Brep)]
     public class FixedAnchorGeometry : IfcGeometry
@@ -28,20 +28,20 @@ namespace Ifc.Geometries
         private const double DiameterToLengthFactor = 0.1;
         private const double DiameterToXDimFactor = 1.5;
         private const double XDimToYDimFactor = 1;
-        
-        public FixedAnchorGeometry(IIfcBuilder geometryBuilder, 
-            IIfcRepresentationContext? representationContext = null) 
+
+        public FixedAnchorGeometry(IIfcBuilder geometryBuilder,
+            IIfcRepresentationContext? representationContext = null)
             : base(geometryBuilder, representationContext)
         {
         }
 
-        public FixedAnchorGeometry(IEnumerable<IIfcBuilder> geometryBuilders, 
-            IIfcRepresentationContext? representationContext = null) 
+        public FixedAnchorGeometry(IEnumerable<IIfcBuilder> geometryBuilders,
+            IIfcRepresentationContext? representationContext = null)
             : base(geometryBuilders, representationContext)
         {
         }
 
-        public static FixedAnchorGeometry CreateGeometry(IModel model, 
+        public static FixedAnchorGeometry CreateGeometry(IModel model,
             FixedAnchorGeometryProperties properties)
         {
             double length = properties.Diameter * DiameterToLengthFactor;

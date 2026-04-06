@@ -16,7 +16,7 @@ using VectorExtensions = Utils.VectorExtensions;
 
 namespace IFCConverter.Converters.Elements
 {
-    public sealed class ConstantSpringAnchorConverter : 
+    internal sealed class ConstantSpringAnchorConverter :
         IfcElementConverter<StartAbstractConstantSpringAnchorEntity, IfcDiscreteAccessory>
     {
         public ConstantSpringAnchorConverter(IModel model) : base(model)
@@ -29,7 +29,7 @@ namespace IFCConverter.Converters.Elements
             Matrix<double> segmentMatrix = segmentEntity.TransformationMatrix;
             double diameter = segmentEntity.Diameter.SIProperty;
             Vector<double> direction = GetDirection(start);
-            
+
             bool isDoubleSided = segmentMatrix.GetZ().IsParallel(VectorExtensions.Z);
             Vector<double> position, doubleSidedDisplacement;
             if (isDoubleSided)
@@ -63,7 +63,8 @@ namespace IFCConverter.Converters.Elements
             return MatrixExtensions.CreateTransition(start.Position);
         }
 
-        public override IIfcProductBuilder<IfcDiscreteAccessory> CreateBuilder(StartAbstractConstantSpringAnchorEntity start)
+        public override IIfcProductBuilder<IfcDiscreteAccessory> CreateBuilder(
+            StartAbstractConstantSpringAnchorEntity start)
         {
             return new IfcDiscreteAccessoryBuilder<IfcDiscreteAccessory>(
                 GenerateName(start), GenerateTag(start), IfcDiscreteAccessoryTypeEnum.ANCHORPLATE
@@ -74,7 +75,7 @@ namespace IFCConverter.Converters.Elements
         {
             throw new NotImplementedException();
         }
-        
+
         private static Vector<double> GetDirection(StartAbstractConstantSpringAnchorEntity start)
         {
             return start switch

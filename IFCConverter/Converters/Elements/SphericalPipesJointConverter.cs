@@ -18,7 +18,7 @@ using VectorExtensions = Utils.VectorExtensions;
 
 namespace IFCConverter.Converters.Elements
 {
-    public sealed class SphericalPipesJointConverter : 
+    internal sealed class SphericalPipesJointConverter :
         IfcElementConverter<StartAbstractExpansionJointEntity, IfcPipeFitting>
     {
         private readonly Logger _logger = Logger.GetInstance();

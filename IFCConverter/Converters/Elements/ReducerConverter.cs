@@ -14,7 +14,7 @@ using MatrixExtensions = Utils.MatrixExtensions;
 
 namespace IFCConverter.Converters.Elements
 {
-    public sealed class ReducerConverter : IfcElementConverter<StartAbstractReducerEntity, IfcPipeFitting>
+    internal sealed class ReducerConverter : IfcElementConverter<StartAbstractReducerEntity, IfcPipeFitting>
     {
         private readonly Logger _logger = Logger.GetInstance();
 

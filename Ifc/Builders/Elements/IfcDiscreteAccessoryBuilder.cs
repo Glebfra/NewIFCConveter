@@ -6,17 +6,17 @@ using Xbim.Ifc4.SharedComponentElements;
 
 namespace Ifc.Builders.Elements
 {
-    public class IfcDiscreteAccessoryBuilder<T> : IfcElementBuilder<T>, IIfcDiscreteAccessoryBuilder<T> 
+    public class IfcDiscreteAccessoryBuilder<T> : IfcElementBuilder<T>, IIfcDiscreteAccessoryBuilder<T>
         where T : IfcDiscreteAccessory
     {
-        public IfcDiscreteAccessoryTypeEnum PredefinedType { get; }
-        
-        public IfcDiscreteAccessoryBuilder(IfcLabel name, IfcIdentifier tag, 
-            IfcDiscreteAccessoryTypeEnum predefinedType) 
+        public IfcDiscreteAccessoryBuilder(IfcLabel name, IfcIdentifier tag,
+            IfcDiscreteAccessoryTypeEnum predefinedType)
             : base(name, tag)
         {
             PredefinedType = predefinedType;
         }
+
+        public IfcDiscreteAccessoryTypeEnum PredefinedType { get; }
 
         public override T CreateInstance(IModel model)
         {

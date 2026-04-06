@@ -16,7 +16,7 @@ using VectorExtensions = Utils.VectorExtensions;
 
 namespace IFCConverter.Converters.Elements
 {
-    public sealed class ValveConverter : IfcElementConverter<StartValveEntity, IfcPipeFitting>
+    internal sealed class ValveConverter : IfcElementConverter<StartValveEntity, IfcPipeFitting>
     {
         private readonly Logger _logger = Logger.GetInstance();
 

@@ -28,7 +28,7 @@ namespace Ifc.Geometries
     public class TorsionExpansionJointGeometry : IfcGeometry
     {
         private const double DiameterToBottomConeDiameterFactor = 1.25;
-        
+
         public TorsionExpansionJointGeometry(IIfcBuilder geometryBuilder,
             IIfcRepresentationContext? representationContext = null)
             : base(geometryBuilder, representationContext)

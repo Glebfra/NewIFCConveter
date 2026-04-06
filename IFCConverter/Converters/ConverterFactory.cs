@@ -10,7 +10,7 @@ using Xbim.Common;
 
 namespace IFCConverter.Converters
 {
-    public static class ConverterFactory
+    internal static class ConverterFactory
     {
         [Pure]
         public static IIfcElementConverter? CreateConverter(IModel model, IStartEntity startEntity)
@@ -26,7 +26,7 @@ namespace IFCConverter.Converters
                 StartAbstractDirectionalGuideAnchorEntity => new DirectionalGuideAnchorConverter(model),
                 StartAbstractConstantSpringAnchorEntity => new ConstantSpringAnchorConverter(model),
                 StartNonstandardAnchorEntity => new NonstandardAnchorConverter(model),
-                
+
                 // Expansion Joint Entities
                 StartAngularExpansionJointEntity => new SphericalPipesJointConverter(model),
                 StartBallExpansionJointEntity => new SphericalPipesJointConverter(model),

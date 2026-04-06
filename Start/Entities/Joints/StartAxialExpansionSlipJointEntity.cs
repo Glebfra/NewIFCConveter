@@ -8,7 +8,7 @@ using Start.StartProperties;
 namespace Start.Entities.Joints
 {
     [StartElement(StartElementTypeEnum.AXIAL_EXPANSION_SLIP_JOINT)]
-    public class StartAxialExpansionSlipJointEntity : StartAbstractExpansionJointEntity
+    public sealed class StartAxialExpansionSlipJointEntity : StartAbstractExpansionJointEntity
     {
         [JsonProperty(StartPropertyName.AllowableAxialExpansion)]
         [JsonConverter(typeof(JsonStartConverter<LengthValueProperty<double>>))]

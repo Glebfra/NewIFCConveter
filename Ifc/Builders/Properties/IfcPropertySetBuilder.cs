@@ -10,15 +10,15 @@ namespace Ifc.Builders.Properties
 {
     public class IfcPropertySetBuilder : IIfcPropertySetBuilder
     {
-        private string _name;
-        private IEnumerable<IIfcPropertyBuilder<IIfcProperty>> _propertyBuilders;
+        private readonly string _name;
+        private readonly IEnumerable<IIfcPropertyBuilder<IIfcProperty>> _propertyBuilders;
 
         public IfcPropertySetBuilder(string name, IEnumerable<IIfcPropertyBuilder<IIfcProperty>> propertyBuilders)
         {
             _name = name;
             _propertyBuilders = propertyBuilders;
         }
-        
+
         public IIfcPropertySet CreatePropertySet(IModel model)
         {
             IEnumerable<IIfcProperty> properties =

@@ -16,7 +16,7 @@ using MatrixExtensions = Utils.MatrixExtensions;
 
 namespace IFCConverter.Converters.Elements
 {
-    public sealed class BendConverter : IfcElementConverter<StartAbstractBendEntity, IfcPipeFitting>
+    internal sealed class BendConverter : IfcElementConverter<StartAbstractBendEntity, IfcPipeFitting>
     {
         private readonly Logger _logger = Logger.GetInstance();
 

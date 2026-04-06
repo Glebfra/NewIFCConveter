@@ -17,7 +17,7 @@ using VectorExtensions = Utils.VectorExtensions;
 
 namespace IFCConverter.Converters.Elements
 {
-    public sealed class TorsionExpansionJointConverter : 
+    internal sealed class TorsionExpansionJointConverter :
         IfcElementConverter<StartTorsionExpansionJointEntity, IfcPipeFitting>
     {
         private readonly Logger _logger = Logger.GetInstance();

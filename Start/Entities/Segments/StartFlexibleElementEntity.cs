@@ -10,7 +10,7 @@ namespace Start.Entities.Segments
     ///     <see cref="IStartSegmentDiameterUndefinedEntity" /> interface.
     /// </summary>
     [StartElement(StartElementTypeEnum.FLEXIBLE_ELEMENT)]
-    public class StartFlexibleElementEntity : StartAbstractSegmentUndefinedEntity,
+    public sealed class StartFlexibleElementEntity : StartAbstractSegmentUndefinedEntity,
         IStartSegmentDiameterUndefinedEntity
     {
     }

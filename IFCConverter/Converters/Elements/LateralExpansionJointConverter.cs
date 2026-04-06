@@ -17,7 +17,7 @@ using VectorExtensions = Utils.VectorExtensions;
 
 namespace IFCConverter.Converters.Elements
 {
-    public sealed class LateralExpansionJointConverter : 
+    internal sealed class LateralExpansionJointConverter :
         IfcElementConverter<StartLateralExpansionJointEntity, IfcPipeFitting>
     {
         public LateralExpansionJointConverter(IModel model) : base(model)

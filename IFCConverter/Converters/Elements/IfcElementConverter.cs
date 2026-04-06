@@ -13,13 +13,12 @@ using Utils;
 using Xbim.Common;
 using Xbim.Ifc.Extensions;
 using Xbim.Ifc4.Interfaces;
-using Xbim.Ifc4.Kernel;
 using Xbim.Ifc4.MeasureResource;
 using Xbim.Ifc4.PropertyResource;
 
 namespace IFCConverter.Converters.Elements
 {
-    public abstract class IfcElementConverter<TStart, TIfc> : IIfcElementConverter
+    internal abstract class IfcElementConverter<TStart, TIfc> : IIfcElementConverter
         where TStart : IStartEntity
         where TIfc : IIfcProduct, IInstantiableEntity
     {
@@ -43,10 +42,10 @@ namespace IFCConverter.Converters.Elements
 
         [Pure]
         public abstract IIfcGeometry CreateGeometry(TStart start);
-        
+
         [Pure]
         public abstract Matrix<double> CreateObjectMatrix(TStart start);
-        
+
         [Pure]
         public abstract IIfcProductBuilder<TIfc> CreateBuilder(TStart start);
 
@@ -107,9 +106,10 @@ namespace IFCConverter.Converters.Elements
                 .Select(pair =>
                 {
                     string propertyName = pair.Key;
-                    IfcText propertyValue = new IfcText(pair.Value);
+                    IfcText propertyValue = new(pair.Value);
                     string propertyDescription = "";
-                    return new IfcPropertySingleValueBuilder<IfcPropertySingleValue>(propertyName, propertyDescription, propertyValue, null);
+                    return new IfcPropertySingleValueBuilder<IfcPropertySingleValue>(propertyName, propertyDescription,
+                        propertyValue, null);
                 });
             IIfcPropertySetBuilder propertySetBuilder = new IfcPropertySetBuilder("Pset_Start", propertyBuilders);
             return propertySetBuilder.CreatePropertySet(_Model);

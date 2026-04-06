@@ -11,7 +11,7 @@ namespace Start.Entities.Segments
     ///     <see cref="IStartMaterializedEntity" /> interface.
     /// </summary>
     [StartElement(StartElementTypeEnum.RIGID_ELEMENT)]
-    public class StartRigidElementEntity : StartAbstractSegmentUndefinedEntity,
+    public sealed class StartRigidElementEntity : StartAbstractSegmentUndefinedEntity,
         IStartMaterializedEntity
     {
         /// <summary>

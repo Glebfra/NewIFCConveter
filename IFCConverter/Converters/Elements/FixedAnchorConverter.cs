@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Ifc.API;
 using Ifc.Builders.Elements;
 using Ifc.Geometries;
@@ -15,7 +16,7 @@ using VectorExtensions = Utils.VectorExtensions;
 
 namespace IFCConverter.Converters.Elements
 {
-    public sealed class FixedAnchorConverter : IfcElementConverter<StartFixedAnchorEntity, IfcDiscreteAccessory>
+    internal sealed class FixedAnchorConverter : IfcElementConverter<StartFixedAnchorEntity, IfcDiscreteAccessory>
     {
         public FixedAnchorConverter(IModel model) : base(model)
         {
@@ -49,7 +50,7 @@ namespace IFCConverter.Converters.Elements
 
         public override StartFixedAnchorEntity BuildStartElement(IfcDiscreteAccessory ifc)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

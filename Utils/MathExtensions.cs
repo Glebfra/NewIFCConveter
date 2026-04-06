@@ -19,7 +19,7 @@ namespace Utils
             double angle = segmentMatrix.GetZ().Angle(VectorExtensions.Z);
             if (angle.AlmostEqual(0, 1e-6)) // a!=0 => sin(a)!=0
                 angle = segmentMatrix.GetY().Angle(VectorExtensions.Z);
-            
+
             return diameter / (2 * Math.Sin(angle)); // r / sin(a)
         }
     }

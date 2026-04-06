@@ -27,7 +27,7 @@ namespace Ifc.Geometries
     {
         private const double DiameterToLengthFactor = 0.1;
         private const double DiameterToOuterDiameterFactor = 1.1;
-        
+
         public AxialCouplingJointGeometry(IIfcBuilder geometryBuilder,
             IIfcRepresentationContext? representationContext = null)
             : base(geometryBuilder, representationContext)

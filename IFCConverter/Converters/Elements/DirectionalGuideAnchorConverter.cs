@@ -15,7 +15,7 @@ using MatrixExtensions = Utils.MatrixExtensions;
 
 namespace IFCConverter.Converters.Elements
 {
-    public sealed class DirectionalGuideAnchorConverter : 
+    internal sealed class DirectionalGuideAnchorConverter :
         IfcElementConverter<StartAbstractDirectionalGuideAnchorEntity, IfcDiscreteAccessory>
     {
         public DirectionalGuideAnchorConverter(IModel model) : base(model)
@@ -50,7 +50,8 @@ namespace IFCConverter.Converters.Elements
             return MatrixExtensions.CreateTransition(start.Position);
         }
 
-        public override IIfcProductBuilder<IfcDiscreteAccessory> CreateBuilder(StartAbstractDirectionalGuideAnchorEntity start)
+        public override IIfcProductBuilder<IfcDiscreteAccessory> CreateBuilder(
+            StartAbstractDirectionalGuideAnchorEntity start)
         {
             return new IfcDiscreteAccessoryBuilder<IfcDiscreteAccessory>(
                 GenerateName(start), GenerateTag(start), IfcDiscreteAccessoryTypeEnum.ANCHORPLATE
@@ -59,23 +60,23 @@ namespace IFCConverter.Converters.Elements
 
         public override StartAbstractDirectionalGuideAnchorEntity BuildStartElement(IfcDiscreteAccessory ifc)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         private static Vector<double>[] CreateDirections(StartAbstractDirectionalGuideAnchorEntity start)
         {
             IStartSegmentEntity segmentEntity = start.ConnectedEntities.OfType<IStartSegmentEntity>().First();
             Matrix<double> segmentMatrix = segmentEntity.TransformationMatrix;
-            
+
             return start switch
             {
-                StartSingleDirectionalGuideAnchorEntity => new Vector<double>[]
+                StartSingleDirectionalGuideAnchorEntity => new[]
                 {
                     segmentMatrix.GetX(),
                     -segmentMatrix.GetX(),
                     segmentMatrix.GetY()
                 },
-                StartDoubleDirectionalGuideAnchorEntity => new Vector<double>[]
+                StartDoubleDirectionalGuideAnchorEntity => new[]
                 {
                     segmentMatrix.GetX(),
                     -segmentMatrix.GetX(),

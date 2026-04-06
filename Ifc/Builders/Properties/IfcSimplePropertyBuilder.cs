@@ -8,7 +8,7 @@ namespace Ifc.Builders.Properties
     public class IfcSimplePropertyBuilder<T> : IfcPropertyBuilder<T>, IIfcSimplePropertyBuilder<T>
         where T : IIfcSimpleProperty, IInstantiableEntity
     {
-        public IfcSimplePropertyBuilder(IfcIdentifier name, IfcText description) 
+        public IfcSimplePropertyBuilder(IfcIdentifier name, IfcText description)
             : base(name, description)
         {
         }

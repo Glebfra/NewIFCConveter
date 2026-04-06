@@ -21,7 +21,7 @@ using VectorExtensions = Utils.VectorExtensions;
 
 namespace IFCConverter.Converters.Elements
 {
-    public sealed class NonstandardAnchorConverter : 
+    internal sealed class NonstandardAnchorConverter :
         IfcElementConverter<StartNonstandardAnchorEntity, IfcDiscreteAccessory>
     {
         public NonstandardAnchorConverter(IModel model) : base(model)
@@ -33,10 +33,10 @@ namespace IFCConverter.Converters.Elements
             IStartSegmentEntity[] segmentEntities = start.ConnectedEntities.OfType<IStartSegmentEntity>().ToArray();
             Matrix<double> segmentMatrix = segmentEntities[0].TransformationMatrix;
             double diameter = segmentEntities.Max(segmentEntity => segmentEntity.Diameter).SIProperty;
-            
+
             StartNonStandardRestraintModule[] restraintModules = start.Restraints.ToArray();
-            List<Vector<double>> positions = new List<Vector<double>>(capacity: restraintModules.Length);
-            List<Vector<double>> directions = new List<Vector<double>>(capacity: restraintModules.Length);
+            List<Vector<double>> positions = new(restraintModules.Length);
+            List<Vector<double>> directions = new(restraintModules.Length);
 
             for (int i = 0; i < restraintModules.Length; i++)
             {
@@ -48,7 +48,7 @@ namespace IFCConverter.Converters.Elements
                 Vector<double> position = CalculatePosition(segmentMatrix, direction, diameter);
                 directions.Add(direction);
                 positions.Add(position);
-                
+
                 if (restraintModule.Type.EnumValue == StartRestraintTypeEnum.RIGID_DOUBLE_SIDED)
                 {
                     direction = -direction;
@@ -66,7 +66,7 @@ namespace IFCConverter.Converters.Elements
                     Positions = positions.ToArray()
                 });
             geometry.AssignColor(Color.FromHEX("4ab636"));
-            
+
             return geometry;
         }
 
@@ -84,38 +84,38 @@ namespace IFCConverter.Converters.Elements
 
         public override StartNonstandardAnchorEntity BuildStartElement(IfcDiscreteAccessory ifc)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         [Pure]
         private static Vector<double> CreateDirection(StartNonStandardRestraintModule restraintModule)
         {
-            double restraintX = restraintModule.AngleX.SIProperty < 0 
+            double restraintX = restraintModule.AngleX.SIProperty < 0
                 ? -Math.Cos(restraintModule.AngleX.SIProperty)
                 : Math.Cos(restraintModule.AngleX.SIProperty);
-            double restraintY = restraintModule.AngleY.SIProperty < 0 
+            double restraintY = restraintModule.AngleY.SIProperty < 0
                 ? -Math.Cos(restraintModule.AngleY.SIProperty)
                 : Math.Cos(restraintModule.AngleY.SIProperty);
-            double restraintZ = restraintModule.AngleZ.SIProperty < 0 
+            double restraintZ = restraintModule.AngleZ.SIProperty < 0
                 ? -Math.Cos(restraintModule.AngleZ.SIProperty)
                 : Math.Cos(restraintModule.AngleZ.SIProperty);
-            return new DenseVector(new double[] { restraintX, restraintY, restraintZ });
+            return new DenseVector(new[] { restraintX, restraintY, restraintZ });
         }
 
         [Pure]
         private static Vector<double> CreateDirectionFromLocal(StartNonstandardAnchorEntity start,
             StartNonStandardRestraintModule restraintModule, IStartSegmentEntity[] segmentEntities)
         {
-            double restraintX = restraintModule.AngleX.SIProperty < 0 
+            double restraintX = restraintModule.AngleX.SIProperty < 0
                 ? -Math.Cos(restraintModule.AngleX.SIProperty)
                 : Math.Cos(restraintModule.AngleX.SIProperty);
-            double restraintY = restraintModule.AngleY.SIProperty < 0 
+            double restraintY = restraintModule.AngleY.SIProperty < 0
                 ? -Math.Cos(restraintModule.AngleY.SIProperty)
                 : Math.Cos(restraintModule.AngleY.SIProperty);
-            double restraintZ = restraintModule.AngleZ.SIProperty < 0 
+            double restraintZ = restraintModule.AngleZ.SIProperty < 0
                 ? -Math.Cos(restraintModule.AngleZ.SIProperty)
                 : Math.Cos(restraintModule.AngleZ.SIProperty);
-            
+
             foreach (IStartSegmentEntity segmentEntity in segmentEntities)
             {
                 StartNodeEntity[] nodeEntities = segmentEntity.ConnectedEntities.OfType<StartNodeEntity>().ToArray();
@@ -125,20 +125,23 @@ namespace IFCConverter.Converters.Elements
                     continue;
 
                 Vector<double> direction = endNode.Position - startNode.Position;
-                Matrix<double> transitionMatrix = MatrixExtensions.CreateTransitionWithWorldUp(VectorExtensions.Zero, direction);
+                Matrix<double> transitionMatrix =
+                    MatrixExtensions.CreateTransitionWithWorldUp(VectorExtensions.Zero, direction);
                 return transitionMatrix.GetZ() * restraintX +
                        transitionMatrix.GetX() * restraintY +
                        transitionMatrix.GetY() * restraintZ;
             }
+
             throw new Exception("Cannot find local axes for nonstandard anchor restraint module");
         }
 
         [Pure]
-        private static Vector<double> CalculatePosition(Matrix<double> segmentMatrix, Vector<double> direction, double diameter)
+        private static Vector<double> CalculatePosition(Matrix<double> segmentMatrix, Vector<double> direction,
+            double diameter)
         {
             if (direction.IsParallel(segmentMatrix.GetZ(), 1e-3))
                 return segmentMatrix.GetY() * diameter / 2;
-            
+
             return -direction * MathExtensions.CalculateAnchorDisplacement(segmentMatrix, diameter);
         }
     }

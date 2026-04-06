@@ -25,7 +25,7 @@ namespace Ifc.Geometries
     public class ValveGeometry : IfcGeometry
     {
         private const double DiameterToConeDiameterFactor = 1.5;
-        
+
         public ValveGeometry(IIfcBuilder geometryBuilder, IIfcRepresentationContext? representationContext = null)
             : base(geometryBuilder, representationContext)
         {

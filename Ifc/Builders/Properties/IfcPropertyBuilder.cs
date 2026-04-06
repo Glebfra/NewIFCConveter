@@ -8,16 +8,16 @@ namespace Ifc.Builders.Properties
     public class IfcPropertyBuilder<T> : IIfcPropertyBuilder<T>
         where T : IIfcProperty, IInstantiableEntity
     {
-        public bool IsCreated { get; private set; }
-        public IfcIdentifier Name { get; }
-        public IfcText Description { get; }
-        public T? Instance { get; private set; }
-
         public IfcPropertyBuilder(IfcIdentifier name, IfcText description)
         {
             Name = name;
             Description = description;
         }
+
+        public bool IsCreated { get; private set; }
+        public IfcIdentifier Name { get; }
+        public IfcText Description { get; }
+        public T? Instance { get; private set; }
 
         public virtual T CreateInstance(IModel model)
         {
@@ -27,7 +27,7 @@ namespace Ifc.Builders.Properties
                 set.Description = Description;
             });
             IsCreated = true;
-            
+
             return Instance;
         }
     }

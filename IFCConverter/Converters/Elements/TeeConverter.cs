@@ -16,7 +16,7 @@ using VectorExtensions = Utils.VectorExtensions;
 
 namespace IFCConverter.Converters.Elements
 {
-    public sealed class TeeConverter : IfcElementConverter<StartAbstractTeeEntity, IfcPipeFitting>
+    internal sealed class TeeConverter : IfcElementConverter<StartAbstractTeeEntity, IfcPipeFitting>
     {
         private readonly Logger _logger = Logger.GetInstance();
 

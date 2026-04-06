@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Ifc.API;
 using Ifc.Builders.Elements;
 using Ifc.Geometries;
@@ -15,7 +16,7 @@ using VectorExtensions = Utils.VectorExtensions;
 
 namespace IFCConverter.Converters.Elements
 {
-    public sealed class RigidHangerAnchorConverter : 
+    internal sealed class RigidHangerAnchorConverter :
         IfcElementConverter<StartRigidHangerAnchorEntity, IfcDiscreteAccessory>
     {
         public RigidHangerAnchorConverter(IModel model) : base(model)
@@ -27,7 +28,7 @@ namespace IFCConverter.Converters.Elements
             IStartSegmentEntity[] segmentEntities = start.ConnectedEntities.OfType<IStartSegmentEntity>().ToArray();
             Matrix<double> segmentMatrix = segmentEntities[0].TransformationMatrix;
             double diameter = segmentEntities[0].Diameter.SIProperty;
-            
+
             // Check if should double sided
             bool isDoubleSided = segmentMatrix.GetZ().IsParallel(VectorExtensions.Z);
             Vector<double> position, doubleSidedDisplacement;
@@ -71,7 +72,7 @@ namespace IFCConverter.Converters.Elements
 
         public override StartRigidHangerAnchorEntity BuildStartElement(IfcDiscreteAccessory ifc)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }
