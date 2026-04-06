@@ -139,7 +139,7 @@ namespace IFCConverter.Converters.Elements
             if (direction.IsParallel(segmentMatrix.GetZ(), 1e-3))
                 return segmentMatrix.GetY() * diameter / 2;
             
-            return -direction * MathExtensions.CalculateAnchorDisplacement(direction, diameter);
+            return -direction * MathExtensions.CalculateAnchorDisplacement(segmentMatrix, diameter);
         }
     }
 }

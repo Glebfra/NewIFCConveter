@@ -114,6 +114,10 @@
         <Compile Include="Builders\IfcMaterialBuilder.cs" />
         <Compile Include="Builders\IfcPortBuilder.cs" />
         <Compile Include="Builders\IfcStyledSurfaceBuilder.cs" />
+        <Compile Include="Builders\Properties\IfcPropertyBuilder.cs" />
+        <Compile Include="Builders\Properties\IfcPropertySetBuilder.cs" />
+        <Compile Include="Builders\Properties\IfcPropertySingleValueBuilder.cs" />
+        <Compile Include="Builders\Properties\IfcSimplePropertyBuilder.cs" />
         <Compile Include="Exceptions\IfcEntityCreatedException.cs" />
         <Compile Include="Extensions\IfcMatrixExtensions.cs" />
         <Compile Include="Extensions\IfcVectorExtensions.cs" />
@@ -171,6 +175,10 @@
         <Compile Include="Interfaces\Builders\IIfcMaterialBuilder.cs" />
         <Compile Include="Interfaces\Builders\IIfcPortBuilder.cs" />
         <Compile Include="Interfaces\Builders\IIfcStyledSurfaceBuilder.cs" />
+        <Compile Include="Interfaces\Builders\Properties\IIfcPropertyBuilder.cs" />
+        <Compile Include="Interfaces\Builders\Properties\IIfcPropertySetBuilder.cs" />
+        <Compile Include="Interfaces\Builders\Properties\IIfcPropertySingleValueBuilder.cs" />
+        <Compile Include="Interfaces\Builders\Properties\IIfcSimplePropertyBuilder.cs" />
         <Compile Include="Interfaces\Geometry\IIfcGeometry.cs" />
         <Compile Include="Interfaces\IColor.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />

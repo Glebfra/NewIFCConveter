@@ -38,7 +38,7 @@ namespace IFCConverter.Converters.Elements
             }
             else
             {
-                double displacement = MathExtensions.CalculateAnchorDisplacement(segmentMatrix.GetZ(), diameter);
+                double displacement = MathExtensions.CalculateAnchorDisplacement(segmentMatrix, diameter);
                 position = -displacement * VectorExtensions.Z;
                 doubleSidedDisplacement = VectorExtensions.Zero;
             }

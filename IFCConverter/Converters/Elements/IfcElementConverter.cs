@@ -1,6 +1,9 @@
-﻿using System.Diagnostics.Contracts;
+﻿using System.Collections.Generic;
+using System.Diagnostics.Contracts;
+using System.Linq;
 using System.Reflection;
 using Ifc.Builders;
+using Ifc.Builders.Properties;
 using Ifc.Interfaces;
 using IFCConverter.Interfaces;
 using MathNet.Numerics.LinearAlgebra;
@@ -10,6 +13,9 @@ using Utils;
 using Xbim.Common;
 using Xbim.Ifc.Extensions;
 using Xbim.Ifc4.Interfaces;
+using Xbim.Ifc4.Kernel;
+using Xbim.Ifc4.MeasureResource;
+using Xbim.Ifc4.PropertyResource;
 
 namespace IFCConverter.Converters.Elements
 {
@@ -57,6 +63,9 @@ namespace IFCConverter.Converters.Elements
             builder.AssignGeometry(geometry);
             builder.CreateObjectPlacement(_Model, objectMatrix);
 
+            IIfcPropertySet psetStart = CreateStartPropertySet(start);
+            builder.PropertySets.Add(psetStart);
+
             return builder.CreateInstance(_Model);
         }
 
@@ -89,6 +98,21 @@ namespace IFCConverter.Converters.Elements
             if (materialBuilder.GetOrCreateMaterial(_Model, out IIfcMaterial material))
                 _logger.Info($"Created material with name: {material.Name}");
             builder.AssignMaterial(material);
+        }
+
+        private IIfcPropertySet CreateStartPropertySet(TStart start)
+        {
+            IDictionary<string, string> psetData = start.GetData();
+            IEnumerable<IIfcPropertySingleValueBuilder<IIfcPropertySingleValue>> propertyBuilders = psetData
+                .Select(pair =>
+                {
+                    string propertyName = pair.Key;
+                    IfcText propertyValue = new IfcText(pair.Value);
+                    string propertyDescription = "";
+                    return new IfcPropertySingleValueBuilder<IfcPropertySingleValue>(propertyName, propertyDescription, propertyValue, null);
+                });
+            IIfcPropertySetBuilder propertySetBuilder = new IfcPropertySetBuilder("Pset_Start", propertyBuilders);
+            return propertySetBuilder.CreatePropertySet(_Model);
         }
     }
 }

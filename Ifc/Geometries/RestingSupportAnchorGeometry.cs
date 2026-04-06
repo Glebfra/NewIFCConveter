@@ -7,6 +7,7 @@ using Ifc.Builders.Geometry.SolidModel;
 using Ifc.Builders.Geometry.Tessellated;
 using Ifc.Interfaces;
 using MathNet.Numerics.LinearAlgebra;
+using Utils;
 using Xbim.Common;
 using Xbim.Ifc4.GeometricModelResource;
 using Xbim.Ifc4.Interfaces;
@@ -20,6 +21,7 @@ namespace Ifc.Geometries
     {
         public Vector<double> Position;
         public Vector<double> Direction;
+        public Vector<double> RefDirection;
         public double Diameter;
         public bool IsDoubleSided;
         public Vector<double> DoubleSidedDisplacement;
@@ -89,8 +91,11 @@ namespace Ifc.Geometries
                 
                 Matrix<double> profileDefMatrix =
                     MatrixExtensions.CreateTransition(VectorExtensions.Zero, VectorExtensions.Z);
-                Matrix<double> baseExtrudedAreaSolidMatrix =
-                    MatrixExtensions.CreateTransition(basePoint, properties.Direction);
+                Matrix<double> baseExtrudedAreaSolidMatrix = MatrixExtensions.CreateTransition(
+                    basePoint,
+                    properties.RefDirection,
+                    properties.Direction.CrossProduct(properties.RefDirection)
+                );
                 Matrix<double> stickExtrudedAreaSolidMatrix =
                     MatrixExtensions.CreateTransition(botStickPoint, properties.Direction);
 
