@@ -25,6 +25,9 @@ namespace Ifc.Geometries
     [IfcRepresentationType(IfcRepresentationType.Brep)]
     public class AxialCouplingJointGeometry : IfcGeometry
     {
+        private const double DiameterToLengthFactor = 0.1;
+        private const double DiameterToOuterDiameterFactor = 1.1;
+        
         public AxialCouplingJointGeometry(IIfcBuilder geometryBuilder,
             IIfcRepresentationContext? representationContext = null)
             : base(geometryBuilder, representationContext)
@@ -40,9 +43,9 @@ namespace Ifc.Geometries
         public static AxialCouplingJointGeometry CreateGeometry(IModel model,
             AxialCouplingJointGeometryProperties properties)
         {
-            double length = properties.Diameter / 10;
+            double length = properties.Diameter * DiameterToLengthFactor;
             double innerDiameter = properties.Diameter;
-            double outerDiameter = properties.Diameter * 1.1;
+            double outerDiameter = properties.Diameter * DiameterToOuterDiameterFactor;
             double wallThickness = outerDiameter - innerDiameter;
 
             Vector<double> extrudedAreaPoint = properties.Position - properties.Direction * (length / 2);

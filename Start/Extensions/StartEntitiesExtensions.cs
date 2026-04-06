@@ -51,6 +51,7 @@ namespace Start.Extensions
             return GetNearestPosition(startEntity, position) - position;
         }
 
+        [Pure]
         public static Vector<double> GetProjectionFromPoint(this IStartSegmentEntity segmentEntity,
             Vector<double> position)
         {

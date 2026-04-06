@@ -26,6 +26,8 @@ namespace Ifc.Geometries
     [IfcRepresentationType(IfcRepresentationType.Brep)]
     public class LateralExpansionJointGeometry : IfcGeometry
     {
+        private const double DiameterToSphereDiameterFactor = 1.25;
+        
         public LateralExpansionJointGeometry(IIfcBuilder geometryBuilder,
             IIfcRepresentationContext? representationContext = null)
             : base(geometryBuilder, representationContext)
@@ -78,7 +80,7 @@ namespace Ifc.Geometries
                     new SphereTriangulatedGeometryProperties
                     {
                         Center = sphereCenter,
-                        Diameter = properties.Diameter * 1.25
+                        Diameter = properties.Diameter * DiameterToSphereDiameterFactor
                     });
                 IIfcTriangulatedFaceSetBuilder<IfcTriangulatedFaceSet> faceSetBuilder =
                     new IfcTriangulatedFaceSetBuilder<IfcTriangulatedFaceSet>();

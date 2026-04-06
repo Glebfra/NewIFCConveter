@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics.Contracts;
 using IFCConverter.Converters.Elements;
 using IFCConverter.Interfaces;
+using Start.Entities.Anchors;
 using Start.Entities.Fittings;
 using Start.Entities.Joints;
 using Start.Entities.Segments;
@@ -16,6 +17,16 @@ namespace IFCConverter.Converters
         {
             return startEntity switch
             {
+                // Anchors
+                StartFixedAnchorEntity => new FixedAnchorConverter(model),
+                StartMomentFreeAnchorEntity => new MomentFreeAnchorConverter(model),
+                StartRestingSupportAnchorEntity => new RestingSupportAnchorConverter(model),
+                StartAbstractSpringAnchorEntity => new SpringAnchorConverter(model),
+                StartRigidHangerAnchorEntity => new RigidHangerAnchorConverter(model),
+                StartAbstractDirectionalGuideAnchorEntity => new DirectionalGuideAnchorConverter(model),
+                StartAbstractConstantSpringAnchorEntity => new ConstantSpringAnchorConverter(model),
+                StartNonstandardAnchorEntity => new NonstandardAnchorConverter(model),
+                
                 // Expansion Joint Entities
                 StartAngularExpansionJointEntity => new SphericalPipesJointConverter(model),
                 StartBallExpansionJointEntity => new SphericalPipesJointConverter(model),

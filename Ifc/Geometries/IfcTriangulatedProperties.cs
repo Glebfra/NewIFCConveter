@@ -111,7 +111,7 @@ namespace Ifc.Geometries
         {
             Vector<double> heightDirection = properties.TopConePoint - properties.BottomConeCenter;
             Matrix<double> botMatrix = MatrixExtensions.CreateTransition(properties.BottomConeCenter, heightDirection);
-            return CreateCone(properties, botMatrix);
+            return CreateCone(properties, botMatrix, properties.TopConePoint);
         }
 
         [Pure]
@@ -127,7 +127,7 @@ namespace Ifc.Geometries
 
         [Pure]
         private static IfcTriangulatedProperties CreateCone(ConeTriangulatedGeometryProperties properties,
-            Matrix<double> botMatrix)
+            Matrix<double> botMatrix, Vector<double> topConePoint)
         {
             Vector<double> botCenter = botMatrix.GetOffset();
             double radius = properties.Diameter / 2;
@@ -136,7 +136,7 @@ namespace Ifc.Geometries
             Vector<double>[] normals = new Vector<double>[_numSegments * 2];
             int[][] triangleIndices = new int[_numSegments * 2][];
 
-            coordinates[_numSegments] = VectorExtensions.Zero;
+            coordinates[_numSegments] = topConePoint;
 
             for (int i = 0; i < _numSegments; i++)
             {

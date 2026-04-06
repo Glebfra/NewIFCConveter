@@ -24,7 +24,7 @@ namespace Ifc.Builders.Elements
         public IIfcProductRepresentation? Representation { get; private set; }
         public IIfcMaterial? Material { get; private set; }
 
-        public List<IIfcPropertySet> PropertySets { get; } = new();
+        public List<IIfcPropertySet> PropertySets { get; } = new List<IIfcPropertySet>();
 
         public IIfcObjectPlacement CreateObjectPlacement(IModel model, Matrix<double> matrix)
         {
@@ -62,6 +62,18 @@ namespace Ifc.Builders.Elements
                 RelateMaterial(model);
                 _logger.Info(
                     $"Added relation between material with id: {Material.EntityLabel} and product instance with id: {Instance.EntityLabel}");
+            }
+            
+            foreach (IIfcPropertySet ifcPropertySet in PropertySets)
+            {
+                model.Instances.New<IfcRelDefinesByProperties>(properties =>
+                {
+                    properties.Name = ifcPropertySet.Name;
+                    properties.RelatedObjects.Add(Instance);
+                    properties.RelatingPropertyDefinition = ifcPropertySet;
+                });
+                _logger.Info(
+                    $"Added property set with name: {ifcPropertySet.Name} to product instance with id: {Instance.EntityLabel}");
             }
 
             IsCreated = true;
